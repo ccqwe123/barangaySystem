@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use App\Varpath;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,5 +22,10 @@ class DatabaseSeeder extends Seeder
 			'type'	=>	'admin',
 			'email'	=>	'admin@admin.com',
 		]);
+
+        $var = Varpath::create([
+            'name'  =>  'system_title',
+            'value'  =>  'Barangay Record Information System',
+        ]);
     }
 }

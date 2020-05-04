@@ -22,6 +22,8 @@ Route::apiResources(['dashboard'=>'API\DashboardController']);
 Route::apiResources(['barangay'=>'API\BarangayController']);
 Route::apiResources(['residents'=>'API\ResidentController']);
 Route::apiResources(['officials'=>'API\BarangayOfficialController']);
+Route::apiResources(['business_clearance'=>'API\BusinessClearanceController']);
+Route::apiResources(['system-info'=>'API\SystemController']);
 Route::apiResources(['users'=>'API\UserController']);
 
 Route::get('fetch/barangay_head','API\BarangayController@fetchBarangay');
@@ -32,4 +34,10 @@ Route::get('getBarangay','API\ResidentController@getBarangay');
 Route::get('fetch/barangaySelected','API\ResidentController@barangaySelected');
 Route::get('fetch/getbarangayinfo','API\DashboardController@getBarangayInfo');
 Route::get('fetch/user_id','API\UserController@getUser');
+
+Route::post('system-info/logo','API\SystemController@updateBarangayLogo');
+Route::get('system/getlogo','API\SystemController@getBarangayLogo');
+Route::get('system/logo/default','API\SystemController@setBarangayLogo');
+
+Route::get('fetch/barangay/residents','API\BusinessClearanceController@fetchResidents');
 // Route::get('getResidentBarangay','API\BarangayController@getResidentBarangay');

@@ -71,7 +71,7 @@ let routes = [
   { path: '/profile', component: require('./components/ProfileComponent.vue').default, meta: { title: 'BRIS - Profile', } },
   { path: '/barangay', component: require('./components/BarangayComponent.vue').default, meta: { title: 'BRIS - Barangay', } },
   { path: '/residents', component: require('./components/ResidentsComponent.vue').default, meta: { title: 'BRIS - Residents', } },
-  { path: '/barangay-clearance', component: require('./components/BarangayClearanceComponent.vue').default, meta: { title: 'BRIS - Barangay Clearance', } },
+  { path: '/business-clearance', component: require('./components/BusinessClearanceComponent.vue').default, meta: { title: 'BRIS - Barangay Clearance', } },
   { path: '/system', component: require('./components/SystemComponent.vue').default, meta: { title: 'BRIS - System', } },
   { path: '/barangay-officials', component: require('./components/BarangayOfficialComponent.vue').default, meta: { title: 'BRIS - Barangay Officials', } },
 ]
@@ -109,7 +109,4 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-$(document).ready(function() {
-  
-    
-});
+

@@ -77,7 +77,10 @@
     <a href="index3.html" class="brand-link">
       <img src="/images/barangay/barangay_logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">BRIS</span>
+      <span class="brand-text font-weight-light" style="display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;">BRIS</span>
     </a>
 
     <!-- Sidebar -->
@@ -144,19 +147,39 @@
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/barangay-clearance" class="nav-link">
-                      <p>Barangay Clearance</p>
+                  <router-link to="/good-moral" class="nav-link">
+                      <p>Good Moral Certificate</p>
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/barangay-residency" class="nav-link">
-                      <p>Barangay Residency</p>
+                  <router-link to="/student-certificate" class="nav-link">
+                      <p>Student Certificate</p>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/barangay-indigency" class="nav-link">
+                      <p>Indigency Certificate</p>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/transfer-certificate" class="nav-link">
+                      <p>Transfer Certificate</p>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/excavation-certificate" class="nav-link">
+                      <p>Excavation Certificate</p>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/resident-certificate" class="nav-link">
+                      <p>Resident Certificate</p>
                   </router-link>
                 </li>
               </ul>
             </li>
             <li class="nav-item">
-              <router-link to="/barangay" class="nav-link disabled">
+              <router-link to="/blotter" class="nav-link disabled">
                 <i class="nav-icon fas fa-file-signature"></i>
                 <p>
                   Blotter
@@ -222,7 +245,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-	  <div class="content-wrapper pt-5">
+	  <div class="content-wrapper pt-2">
 	    <!-- Main content -->
 	    <div class="content">
 	      <div class="container-fluid">

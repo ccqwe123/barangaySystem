@@ -44,9 +44,15 @@ class BarangayController extends Controller
         $this->validate($request, [
             'barangay_name' => 'required|min:2|string|max:299'
         ]);
-        return Barangay::create([
+        $brgy = Barangay::create([
             'barangay_name'=> $request['barangay_name']
         ]);
+         $test = DB::table('barangay_logo')
+                ->insert([
+                    'barangay_logo1' => 'default_logo1.png',
+                    'barangay_logo2' => 'default_logo2.png',
+                    'barangay_id' => $brgy->id,
+            ]);
     }
 
     /**

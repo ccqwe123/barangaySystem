@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Log;
 use App\User;
-use Illuminate\Support\Facades\Hash;
 use Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -118,7 +118,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|min:2|string|max:299',
             'email' => 'required|min:6|email|string|max:299|unique:users,email,'.$user->id,
-            'username' => 'required|min:6|unique:users,username,'.$user->id,
+            'username' => 'required|min:4|unique:users,username,'.$user->id,
             'password' => 'sometimes|min:6|max:299',
             'type' => 'required'
         ]);
