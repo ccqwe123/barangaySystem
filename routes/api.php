@@ -40,4 +40,6 @@ Route::get('system/getlogo','API\SystemController@getBarangayLogo');
 Route::get('system/logo/default','API\SystemController@setBarangayLogo');
 
 Route::get('fetch/barangay/residents','API\BusinessClearanceController@fetchResidents');
+Route::get('fetch/variable/path','API\SystemController@fetchVariable');
+Route::get('fetch/barangay/officials','API\BarangayOfficialController@fetchOfficials');
 // Route::get('getResidentBarangay','API\BarangayController@getResidentBarangay');

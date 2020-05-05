@@ -283,4 +283,40 @@ class BarangayOfficialController extends Controller
         $data = BarangayOfficials::findOrFail($id);
         $data->delete();
     }
+    public function fetchOfficials()
+    {
+        $captain = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
+                                ->where('position','=','barangay captain')
+                                ->first();
+        $secretary = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
+                                ->where('position','=','secretary')
+                                ->first();
+        $treasurer = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
+                                ->where('position','=','treasurer')
+                                ->first();                                             
+        $kagawad = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
+                                ->where('position','=','kagawad')
+                                ->get();
+        return response()->json([
+            'captain' => $captain,
+            'secretary' => $secretary,
+            'treasurer' => $treasurer,
+            'kagawad' => $kagawad
+        ]);
+    }
+    // function getKagawad($position, $barangay_id)
+    // {
+    //     if($barangay_id =='' || $barangay_id== NULL || $barangay_id == 0){
+    //         $kagawad = DB::table('barangay_officials')
+    //         ->where('position',$position)
+    //         ->get();
+    //     }else{
+    //         $kagawad = DB::table('barangay_officials')
+    //         ->where('position',$position)
+    //         ->where('barangay_id', $barangay_id)
+    //         ->get();
+    //     }
+
+    //     return json_encode($kagawad);
+    // }
 }

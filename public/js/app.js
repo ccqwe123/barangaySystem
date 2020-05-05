@@ -2454,6 +2454,217 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2462,6 +2673,19 @@ __webpack_require__.r(__webpack_exports__);
       editMode: false,
       clearances: {},
       residents: [],
+      variables: [],
+      kagawads: [],
+      brgy_captain: '',
+      brgy_secretary: '',
+      brgy_treasurer: '',
+      kagawad1: '',
+      kagawad2: '',
+      kagawad3: '',
+      kagawad4: '',
+      kagawad5: '',
+      kagawad6: '',
+      kagawad7: '',
+      date_created: '',
       res: {
         id: ''
       },
@@ -2481,6 +2705,8 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     openAddModal: function openAddModal() {
       this.form.reset();
+      this.res.id = '';
+      this.form.requestor_resident_id = '';
       this.editMode = false;
       $('.btnSubmit').text('Create');
       $('.btnSubmit').addClass('btn-primary');
@@ -2501,10 +2727,93 @@ __webpack_require__.r(__webpack_exports__);
         _this.populateClearance();
       })["catch"](function (error) {});
     },
-    editClearance: function editClearance(clearance) {
+    printClearance: function printClearance(clearance) {
       var _this2 = this;
 
+      this.res.id = '';
+      this.form.requestor_resident_id = '';
       this.form.reset();
+      this.form.fill(clearance);
+      axios.all([axios.get('/api/fetch/variable/path'), axios.get('/api/fetch/barangay/officials')]).then(axios.spread(function (response, dep2) {
+        _this2.variables = response.data;
+        _this2.brgy_captain = dep2.data.captain.name;
+        _this2.brgy_secretary = dep2.data.secretary.name;
+        _this2.brgy_treasurer = dep2.data.treasurer.name;
+        console.log(dep2.data.kagawad[1].name);
+
+        if (dep2.data.kagawad[0].name != undefined) {
+          _this2.kagawad1 = dep2.data.kagawad[0].name;
+          console.log("kagawad 1: " + _this2.kagawad1);
+        }
+
+        if (dep2.data.kagawad[1].name != undefined) {
+          _this2.kagawad2 = dep2.data.kagawad[1].name;
+          console.log("kagawad 2: " + _this2.kagawad2);
+        }
+
+        if (dep2.data.kagawad[2].name != undefined) {
+          _this2.kagawad3 = dep2.data.kagawad[2].name;
+          console.log("kagawad 3: " + _this2.kagawad3);
+        }
+
+        if (dep2.data.kagawad[3].name != undefined) {
+          _this2.kagawad4 = dep2.data.kagawad[3].name;
+          console.log("kagawad 4: " + _this2.kagawad4);
+        }
+
+        if (dep2.data.kagawad[4].name != undefined) {
+          _this2.kagawad5 = dep2.data.kagawad[4].name;
+          console.log("kagawad 5: " + _this2.kagawad5);
+        }
+
+        if (dep2.data.kagawad[5].name != undefined) {
+          _this2.kagawad6 = dep2.data.kagawad[5].name;
+          console.log("kagawad 6: " + _this2.kagawad6);
+        }
+
+        if (dep2.data.kagawad[6].name != undefined) {
+          _this2.kagawad7 = dep2.data.kagawad[6].name;
+          console.log("kagawad 7: " + _this2.kagawad7);
+        } else {
+          _this2.kagawad1 = '';
+          _this2.kagawad2 = '';
+          _this2.kagawad3 = '';
+          _this2.kagawad4 = '';
+          _this2.kagawad5 = '';
+          _this2.kagawad6 = '';
+          _this2.kagawad7 = '';
+        } // this.officials = dep2.data;
+        // for(var i = 0; i < dep2.data.length; i ++)
+        // {
+        //     if(dep2.data[i].position == 'barangay captain')
+        //     {
+        //         this.brgy_captain = dep2.data[i].name;
+        //     }
+        // }
+
+
+        if (response.data[0].created_at != undefined) {
+          _this2.date_created = response.data[0].created_at;
+        }
+      }))["catch"](function (error) {});
+      var vm = this;
+      var timesRun = 0;
+      var interval = setInterval(function () {
+        timesRun += 1;
+
+        if (timesRun === 1) {
+          clearInterval(interval);
+        }
+
+        vm.$htmlToPaper('printMe');
+      }, 1000);
+    },
+    editClearance: function editClearance(clearance) {
+      var _this3 = this;
+
+      this.form.reset();
+      this.res.id = '';
+      this.form.requestor_resident_id = '';
       this.editMode = true;
       $('.btnSubmit').text('Update');
       $('.btnSubmit').removeClass('btn-primary');
@@ -2516,23 +2825,23 @@ __webpack_require__.r(__webpack_exports__);
           clearance_id: clearance.requestor_resident_id
         }
       })]).then(axios.spread(function (response, dep2) {
-        _this2.residents = response.data;
+        _this3.residents = response.data;
 
         if (dep2.data[0].full_name != undefined) {
-          _this2.res.id = dep2.data[0].full_name;
-          _this2.form.requestor_resident_id = dep2.data[0].id;
+          _this3.res.id = dep2.data[0].full_name;
+          _this3.form.requestor_resident_id = dep2.data[0].id;
         } else {
-          _this2.res.id = '';
-          _this2.form.requestor_resident_id = '';
+          _this3.res.id = '';
+          _this3.form.requestor_resident_id = '';
         }
       }))["catch"](function (error) {
-        _this2.res.id = '';
-        _this2.form.requestor_resident_id = '';
+        _this3.res.id = '';
+        _this3.form.requestor_resident_id = '';
       });
       this.form.fill(clearance);
     },
     updateClearance: function updateClearance() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.form.put('/api/business_clearance/' + this.form.id).then(function (response) {
         toast.fire({
@@ -2541,7 +2850,7 @@ __webpack_require__.r(__webpack_exports__);
         });
         $("#modalclose").trigger("click");
 
-        _this3.populateClearance();
+        _this4.populateClearance();
       })["catch"](function (error) {});
     },
     setSelected: function setSelected(value) {
@@ -2549,11 +2858,11 @@ __webpack_require__.r(__webpack_exports__);
       this.form.requestor_resident_id = value.id;
     },
     populateClearance: function populateClearance() {
-      var _this4 = this;
+      var _this5 = this;
 
       axios.get("api/business_clearance").then(function (response) {
-        _this4.clearances = response.data.data;
-        _this4.loadingData = false;
+        _this5.clearances = response.data.data;
+        _this5.loadingData = false;
       })["catch"](function (error) {});
     },
     fetchResidents: function fetchResidents() {
@@ -2561,6 +2870,30 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
         this.residents = response.data;
       }.bind(this));
+    },
+    deleteClearance: function deleteClearance(id) {
+      var _this6 = this;
+
+      swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(function (result) {
+        if (result.value) {
+          _this6.form["delete"]('/api/business_clearance/' + id).then(function () {
+            _this6.populateClearance();
+
+            toast.fire({
+              icon: 'success',
+              title: 'Business Clearance has been Deleted'
+            });
+          });
+        }
+      });
     }
   },
   created: function created() {
@@ -24619,7 +24952,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.removeDept, a label\n{\n    text-decoration: none;\n    color:red;\n    margin-left:10px;\n    cursor: pointer !important;\n}\n.removeDept:hover\n{\n    color:darkred;\n}\n", ""]);
+exports.push([module.i, "\n.removeDept, a label\n{\n    text-decoration: none;\n    color:red;\n    margin-left:10px;\n    cursor: pointer !important;\n}\n.removeDept:hover\n{\n    color:darkred;\n}\n\n", ""]);
 
 // exports
 
@@ -89549,7 +89882,19 @@ var render = function() {
                               }
                             },
                             [
-                              _vm._m(1, true),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success",
+                                  attrs: { alt: "Print", title: "Print Data" },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.printClearance(clearance)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fas fa-print" })]
+                              ),
                               _vm._v(" "),
                               _c(
                                 "button",
@@ -89565,7 +89910,22 @@ var render = function() {
                                 [_c("i", { staticClass: "fas fa-pencil-alt" })]
                               ),
                               _vm._v(" "),
-                              _vm._m(2, true)
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger",
+                                  attrs: {
+                                    alt: "Delete",
+                                    title: "Delete Data"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.deleteClearance(clearance.id)
+                                    }
+                                  }
+                                },
+                                [_c("i", { staticClass: "fas fa-trash" })]
+                              )
                             ]
                           )
                         ])
@@ -89581,7 +89941,7 @@ var render = function() {
                   staticClass: "card-body p-3",
                   staticStyle: { display: "block" }
                 },
-                [_vm._m(3)]
+                [_vm._m(1)]
               )
         ])
       ])
@@ -89605,7 +89965,7 @@ var render = function() {
           { staticClass: "modal-dialog modal-lg", attrs: { role: "document" } },
           [
             _c("div", { staticClass: "modal-content" }, [
-              _vm._m(4),
+              _vm._m(2),
               _vm._v(" "),
               _c(
                 "form",
@@ -90013,7 +90373,299 @@ var render = function() {
           ]
         )
       ]
-    )
+    ),
+    _vm._v(" "),
+    _c("div", { attrs: { id: "printMe", hidden: "" } }, [
+      _c("div", { staticClass: "header" }, [
+        _vm._m(3),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "header_text" },
+          [
+            _vm._v("\n            Republic of the Philippines\n            "),
+            _c("br"),
+            _vm._v(" "),
+            _vm._l(_vm.variables, function(variable) {
+              return _c("span", [
+                variable.name == "barangay_name" && variable.value != ""
+                  ? _c("span", [_c("b", [_vm._v(_vm._s(variable.value))])])
+                  : _vm._e(),
+                _vm._v(" "),
+                variable.name == "barangay_city" && variable.value != ""
+                  ? _c("span", [_c("br"), _vm._v(_vm._s(variable.value))])
+                  : _vm._e(),
+                _vm._v(" "),
+                variable.name == "barnagay_zone" && variable.value != ""
+                  ? _c("span", [_c("br"), _vm._v(_vm._s(variable.value))])
+                  : _vm._e(),
+                _vm._v(" "),
+                variable.name == "barangay_address" && variable.value != ""
+                  ? _c("span", [_c("br"), _vm._v(_vm._s(variable.value))])
+                  : _vm._e(),
+                _vm._v(" "),
+                variable.name == "barangay_contact" && variable.value != ""
+                  ? _c("span", [
+                      _c("br"),
+                      _vm._v("Telephone No: " + _vm._s(variable.value))
+                    ])
+                  : _vm._e()
+              ])
+            }),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _vm._m(4)
+          ],
+          2
+        ),
+        _vm._v(" "),
+        _vm._m(5)
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "cus_header_line_1" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "cus_header_line_2" }),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "date_and_control_number_container" }, [
+        _c(
+          "div",
+          {
+            staticClass: "date_container",
+            staticStyle: { display: "flex", "text-align": "center" }
+          },
+          [
+            _vm._v("\n            Date: "),
+            _c(
+              "div",
+              {
+                staticStyle: {
+                  "border-bottom": "1px solid black",
+                  width: "100px",
+                  margin: "auto"
+                }
+              },
+              [
+                _vm._v(
+                  _vm._s(_vm._f("moment")(this.date_created, "MMMM D, YYYY"))
+                )
+              ]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _vm._m(6)
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "business_clearance_content" }, [
+        _vm._m(7),
+        _vm._v(" "),
+        _vm._m(8),
+        _vm._v(" "),
+        _c("div", { staticStyle: { "font-size": "1.5em" } }, [
+          _vm._v(
+            "\n            This is to certify that the business or trade activity described below.\n        "
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticStyle: { "font-size": "1.5em" } }, [
+          _c(
+            "div",
+            {
+              staticStyle: {
+                "border-bottom": "1px solid black",
+                width: "300px",
+                margin: "auto"
+              }
+            },
+            [_vm._v(_vm._s(this.form.business_name))]
+          ),
+          _vm._v("\n            (Business or Trade Activity)\n        ")
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticStyle: { "font-size": "1.5em" } }, [
+          _c(
+            "div",
+            {
+              staticStyle: {
+                "border-bottom": "1px solid black",
+                width: "300px",
+                margin: "auto"
+              }
+            },
+            [_vm._v(_vm._s(this.form.location))]
+          ),
+          _vm._v("\n            (Location)\n        ")
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticStyle: { "font-size": "1.5em" } }, [
+          _c(
+            "div",
+            {
+              staticStyle: {
+                "border-bottom": "1px solid black",
+                width: "300px",
+                margin: "auto"
+              }
+            },
+            [_vm._v(_vm._s(this.form.name))]
+          ),
+          _vm._v("\n            (Operator/Manager)\n        ")
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticStyle: { "font-size": "1.5em" } }, [
+          _c(
+            "div",
+            {
+              staticStyle: {
+                "border-bottom": "1px solid black",
+                width: "300px",
+                margin: "auto"
+              }
+            },
+            [_vm._v(_vm._s(this.form.address))]
+          ),
+          _vm._v("\n            (Address)\n        ")
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _vm._m(9)
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "seal_and_signature" }, [
+        _c("div", { staticClass: "seal" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "signature" }, [
+          _c("b", [_vm._v(_vm._s(this.brgy_captain))]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v("\n            PUNONG BARANGAY\n        ")
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "cus_header_line_1" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "footer" }, [
+        _c("div", { staticClass: "footer_punong_barangay" }, [
+          _c("b", { staticStyle: { "text-transform": "uppercase" } }, [
+            _vm._v(_vm._s(this.brgy_captain))
+          ]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v("\n            PUNONG BARANGAY\n        ")
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "kagawad_text" }, [_vm._v("KAGAWAD")]),
+        _vm._v(" "),
+        _c("div", { staticClass: "kagawad_container_1" }, [
+          this.kagawad1 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad1))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.kagawad2 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad2))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.kagawad3 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad3))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.kagawad4 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad4))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.kagawad5 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad5))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e()
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "kagawad_container_2" }, [
+          this.kagawad6 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad6))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.kagawad7 != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.kagawad7))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                Brgy. Kagawad\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.brgy_treasurer != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.brgy_treasurer))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                TREASURER\n            ")
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          this.brgy_secretary != ""
+            ? _c("div", [
+                _c("b", [_vm._v(_vm._s(this.brgy_secretary))]),
+                _vm._v(" "),
+                _c("br"),
+                _vm._v("\n                SECRETARY\n            ")
+              ])
+            : _vm._e()
+        ])
+      ])
+    ])
   ])
 }
 var staticRenderFns = [
@@ -90064,32 +90716,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-success",
-        attrs: { alt: "Print", title: "Print Data" }
-      },
-      [_c("i", { staticClass: "fas fa-print" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "button",
-      {
-        staticClass: "btn btn-danger",
-        attrs: { alt: "Delete", title: "Delete Data" }
-      },
-      [_c("i", { staticClass: "fas fa-trash" })]
-    )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center" }, [
       _c("div", { staticClass: "spinner-border", attrs: { role: "status" } }, [
         _c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])
@@ -90114,6 +90740,138 @@ var staticRenderFns = [
           }
         },
         [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      )
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "barangay_logo_container" }, [
+      _c("img", {
+        staticClass: "barangay_logo",
+        attrs: {
+          src: "images/certificate/default_logo1.png",
+          alt: "Manila Logo"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h2", { staticClass: "office_of_the_punong_barangay_header" }, [
+      _c("b", [_vm._v("OFFICE OF THE PUNONG BARANGAY")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "manila_logo_container" }, [
+      _c("img", {
+        staticClass: "manila_logo",
+        attrs: {
+          src: "images/certificate/default_logo2.png",
+          alt: "Manila Logo"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass: "control_number_container",
+        staticStyle: { display: "flex", "text-align": "center" }
+      },
+      [
+        _vm._v("\n            Control No: "),
+        _c(
+          "div",
+          {
+            staticStyle: {
+              "border-bottom": "1px solid black",
+              width: "100px",
+              margin: "auto"
+            }
+          },
+          [_vm._v(" ")]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "barangay_business_clearance_text" }, [
+      _c("b", [_vm._v("BARANGAY BUSINESS CLEARANCE")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "to_whom_it_may_concern_text" }, [
+      _c("b", [_vm._v("TO WHOM IT MAY CONCERN:")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "paragraph_container" }, [
+      _c(
+        "div",
+        { staticClass: "paragraph", staticStyle: { "text-align": "justify" } },
+        [
+          _vm._v("\n                being applied for the "),
+          _c("i", [_c("b", [_vm._v("NEW / RENEWAL")])]),
+          _vm._v(
+            " of the corresponding Mayor's Permit has been found to be:\n                "
+          ),
+          _c("br"),
+          _vm._v(
+            "\n                ___________/ Complying with the provisions of existing Barangay ordinances, rules and regulations being enforced in this Barangay:\n                "
+          ),
+          _c("br"),
+          _vm._v(
+            "\n                ___________/ Partially complying with the provisions of existing Barangay ordinances, rules and regulations being enforced in this Barangay:\n            "
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "paragraph", staticStyle: { "text-align": "justify" } },
+        [
+          _vm._v(
+            "\n                In view of the foregoing, this Barangay thru the undersigned - - -\n                "
+          ),
+          _c("br"),
+          _vm._v("\n                ___________/ Interposes "),
+          _c("b", [_c("i", [_vm._v("NO objection")])]),
+          _vm._v(" for the issuance of the corresponding\n                "),
+          _c("br"),
+          _vm._v(
+            "\n                Mayor's Permit being applied for;\n                "
+          ),
+          _c("br"),
+          _vm._v(
+            "\n                ___________/ Recommended only the issuance of a "
+          ),
+          _c("b", [_c("i", [_vm._v('"TEMPORARY PERMIT"')])]),
+          _vm._v(
+            " for not more than (3) months and within that period the requirements under existing Barangay ordinances, rules and regulations on that matter should be totally compiled with, otherwise this Barangay would take the necessary actions, within legal bounds, to stop its continued operation.\n            "
+          )
+        ]
       )
     ])
   }
@@ -112571,7 +113329,7 @@ window.Chart = chart_js__WEBPACK_IMPORTED_MODULE_4___default.a;
 var options = {
   name: '_blank',
   specs: ['fullscreen=yes', 'titlebar=yes', 'scrollbars=yes'],
-  styles: ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', 'https://unpkg.com/kidlat-css/css/kidlat.css']
+  styles: ['https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', 'https://unpkg.com/kidlat-css/css/kidlat.css', '/css/printstyle.css']
 };
 Vue.use(vue_html_to_paper__WEBPACK_IMPORTED_MODULE_5___default.a, options);
 Vue.use(__webpack_require__(/*! vue-moment */ "./node_modules/vue-moment/dist/vue-moment.js"));

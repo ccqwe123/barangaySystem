@@ -1,0 +1,420 @@
+            body
+            {
+                margin: 20px;
+
+                box-sizing: border-box;
+            }
+            .default
+            {
+                margin: 0px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+
+                border: 1px solid #333333;
+            }
+
+            .header
+            {
+                margin: 0px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                display: -o-flex;
+                display: flex;
+
+                box-sizing: border-box;
+            }
+
+            .barangay_logo_container
+            {
+                margin: auto auto auto 50px; padding: 0px;
+
+                position: relative;
+
+                width: 130px; height: 130px;
+
+                display: block;
+
+                box-sizing: border-box;
+            }
+
+            .barangay_logo
+            {
+                width: 130px; height: 130px;
+            }
+
+            .header_text
+            {
+                margin: auto; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+
+                text-align: center;
+                font-family: "Times New Roman";
+            }
+
+            .office_of_the_punong_barangay_header
+            {
+                margin-top: 10px margin-bottom: 5px;
+            }
+
+            .manila_logo_container
+            {
+                margin: auto 50px auto auto; padding: 0px;
+
+                position: relative;
+
+                width: 130px; height: 130px;
+
+                display: block;
+
+                box-sizing: border-box;
+            }
+
+            .manila_logo
+            {
+                width: 130px; height: 130px;
+            }
+
+            .cus_header_line_1
+            {
+                width: 100%;
+
+                border: 2px solid black;
+            }
+
+            .cus_header_line_2
+            {
+                margin-top: 5px;
+
+                width: 100%;
+
+                border: 1px solid black;
+            }
+
+            .date_and_control_number_container
+            {
+                margin: 0px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                display: -o-flex;
+                display: flex;
+                flex-direction: column;
+
+                box-sizing: border-box;
+
+                font-family: "Verdana";
+            }
+
+            .barangay_business_clearance_text
+            {
+                font-size: 1.5em;
+            }
+
+            .to_whom_it_may_concern_text
+            {
+                margin: 20px auto;
+
+                text-align: left;
+                text-indent: 220px;
+                font-style: italic;
+            }
+
+            .business_clearance_content
+            {
+                text-align: center;
+                font-family: 'Arial';
+            }
+
+            .date_container
+            {
+                margin: auto 170px auto auto; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+            }
+
+            .control_number_container
+            {
+                margin: auto 170px auto auto; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+            }
+
+            .seal_and_signature
+            {
+                margin: 0px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                display: -o-flex;
+                display: flex;
+
+                box-sizing: border-box;
+                
+                font-family: "Arial";
+            }
+            
+            .seal
+            {
+                margin: auto auto 0px 150px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+            }
+
+            .signature
+            {
+                margin: auto 150px auto auto; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+
+                text-align: center;
+            }
+
+            .paragraph_container
+            {
+                margin: auto;
+
+                font-size: 1.5em;
+                text-align: center;
+            }
+
+            .paragraph
+            {
+                margin: auto;
+                
+                width: 800px;
+
+                text-align: left;
+                text-indent: 60px;
+            }
+
+            .footer
+            {
+                margin: 0px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: block;
+
+                box-sizing: border-box;
+
+                font-family: "Times New Roman";
+            }
+
+            .footer_punong_barangay
+            {
+                margin-top: 5px;
+
+                text-align: center;
+            }
+
+            .kagawad_text
+            {
+                margin-top: 3px;
+
+                text-align: center;
+                letter-spacing: 50px;
+                font-weight: bold;
+            }
+
+            .kagawad_container_1
+            {
+                margin: 0px; padding: 0px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                display: -o-flex;
+                display: flex;
+
+                box-sizing: border-box;
+            }
+
+            .kagawad_container_1 div
+            {
+                flex: .2;
+
+                text-align: center;
+            }
+
+            .kagawad_container_2
+            {
+                margin: 0px; padding: 0px;
+                margin-top: 3px;
+
+                position: relative;
+
+                width: auto; height: auto;
+
+                display: -webkit-flex;
+                display: -moz-flex;
+                display: -ms-flex;
+                display: -o-flex;
+                display: flex;
+
+                box-sizing: border-box;
+            }
+
+            .kagawad_container_2 div
+            {
+                flex: .35;
+                margin: 10px auto;
+                text-align: center;
+                justify-content: center;
+                align-items: center;
+            }
+
+            @page
+            {
+                margin: 0px;
+            }
+
+            @media  print
+            {
+                .barangay_logo_container
+                {
+                    width: 100px; height: 100px;
+                }
+
+                .barangay_logo
+                {
+                    width: 100px; height: 100px;
+                }
+
+                .manila_logo_container
+                {
+                    width: 100px; height: 100px;
+                }
+
+                .manila_logo
+                {
+                    width: 100px; height: 100px;
+                }
+
+                .header_text
+                {
+                    padding: 10px;
+
+                    font-size: .7em;
+                }
+
+                .date_container
+                {
+                    margin-right: 100px;
+
+                    font-size: .7em;
+                }
+
+                .control_number_container
+                {
+                    margin-right: 100px;
+
+                    font-size: .7em;
+                }
+
+                .office_of_the_punong_barangay_header
+                {
+                    font-size: 1.1em;
+                }
+
+                .to_whom_it_may_concern_text
+                {
+                    text-indent: 100px;
+                }
+
+                .business_clearance_content
+                {
+                    font-size: .7em;
+                }
+
+                .paragraph_container
+                {
+                    margin: auto;
+
+                    text-align: center;
+                }
+
+                .paragraph
+                {
+                    width: 600px;
+                }
+
+                .seal_and_signature
+                {
+                    font-size: .8em;
+                }
+
+                .seal
+                {
+                    margin: auto auto 0px 100px;
+                }
+
+                .signature
+                {
+                    margin: auto 100px auto auto;
+                    font-size: 1.5em
+                }
+
+                .footer
+                {
+                    font-size: .8em;
+                }
+            }

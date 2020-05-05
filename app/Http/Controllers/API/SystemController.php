@@ -10,6 +10,7 @@ use App\Varpath;
 use App\User;
 use App\Barangay;
 use Auth;
+use Carbon\Carbon;
 
 class SystemController extends Controller
 {
@@ -52,6 +53,7 @@ class SystemController extends Controller
      */
     public function store(Request $request)
     {
+        $date_now = Carbon::now();
         $var = Varpath::where('barangay_id',Auth::user()->barangay_id)->first();
         $collection = collect($request->all());
         if($var == '' || $var == NULL){
@@ -63,34 +65,27 @@ class SystemController extends Controller
                         'name' => $var,
                         'value' => $var,
                         'barangay_id' => Auth::user()->barangay_id,
+                        'created_at' => $date_now,
                     ]);
                 }else {}
             }
             $update_existing_data = Varpath::where('barangay_id', Auth::user()->barangay_id)->get();
             foreach ($update_existing_data as $var_rename) {
-                if($var_rename->name == $request->barangay_id) {
-                    //update barangay name
-                    DB::table('var_path')
-                        ->where('name', $request->barangay_id)
-                        ->where('barangay_id', Auth::user()->barangay_id)
-                        ->update([
-                            'name' => 'barangay_name',
-                    ]);
-                }else if($var_rename->name == $request->barangay_contact) {
-                    //update barangay contact
-                    DB::table('var_path')
-                        ->where('name', $request->barangay_contact)
-                        ->where('barangay_id', Auth::user()->barangay_id)
-                        ->update([
-                            'name' => 'barangay_contact',
-                    ]);
-                }else if($var_rename->name == $request->barangay_city) {
+                if($var_rename->name == $request->barangay_city) {
                     //update barangay city
                     DB::table('var_path')
                         ->where('name', $request->barangay_city)
                         ->where('barangay_id', Auth::user()->barangay_id)
                         ->update([
                             'name' => 'barangay_city',
+                    ]);
+                }else if($var_rename->name == $request->barangay_id) {
+                    //update barangay name
+                    DB::table('var_path')
+                        ->where('name', $request->barangay_id)
+                        ->where('barangay_id', Auth::user()->barangay_id)
+                        ->update([
+                            'name' => 'barangay_name',
                     ]);
                 }else if($var_rename->name == $request->barnagay_zone) {
                     // update barangay zone
@@ -107,6 +102,14 @@ class SystemController extends Controller
                         ->where('barangay_id', Auth::user()->barangay_id)
                         ->update([
                             'name' => 'barangay_address',
+                    ]);
+                }else if($var_rename->name == $request->barangay_contact) {
+                    //update barangay contact
+                    DB::table('var_path')
+                        ->where('name', $request->barangay_contact)
+                        ->where('barangay_id', Auth::user()->barangay_id)
+                        ->update([
+                            'name' => 'barangay_contact',
                     ]);
                 }else if($var_rename->name == $request->software_name) {
                     //update software name
@@ -139,34 +142,27 @@ class SystemController extends Controller
                         'name' => $var,
                         'value' => $var,
                         'barangay_id' => Auth::user()->barangay_id,
+                        'created_at' => $date_now,
                     ]);
                 }else {}
             }
             $update_existing_data = Varpath::where('barangay_id', Auth::user()->barangay_id)->get();
             foreach ($update_existing_data as $var_rename) {
-                if($var_rename->name == $request->barangay_id) {
-                    //update barangay name
-                    DB::table('var_path')
-                        ->where('name', $request->barangay_id)
-                        ->where('barangay_id', Auth::user()->barangay_id)
-                        ->update([
-                            'name' => 'barangay_name',
-                    ]);
-                }else if($var_rename->name == $request->barangay_contact) {
-                    //update barangay contact
-                    DB::table('var_path')
-                        ->where('name', $request->barangay_contact)
-                        ->where('barangay_id', Auth::user()->barangay_id)
-                        ->update([
-                            'name' => 'barangay_contact',
-                    ]);
-                }else if($var_rename->name == $request->barangay_city) {
+                if($var_rename->name == $request->barangay_city) {
                     //update barangay city
                     DB::table('var_path')
                         ->where('name', $request->barangay_city)
                         ->where('barangay_id', Auth::user()->barangay_id)
                         ->update([
                             'name' => 'barangay_city',
+                    ]);
+                }else if($var_rename->name == $request->barangay_id) {
+                    //update barangay name
+                    DB::table('var_path')
+                        ->where('name', $request->barangay_id)
+                        ->where('barangay_id', Auth::user()->barangay_id)
+                        ->update([
+                            'name' => 'barangay_name',
                     ]);
                 }else if($var_rename->name == $request->barnagay_zone) {
                     // update barangay zone
@@ -183,6 +179,14 @@ class SystemController extends Controller
                         ->where('barangay_id', Auth::user()->barangay_id)
                         ->update([
                             'name' => 'barangay_address',
+                    ]);
+                }else if($var_rename->name == $request->barangay_contact) {
+                    //update barangay contact
+                    DB::table('var_path')
+                        ->where('name', $request->barangay_contact)
+                        ->where('barangay_id', Auth::user()->barangay_id)
+                        ->update([
+                            'name' => 'barangay_contact',
                     ]);
                 }else if($var_rename->name == $request->software_name) {
                     //update software name
@@ -331,5 +335,9 @@ class SystemController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function fetchVariable()
+    {
+        return DB::table('var_path')->where('barangay_id', Auth::user()->barangay_id)->get();
     }
 }

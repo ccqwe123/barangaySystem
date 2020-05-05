@@ -116,7 +116,17 @@ class BusinessClearanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        log::info($request);
+        $bc = BusinessClearance::findOrFail($id);
+        $this->validate($request, [
+            'business_name' => 'required|min:2|string|max:299',
+            'location' => 'required|min:2|string|max:299',
+            'requestor_resident_id' => 'required',
+            'address' => 'required|min:2|string|max:299',
+            'remarks' => 'required|min:2|string|max:299',
+            'status' => 'required'
+        ]);
+        $request->merge(['barangay_id' => Auth::user()->barangay_id]);
+        $bc->update($request->all());
     }
 
     /**
@@ -127,6 +137,7 @@ class BusinessClearanceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bc = BusinessClearance::findOrFail($id);
+        $bc->delete();
     }
 }
