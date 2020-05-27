@@ -58,4 +58,10 @@ class LoginController extends Controller
     {
         return $this->username;
     }
+
+    public function index()
+    {
+        $var = DB::table('var_path')->where('name','=','system_title')->first();
+        return view('auth.login', ['system_title'=>$var]);
+    }
 }

@@ -132,7 +132,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                         <label for="birthdate">Birth Date</label>
-                        <input v-model="form.birthdate" type="date" class="form-control" :class="{ 'is-invalid': form.errors.has('birthdate') }" id="birthdate" autocomplete="off">
+                        <input v-model="form.birthdate" @input="getAge(form.birthdate)" type="date" class="form-control" :class="{ 'is-invalid': form.errors.has('birthdate') }" id="birthdate" autocomplete="off">
                         <has-error :form="form" field="first_name"></has-error>
                     </div>
                   </div>
@@ -191,21 +191,21 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="form-group">
                         <label for="address">Address</label>
                         <input v-model="form.address" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" id="address" autocomplete="off">
                         <has-error :form="form" field="first_name"></has-error>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <!-- <div class="col-md-6">
                     <div class="form-group">
                         <label for="barangay_id">Barangay</label>
                         <v-select :options="bbarangay_id" placeholder="select" @input="setSelected"  v-model='bar.id' label="barangay_name"  :clearable="false"></v-select>
                         <span class="invalid-feedback" v-if="form.errors.has('bbarangay_id')">The Barangay Field is required!</span>
                         <input type="text" hidden name="barangay_id" v-model="form.barangay_id">
                     </div>
-                  </div>
+                  </div> -->
                 </div>
               </div>
               <div class="modal-footer">
@@ -251,9 +251,9 @@
                 birthdate: '',
                 age: '',
                 gender: '',
-                civil_status: '',
+                civil_status: 'single',
                 mobile_no: '',
-                citizenship: '',
+                citizenship: 'filipino',
                 address: '',
                 barangay_id: '',
                bbarangay_id: [],
@@ -261,6 +261,18 @@
             }
           },
           methods: {
+            getAge(dateString) {
+              // console.log(dateString);
+                var today = new Date();
+                var birthDate = new Date(dateString);
+                var age = today.getFullYear() - birthDate.getFullYear();
+                var m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                    age--;
+                }
+                this.form.age = age;
+                // return age;
+            },
             setSelected(value) {
                 this.form.barangay_id = value.id;
               },

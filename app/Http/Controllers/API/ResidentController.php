@@ -8,9 +8,14 @@ use App\Barangay;
 use App\Residents;
 use DB;
 use Log;
+use Auth;
 
 class ResidentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +23,9 @@ class ResidentController extends Controller
      */
     public function index()
     {
-        $test = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')->paginate(10);
+        $test = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')
+            ->where('residents.barangay_id', Auth::user()->barangay_id)
+            ->paginate(10);
         // $test->merge(['test' => 'testtest']);
         return $test;
     }
@@ -50,7 +57,7 @@ class ResidentController extends Controller
             'gender' => 'required',
             'civil_status' => 'required',
             'citizenship' => 'required',
-            'barangay_id' => 'required',
+            // 'barangay_id' => 'required',
         ]);
         return Residents::create([
             'first_name'=> $request['first_name'],
@@ -63,7 +70,8 @@ class ResidentController extends Controller
             'mobile_no'=> $request['mobile_no'],
             'citizenship'=> $request['citizenship'],
             'address'=> $request['address'],
-            'barangay_id'=> $request['barangay_id']
+            'barangay_id'=> Auth::user()->barangay_id
+            // 'barangay_id'=> $request['barangay_id']
         ]);
     }
 
@@ -107,7 +115,7 @@ class ResidentController extends Controller
             'gender' => 'required',
             'civil_status' => 'required',
             'citizenship' => 'required',
-            'barangay_id' => 'required',
+            // 'barangay_id' => 'required',
         ]);
         return DB::table('residents')
                 ->where('id', $id)
@@ -122,7 +130,7 @@ class ResidentController extends Controller
                     'mobile_no'=> $request['mobile_no'],
                     'citizenship'=> $request['citizenship'],
                     'address'=> $request['address'],
-                    'barangay_id'=> $request['barangay_id']
+                    // 'barangay_id'=> $request['barangay_id']
             ]);
     }
 
