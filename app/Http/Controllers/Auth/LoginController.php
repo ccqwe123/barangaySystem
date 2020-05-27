@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Varpath;
 
 class LoginController extends Controller
 {
@@ -61,7 +62,7 @@ class LoginController extends Controller
 
     public function index()
     {
-        $var = DB::table('var_path')->where('name','=','system_title')->first();
+        $var = Varpath::where('name','=','system_title')->first();
         return view('auth.login', ['system_title'=>$var]);
     }
 }
