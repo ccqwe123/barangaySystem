@@ -20,7 +20,12 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+    
+    public function showLoginForm()
+    {
+        $var = Varpath::where('name','=','system_title')->first();
+        return view('auth.login', ['system_title'=>$var]);
+    }
     /**
      * Where to redirect users after login.
      *
