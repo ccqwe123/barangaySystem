@@ -4,9 +4,21 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Log;
+use Auth;
+use App\Indigency;
 
 class IndigencyCertificateController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +26,7 @@ class IndigencyCertificateController extends Controller
      */
     public function index()
     {
-        //
+        return Indigency::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
     }
 
     /**
@@ -35,29 +47,20 @@ class IndigencyCertificateController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $this->validate($request, [
+            'requestor_resident_id' => 'required',
+            'address' => 'required|min:2|string|max:299',
+            'purpose' => 'required|min:2|string|max:299',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+         $request->merge(['barangay_id' => Auth::user()->barangay_id]);
+        return Indigency::create([
+            'requestor_resident_id'=> $request['requestor_resident_id'],
+            'name'=> $request['name'],
+            'address'=> $request['address'],
+            'purpose'=> $request['purpose'],
+            'barangay_id'=> $request['barangay_id'],
+        ]);
     }
 
     /**
@@ -69,7 +72,14 @@ class IndigencyCertificateController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $indigency = Indigency::findOrFail($id);
+        $this->validate($request, [
+            'requestor_resident_id' => 'required',
+            'address' => 'required|min:2|string|max:299',
+            'purpose' => 'required|min:2|string|max:299',
+        ]);
+        $request->merge(['barangay_id' => Auth::user()->barangay_id]);
+        $indigency->update($request->all());
     }
 
     /**
@@ -80,6 +90,7 @@ class IndigencyCertificateController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $indigency = Indigency::findOrFail($id);
+        $indigency->delete();
     }
 }

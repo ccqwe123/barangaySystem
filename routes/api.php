@@ -28,6 +28,9 @@ Route::apiResources(['system-info'=>'API\SystemController']);
 Route::apiResources(['users'=>'API\UserController']);
 Route::apiResources(['student_certificate'=>'API\StudentCertificateController']);
 Route::apiResources(['barangay_indigency'=>'API\IndigencyCertificateController']);
+Route::apiResources(['resident_certificate'=>'API\ResidentCertificateController']);
+Route::apiResources(['blotter'=>'API\BlotterController']);
+Route::apiResources(['crime_type'=>'API\CrimeController']);
 
 Route::get('fetch/barangay_head','API\BarangayController@fetchBarangay');
 Route::get('fetch/barangay','API\BarangayController@fetchBarangayAll');

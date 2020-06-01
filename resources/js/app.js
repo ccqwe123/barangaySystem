@@ -79,6 +79,9 @@ let routes = [
   { path: '/good-moral', component: require('./components/GoodMoralComponent.vue').default, meta: { title: 'BRIS - Good Moral Certificate', } },
   { path: '/student-certificate', component: require('./components/StudentCertificateComponent.vue').default, meta: { title: 'BRIS - Student Certificate', } },
   { path: '/barangay-indigency', component: require('./components/IndigencyCertificateComponent.vue').default, meta: { title: 'BRIS - Indigency Certificate', } },
+  { path: '/resident-certificate', component: require('./components/ResidentCertificateComponent.vue').default, meta: { title: 'BRIS - Resident Certificate', } },
+  { path: '/crime-type', component: require('./components/CrimeTypeComponent.vue').default, meta: { title: 'BRIS - Crime Type', } },
+  { path: '/blotter', component: require('./components/BlotterComponent.vue').default, meta: { title: 'BRIS - Blotter', } },
 ]
 /**
  * Next, we will create a fresh Vue application instance and attach it to

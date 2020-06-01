@@ -49,16 +49,13 @@
 
             .header_text
             {
-                margin: auto; padding: 0px;
-
+                margin: auto; 
+                padding: 0px;
                 position: relative;
-
-                width: auto; height: auto;
-
+                width: auto; 
+                height: auto;
                 display: block;
-
                 box-sizing: border-box;
-
                 text-align: center;
                 font-family: "Times New Roman";
             }

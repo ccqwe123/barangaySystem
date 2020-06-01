@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\GoodMoral;
 use Log;
 use Auth;
+use App\ResidentCertificate;
 
-class GoodMoralController extends Controller
+class ResidentCertificateController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -26,7 +26,7 @@ class GoodMoralController extends Controller
      */
     public function index()
     {
-        return GoodMoral::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        return ResidentCertificate::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
     }
 
     /**
@@ -47,46 +47,20 @@ class GoodMoralController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
+         $this->validate($request, [
             'requestor_resident_id' => 'required',
             'address' => 'required|min:2|string|max:299',
             'purpose' => 'required|min:2|string|max:299',
         ]);
 
          $request->merge(['barangay_id' => Auth::user()->barangay_id]);
-        return GoodMoral::create([
+        return ResidentCertificate::create([
             'requestor_resident_id'=> $request['requestor_resident_id'],
             'name'=> $request['name'],
             'address'=> $request['address'],
             'purpose'=> $request['purpose'],
             'barangay_id'=> $request['barangay_id'],
         ]);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function fetchData(Request $request)
-    {
-        return GoodMoral::where('barangay_id', Auth::user()->barangay_id)->where('id',$request->id)->first();
-    }
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -98,14 +72,14 @@ class GoodMoralController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $gm = GoodMoral::findOrFail($id);
+         $resident = ResidentCertificate::findOrFail($id);
         $this->validate($request, [
             'requestor_resident_id' => 'required',
             'address' => 'required|min:2|string|max:299',
             'purpose' => 'required|min:2|string|max:299',
         ]);
         $request->merge(['barangay_id' => Auth::user()->barangay_id]);
-        $gm->update($request->all());
+        $resident->update($request->all());
     }
 
     /**
@@ -116,7 +90,7 @@ class GoodMoralController extends Controller
      */
     public function destroy($id)
     {
-        $gm = GoodMoral::findOrFail($id);
-        $gm->delete();
+        $resident = ResidentCertificate::findOrFail($id);
+        $resident->delete();
     }
 }

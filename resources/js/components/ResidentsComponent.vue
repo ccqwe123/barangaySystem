@@ -94,7 +94,7 @@
             </div>
         </div>
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="addModalLabel"></h5>
@@ -129,14 +129,21 @@
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="birthdate">Birth Date</label>
                         <input v-model="form.birthdate" @input="getAge(form.birthdate)" type="date" class="form-control" :class="{ 'is-invalid': form.errors.has('birthdate') }" id="birthdate" autocomplete="off">
-                        <has-error :form="form" field="first_name"></has-error>
+                        <has-error :form="form" field="birthdate"></has-error>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="birthplace">Birthplace</label>
+                        <input v-model="form.birthplace" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('birthplace') }" id="birthplace" placeholder="Birthplace" autocomplete="off">
+                        <has-error :form="form" field="birthplace"></has-error>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="age">Age</label>
                         <input v-model="form.age" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('age') }" id="age" placeholder="0" autocomplete="off">
@@ -145,17 +152,18 @@
                   </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                     <div class="form-group">
                         <label for="gender">Gender</label>
-                        <select class="form-control" :class="{ 'is-invalid': form.errors.has('last_name') }" v-model="form.gender" id="gender">
+                        <select class="form-control" :class="{ 'is-invalid': form.errors.has('gender') }" v-model="form.gender" id="gender">
+                            <option value="" selected disabled>Select Gender</option>
                             <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
                         <has-error :form="form" field="gender"></has-error>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="civil_status">Civil Status</label>
                         <select  placeholder="Select Civil Status" name="civil_status" v-bind:class="{'form-control': true, 'is-invalid': form.errors.has('civil_status') }" v-model="form.civil_status">
@@ -167,16 +175,16 @@
                         <has-error :form="form" field="civil_status"></has-error>
                     </div>
                   </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="mobile_no">Contact Number</label>
                         <input v-model="form.mobile_no" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('mobile_no') }" id="mobile_no" autocomplete="off">
                         <has-error :form="form" field="mobile_no"></has-error>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                </div>
+                <div class="row">
+                  <div class="col-md-4">
                     <div class="form-group">
                         <label for="citizenship">Citizenship</label>
                         <select class="form-control" name="citizenship" v-model="form.citizenship">
@@ -189,6 +197,24 @@
                         <has-error :form="form" field="citizenship"></has-error>
                     </div>
                   </div>
+                  <div class="col-md-4">
+                    <label for="employment_status">Employment Status</label>
+                        <select class="form-control" :class="{ 'is-invalid': form.errors.has('employment_status') }" name="employment_status" v-model="form.employment_status" @change="employment(form.employment_status)">
+                            <option value="" selected disabled="">Select Status</option>
+                            <option value="Employed">Employed</option>
+                            <option value="Unemployed">Unemployed</option>
+                            <option value="Self-employed">Self-employed</option>
+                        </select>
+                        <has-error :form="form" field="employment_status"></has-error>
+                  </div>
+                  <div class="col-md-4">
+                      <label for="occupation">Occupation</label>
+                      <input type="text" name="occupation" v-model="form.occupation" class="form-control" :class="{ 'is-invalid': form.errors.has('occupation') }" :disabled="disabledText">
+                      <has-error :form="form" field="occupation"></has-error>
+                  </div>
+                </div>
+                <div class="row">
+                  
                 </div>
                 <div class="row">
                   <div class="col-md-12">
@@ -237,6 +263,7 @@
             return {
                 barangay_captain_set: 0,
                 editMode : false,
+                disabledText : true,
                 loadingData : true,
                 residents: {},
                bbarangay_id: [],
@@ -255,12 +282,25 @@
                 mobile_no: '',
                 citizenship: 'filipino',
                 address: '',
+                birthplace: '',
+                employment_status: '',
+                occupation: '',
                 barangay_id: '',
                bbarangay_id: [],
               })
             }
           },
           methods: {
+            employment(status)
+            {
+                if(status !== 'Unemployed')
+                {
+                    this.disabledText = false;
+                }else if(status == 'Unemployed')
+                {
+                    this.disabledText = true;
+                }
+            },
             getAge(dateString) {
               // console.log(dateString);
                 var today = new Date();
@@ -336,6 +376,7 @@
             openAddModal(){
                 this.form.reset();
                 this.editMode = false;
+                this.disabledText = true
                 $('.btnSubmit').text('Create');
                 $('.btnSubmit').addClass('btn-primary');
                 $('.btnSubmit').removeClass('btn-secondary');

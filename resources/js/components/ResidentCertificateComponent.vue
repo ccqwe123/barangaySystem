@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">Indigency Certificate List</h3>
+                      <h3 class="card-title">Resident Certificate List</h3>
 
                       <div class="card-tools">
                         <button type="button" class="btn btn-success" @click="openAddModal">
@@ -146,43 +146,33 @@
         
         <!-- Business Clearance Content -->
         <div class="business_clearance_content">
-      <div class="barangay_business_clearance_text">
-        <b>CERTIFICATE OF INDIGENCY</b>
-      </div>
+            <div class="barangay_business_clearance_text">
+              <h1>CERTIFICATION</h1>
+            </div>
 
-      <br>
-      <br>
+            <div class="to_whom_it_may_concern_text">
+              <b>TO WHOM IT MAY CONCERN :</b>
+            </div>
 
-      <div class="to_whom_it_may_concern_text">
-        <b>TO WHOM IT MAY CONCERN:</b>
-      </div>
+      <!--      <br />
+       -->
+            <div class="paragraph_container">
+              <div class="paragraph">
+                This is to certify that <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.name}}</span> whose specimen signature appears below, is a bonafide resident of this barangay with postal address <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.address}}</span>.
+              </div>
 
-      <br>
+              <br>
 
-      <div class="paragraph_container">
-        <div class="paragraph" style="text-align: justify;">
-          This is to certify that the bearer <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.name}}</span> with postal address at <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.address}}</span>, is an <b>INDIGENT</b> in this Barangay.
-        </div>
+              <div class="paragraph">
+                This certification is being issued upon the request of the above named person for <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.purpose}}</span>
+              </div>
+              <br>
 
-        <br>
-
-        <div class="paragraph" style="text-align: justify;">
-          I certify further that the same is known to me to be a person of good moral character and has no derogatory record whatsoever filed against him/her in this office.
-        </div>
-
-        <br>
-
-        <div class="paragraph" style="text-align: justify;">
-          This Certification is being issued upon the request of the above mentioned person for <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.purpose}}</span>
-        </div>
-
-        <br>
-
-        <div class="paragraph" style=" text-align: justify;  text-justify: inter-word;">
+              <div class="paragraph" style=" text-align: justify;  text-justify: inter-word;">
                     Given this <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.date_created | moment("DD")}} </span><span style="border-bottom: 1px solid black;"> day of </span><span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.date_created | moment("MMMM, YYYY")}}</span>
                 </div>
-      </div>
-    </div>
+            </div>
+          </div>
 
         <br />
         <br />
@@ -192,20 +182,32 @@
         <div class="seal_and_signature">
           <div class="seal">
             <h6 style="margin: 0px;">
-              Attested:
-              <br />
-              <br />
+              Specimen Signature
+              <br>
+              <br>
               ______________________________
-              <br />
+              <br>
+              Res. Cert. No.________________
+              <br>
+              Issued at ____________________
+              <br>
+              On ___________________________
+
+              <br>
+              Attested:
+              <br>
+              <br>
+              ______________________________
+              <br>
               <center>Kagawad</center>
-              <br />
+              <br>
               <!-- <b>(Not valid without Barangay Seal)</b> -->
             </h6>
           </div>
 
           <div class="signature">
-            <b style="text-transform:uppercase">{{this.brgy_captain}}</b>
-            <br />
+           <b style="text-transform:uppercase">{{this.brgy_captain}}</b>
+            <br>
             PUNONG BARANGAY
           </div>
         </div>
@@ -361,15 +363,15 @@
                 $('.btnSubmit').text('Create');
                 $('.btnSubmit').addClass('btn-primary');
                 $('.btnSubmit').removeClass('btn-secondary');
-                $('.modal-title').text('Add New Indigency Certificate');
+                $('.modal-title').text('Add New Resident Certificate');
                 $('#addModal').modal('show');
             },
             createClearance() {
-            this.form.post('/api/barangay_indigency')
+            this.form.post('/api/resident_certificate')
                 .then((response) => {
                      toast.fire({
                       icon: 'success',
-                      title: 'New Indigency Certificate successfully Added'
+                      title: 'New Resident Certificate successfully Added'
                     })
                     $("#modalclose").trigger("click");
                     this.populateClearance();
@@ -489,11 +491,11 @@
             },
             updateClearance()
             {
-                this.form.put('/api/barangay_indigency/'+this.form.id)
+                this.form.put('/api/resident_certificate/'+this.form.id)
                     .then((response) => {
                          toast.fire({
                           icon: 'success',
-                          title: 'Indigency Certificate updated!'
+                          title: 'Resident Certificate updated!'
                         })
                         $("#modalclose").trigger("click");
                         this.populateClearance();
@@ -506,7 +508,7 @@
                   this.form.requestor_resident_id = value.id;
             },
             populateClearance(){
-                axios.get("api/barangay_indigency")
+                axios.get("api/resident_certificate")
                  .then((response) => {
                         this.clearances = response.data.data
                         this.loadingData = false;
@@ -532,11 +534,11 @@
                   confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                         if (result.value) {
-                            this.form.delete('/api/barangay_indigency/'+id).then(()=> {
+                            this.form.delete('/api/resident_certificate/'+id).then(()=> {
                             this.populateClearance();
                              toast.fire({
                                   icon: 'success',
-                                  title: 'Indigency Certificate has been Deleted'
+                                  title: 'Resident Certificate has been Deleted'
                                 })
                             })
                           }
