@@ -162,28 +162,29 @@
                   </router-link>
                 </li>
                 <li class="nav-item">
-                  <router-link to="/transfer-certificate" class="nav-link">
-                      <p>Transfer Certificate</p>
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/excavation-certificate" class="nav-link">
-                      <p>Excavation Certificate</p>
-                  </router-link>
-                </li>
-                <li class="nav-item">
                   <router-link to="/resident-certificate" class="nav-link">
                       <p>Resident Certificate</p>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/transfer-certificate" class="nav-link disabled">
+                      <p>Transfer Certificate</p>
+                      <span class="badge badge-warning">Request <br>if needed</span>
+                  </router-link>
+                </li>
+                <li class="nav-item">
+                  <router-link to="/excavation-certificate" class="nav-link disabled">
+                      <p>Excavation Certificate</p>
+                      <span class="badge badge-warning">Request <br>if needed</span>
                   </router-link>
                 </li>
               </ul>
             </li>
             <li class="nav-item">
-              <router-link to="/blotter" class="nav-link disabled">
+              <router-link to="/blotter" class="nav-link">
                 <i class="nav-icon fas fa-file-signature"></i>
                 <p>
                   Blotter
-                  <span class="badge badge-warning">Soon</span>
                 </p>
               </router-link>
             </li>
@@ -230,6 +231,11 @@
                       </p>
 	                </router-link>
 	              </li>
+                <li class="nav-item">
+                  <router-link to="/crime-type" class="nav-link">
+                      <p>Crime Type</p>
+                  </router-link>
+                </li>
 	              <li class="nav-item">
 	                <router-link to="/users" class="nav-link">
 	                  	<p>Users</p>

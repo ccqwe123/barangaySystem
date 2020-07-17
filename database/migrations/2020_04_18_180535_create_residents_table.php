@@ -19,11 +19,14 @@ class CreateResidentsTable extends Migration
             $table->string('middle_name');
             $table->string('last_name');
             $table->date('birthdate');
+            $table->date('birthplace')->nullable();
             $table->integer('age')->nullable();
             $table->enum('gender',array('male','female'))->default('male');
             $table->enum('civil_status',array('single','married','divorced','widowed','solo-parent'))->default('single');
             $table->string('mobile_no')->nullable();
             $table->string('citizenship')->nullable();
+            $table->string('employment_status');
+            $table->string('occupation')->nullable();
             $table->string('address')->nullable();
             $table->integer('barangay_id')->unsigned();
             $table->foreign('barangay_id')->references('id')->on('barangay')->onUpdate('cascade')->onDelete('cascade');

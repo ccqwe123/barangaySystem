@@ -255,6 +255,7 @@
             },
              fetchUsers() {
                 axios.get('/api/fetch/user_id').then(function(response){
+                  console.log(response.data.type);
                     this.user_id = response.data.type
                 }.bind(this));
             }

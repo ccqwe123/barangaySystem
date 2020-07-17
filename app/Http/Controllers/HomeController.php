@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
+use Log;
+use App\Varpath;
 
 class HomeController extends Controller
 {
@@ -21,6 +24,12 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+    public function login()
+    {
+        // $var = DB::table('var_path')->where('name','=','system_title')->first();
+        $var = Varpath::where('name','=','system_title')->first();
+        return view('auth.login', ['system_title'=>$var]);
+    }
     public function index()
     {
         return view('home');

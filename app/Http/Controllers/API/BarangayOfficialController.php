@@ -27,6 +27,7 @@ class BarangayOfficialController extends Controller
     {
          return BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
                      ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
+                     ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
                      ->paginate(100);
     }
 
@@ -287,15 +288,19 @@ class BarangayOfficialController extends Controller
     {
         $captain = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','barangay captain')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->first();
         $secretary = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','secretary')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->first();
         $treasurer = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','treasurer')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->first();                                             
         $kagawad = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','kagawad')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->get();
         return response()->json([
             'captain' => $captain,

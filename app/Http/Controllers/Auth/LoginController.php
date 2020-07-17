@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Varpath;
 
 class LoginController extends Controller
 {
@@ -19,7 +20,12 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
-
+    
+    public function showLoginForm()
+    {
+        $var = Varpath::where('name','=','system_title')->first();
+        return view('auth.login', ['system_title'=>$var]);
+    }
     /**
      * Where to redirect users after login.
      *
@@ -57,5 +63,11 @@ class LoginController extends Controller
     public function username()
     {
         return $this->username;
+    }
+
+    public function index()
+    {
+        $var = Varpath::where('name','=','system_title')->first();
+        return view('auth.login', ['system_title'=>$var]);
     }
 }

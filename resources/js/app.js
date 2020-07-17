@@ -38,7 +38,7 @@ import Chart from 'chart.js'
 window.Chart = Chart;
 import VueHtmlToPaper from 'vue-html-to-paper';
 
-const options = {
+let options = {
   name: '_blank',
   specs: [
     'fullscreen=yes',
@@ -48,7 +48,8 @@ const options = {
   styles: [
     'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css',
     'https://unpkg.com/kidlat-css/css/kidlat.css',
-    '/css/printstyle.css'
+    '/css/printstyle.css',
+    // '/css/goodmoral.css'
   ]
 }
 
@@ -72,9 +73,15 @@ let routes = [
   { path: '/profile', component: require('./components/ProfileComponent.vue').default, meta: { title: 'BRIS - Profile', } },
   { path: '/barangay', component: require('./components/BarangayComponent.vue').default, meta: { title: 'BRIS - Barangay', } },
   { path: '/residents', component: require('./components/ResidentsComponent.vue').default, meta: { title: 'BRIS - Residents', } },
-  { path: '/business-clearance', component: require('./components/BusinessClearanceComponent.vue').default, meta: { title: 'BRIS - Barangay Clearance', } },
+  { path: '/business-clearance', component: require('./components/BusinessClearanceComponent.vue').default, meta: { title: 'BRIS - Business Clearance Certificate', } },
   { path: '/system', component: require('./components/SystemComponent.vue').default, meta: { title: 'BRIS - System', } },
   { path: '/barangay-officials', component: require('./components/BarangayOfficialComponent.vue').default, meta: { title: 'BRIS - Barangay Officials', } },
+  { path: '/good-moral', component: require('./components/GoodMoralComponent.vue').default, meta: { title: 'BRIS - Good Moral Certificate', } },
+  { path: '/student-certificate', component: require('./components/StudentCertificateComponent.vue').default, meta: { title: 'BRIS - Student Certificate', } },
+  { path: '/barangay-indigency', component: require('./components/IndigencyCertificateComponent.vue').default, meta: { title: 'BRIS - Indigency Certificate', } },
+  { path: '/resident-certificate', component: require('./components/ResidentCertificateComponent.vue').default, meta: { title: 'BRIS - Resident Certificate', } },
+  { path: '/crime-type', component: require('./components/CrimeTypeComponent.vue').default, meta: { title: 'BRIS - Crime Type', } },
+  { path: '/blotter', component: require('./components/BlotterComponent.vue').default, meta: { title: 'BRIS - Blotter', } },
 ]
 /**
  * Next, we will create a fresh Vue application instance and attach it to
