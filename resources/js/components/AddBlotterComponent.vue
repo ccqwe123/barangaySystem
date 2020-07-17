@@ -1,206 +1,535 @@
 
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <section class="content my-3">
+        <form @submit.prevent="createBlotter()">
+          <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Blotter List</h3>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-success" @click="openAddModal">
-                          <i class="fas fa-plus"></i> Add New</button>
-                      </div>
-                    </div>
-
-                    <div class="card-body p-0 table-responsive" style="display: block;" v-if="!loadingData">
-                      <table class="table table-striped projects">
-                          <thead>
-                              <tr>
-                                  <th>
-                                      Complainant / Victim
-                                  </th>
-                                  <th>
-                                      Respondent / Suspect
-                                  </th>
-                                  <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
-                                      Actions
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="crime in crimes" :key="crime.id">
-                                  <td>
-                                    {{ crime.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                          <li class="list-inline-item text-capitalize">
-                                            {{crime.name}}
-                                          </li>
-                                      </ul>
-                                  </td>
-                                  <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-                                      <button class="btn btn-primary" @click="editBarangay(crime)" alt="Edit" title="Edit Data">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" @click="deleteBarangay(crime.id)" alt="Delete" title="Delete Data">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                    </div>
-                    <div class="card-body p-0" style="display: block;" v-else>
-                      <div class="text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Blotter Information</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="inputStatus">Desposition</label>
+                                <select class="form-control custom-select" name="desposition" v-model="form.desposition">
+                                  <option selected disabled value="">Select one</option>
+                                  <option value="complaints">Complaints</option>
+                                  <option value="for_record">For Record</option>
+                                  <option value="for_follow_up">For Record & Followed By</option>
+                                </select>
+                            </div>
                         </div>
-                      </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Assigned to</label>
+                                <select class="form-control validate[required]" name="lupon" v-model="form.lupon" id="lupon" >
+                                    <option value="chairman">Chairman</option>
+                                    <option value="secretary">Secretary</option>
+                                    <option value="lupon">Lupon Tagapamayapa</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="well">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Date & Time Of Incident</label>
+                                            <input type="datetime-local" name="date_incident" v-model="form.date_incident" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Date & Time Reported</label>
+                                            <input type="datetime-local" name="date_reported" v-model="form.date_reported" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Incident Address</label>
+                                            <input type="text" name="incident_address" v-model="form.incident_address" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
             </div>
-        </div>
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="col-md-6" style="">
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Complainant/Victim Information</h3>
+                </div>
+                <div class="card-body complainant-table">
+                    <table class="table table-bordered">
+                      <thead>                  
+                        <tr>
+                          <th>Name</th>
+                          <th>Address</th>
+                          <th>Telephone No.</th>
+                          <th>Age</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(content, index) in form.complainants">
+                          <td><input type="text" readonly name="complainant_name[]" class="form-control tbl-border-0" v-model="content.complainant_name"></td>
+                          <td><input type="text" readonly name="address[]" class="form-control tbl-border-0" v-model="content.address"></td>
+                          <td><input type="text" readonly name="telephone[]" class="form-control tbl-border-0" v-model="content.telephone"></td>
+                          <td><input type="text" readonly name="age[]" class="form-control tbl-border-0" v-model="content.age"></td>
+                          <td>
+                              <button class="btn-danger btn-sm" @click="deleteComplainantRow(index)">Delete</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
               </div>
-            <form @submit.prevent="editMode ? updateBarangay() : createBarangay()">
-              <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Crime Name</label>
-                        <input v-model="form.id" type="hidden" class="form-control" name="barangay_id" id="barangay_id">
-                        <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" id="name" placeholder="Crime Type" autocomplete="off">
-                        <has-error :form="form" field="name"></has-error>
+              <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Add Complainant/Victim</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="complainant_name" v-model="form.complainant_names" class="form-control" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="complainant_address" class="form-control" v-model="form.complainant_address" autocomplete="off">
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                             <div class="form-group">
+                                <label>Contact Number</label>
+                                <input type="number" name="complainant_telephone" class="form-control" v-model="form.complainant_telephone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" name="complainant_age" class="form-control" v-model="form.complainant_age" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary float-right px-5" @click="AddComplainant">Add</button>
+                </div>
+                <!-- /.card-body -->
               </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="modalclose" data-dismiss="modal">Close</button>
-                <button :disabled="form.busy" type="submit" class="btn btn-primary btnSubmit">Create</button>
+              <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Respondent/Suspect Information</h3>
+                </div>
+                <div class="card-body complainant-table">
+                    <table class="table table-bordered">
+                      <thead>                  
+                        <tr>
+                          <th>Name</th>
+                          <th>Address</th>
+                          <th>Telephone No.</th>
+                          <th>Age</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(content, index) in form.respondents">
+                          <td><input type="text" readonly name="respondent_name[]" class="form-control tbl-border-0" v-model="content.respondent_name"></td>
+                          <td><input type="text" readonly name="respondent_address[]" class="form-control tbl-border-0" v-model="content.respondent_address"></td>
+                          <td><input type="text" readonly name="respondent_telephone[]" class="form-control tbl-border-0" v-model="content.respondent_telephone"></td>
+                          <td><input type="text" readonly name="respondent_age[]" class="form-control tbl-border-0" v-model="content.respondent_age"></td>
+                          <td>
+                              <button class="btn-danger btn-sm" @click="deleteRespondentRow(index)">Delete</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
               </div>
-            </form>
+              <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Add Respondent/Suspect</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="respondent_name" class="form-control" v-model="form.respondent_name" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="respondent_address" class="form-control" v-model="form.respondent_address" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                             <div class="form-group">
+                                <label>Contact Number</label>
+                                <input type="number" name="respondent_telephone" class="form-control" v-model="form.respondent_telephone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" name="respondent_age" class="form-control" v-model="form.respondent_age" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary float-right px-5" @click="AddRespondent">Add</button>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+              <div class="card card-secondary">
+                <div class="card-header">
+                  <h3 class="card-title">Witness Information</h3>
+                </div>
+                <div class="card-body complainant-table">
+                    <table class="table table-bordered">
+                      <thead>                  
+                        <tr>
+                          <th>Name</th>
+                          <th>Address</th>
+                          <th>Telephone No.</th>
+                          <th>Age</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                         <tr v-for="(content, index) in form.witnesses">
+                          <td><input type="text" readonly name="witness_name[]" class="form-control tbl-border-0" v-model="content.witness_name"></td>
+                          <td><input type="text" readonly name="witness_address[]" class="form-control tbl-border-0" v-model="content.witness_address"></td>
+                          <td><input type="text" readonly name="witness_telephone[]" class="form-control tbl-border-0" v-model="content.witness_telephone"></td>
+                          <td><input type="text" readonly name="witness_age[]" class="form-control tbl-border-0" v-model="content.witness_age"></td>
+                          <td>
+                              <button type="button" class="btn-danger btn-sm" @click="deleteWitnessRow(index)">Delete</button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <div class="col-md-6">
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="card-title">Add Witness</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label>Name</label>
+                                <input type="text" name="witness_name" class="form-control" v-model="form.witness_name" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <input type="text" name="witness_address" class="form-control" v-model="form.witness_address" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                             <div class="form-group">
+                                <label>Contact Number</label>
+                                <input type="number" name="witness_telephone" class="form-control" v-model="form.witness_telephone" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" name="witness_age" class="form-control" v-model="form.witness_age" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary float-right px-5" @click="AddWitness">Add</button>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                      <h3 class="card-title">Submit Blotter</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Type of Crime</label>
+                                    <v-select :options="crime_type" placeholder="select" v-model="res.id" label="name" :clearable="false" @input="setSelected"></v-select>
+                                    <input class="form-control" hidden :class="{ 'is-invalid': form.errors.has('crime_type') }" type="text" v-model="form.crime_type_id">
+                                    <has-error :form="form" field="crime_type"></has-error>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Attachment/Photos</label>
+                                    <input type="file" name="blotter_attachment" class="form-control" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                 <div class="form-group">
+                                    <label>Case Summary</label>
+                                    <textarea class="form-control" rows="10"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
             </div>
           </div>
-        </div>
+          <div class="row">
+            <div class="col-12">
+              <a href="#" class="btn btn-secondary">Cancel</a>
+              <button type="submit" class="btn btn-success float-right">Submit Blotter</button>
+            </div>
+          </div>
+        </form>
+        </section>
     </div>
 </template>
-<style type="text/css">
-    .removeDept, a label
+<style type="text/css" scoped>
+    .card-header
     {
-        text-decoration: none;
-        color:red;
-        margin-left:10px;
-        cursor: pointer !important;
+        padding: .25rem 1.25rem;
     }
-    .removeDept:hover
+    .card-title
     {
-        color:darkred;
+        font-size: 1rem;
+        margin: 0.4em 0rem;
+    }
+    .well 
+    {
+        min-height: 20px;
+        padding: 19px;
+        margin-bottom: 20px;
+        background-color: #f5f5f5;
+        border: 1px solid #e3e3e3;
+        border-radius: 4px;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .05);
+    }
+    .complainant-table
+    {
+        height: 327px;
+        overflow-y: scroll;
+    }
+    .form-control[readonly] {
+    background-color: #ffffff;
+    }
+    .form-control.tbl-border-0
+    {
+        border: 1px solid #ffffff00 !important;
     }
 </style>
 <script>
     export default {
         data () {
             return {
-                barangay_captain_set: 0,
-                editMode : false,
                 loadingData : true,
                 crimes: {},
-                barangay_captain_id: [],
-                bar:{
+                crime_type: [],
+                res:{
                     id: '',
                 },
               form: new Form({
                id: '',
-               name: '',
+               respondents: [],
+               complainants: [],
+               witnesses: [],
+               crime_type_id: '',
+               date_incident: '',
+               date_reported: '',
+               incident_address: '',
+               desposition: '',
+               lupon: '',
               })
             }
           },
           methods: {
-            updateBarangay(){
-                this.form.put('/api/crime_type/'+this.form.id)
+            AddWitness() {
+                 if(this.form.witness_name == '')
+                {
+                     toast.fire({
+                          icon: 'warning',
+                          title: 'Witness Name is Required!'
+                        })
+                }else if(this.form.witness_address == '')
+                {
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Witness Address is Required!'
+                        })
+                }else if(this.form.witness_telephone == ''){
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Witness Contact Number is Required!'
+                        })
+                }else if(this.form.witness_age == '')
+                {
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Witness Age is Required!'
+                        })
+                }else{
+                    this.form.witnesses.push({
+                        witness_name: this.form.witness_name,
+                        witness_address: this.form.witness_address,
+                        witness_telephone: this.form.witness_telephone,
+                        witness_age: this.form.witness_age,
+                    });
+                        this.form.witness_name = '';
+                        this.form.witness_address = '';
+                        this.form.witness_telephone = '';
+                        this.form.witness_age = '';
+                }
+            },
+            deleteWitnessRow(index)
+            {
+                this.form.witnesses.splice(index,1)
+            },
+            AddRespondent() {
+                 if(this.form.respondent_name == '')
+                {
+                     toast.fire({
+                          icon: 'warning',
+                          title: 'Respondent Name is Required!'
+                        })
+                }else if(this.form.respondent_address == '')
+                {
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Respondent Address is Required!'
+                        })
+                }else if(this.form.respondent_telephone == ''){
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Respondent Contact Number is Required!'
+                        })
+                }else if(this.form.respondent_age == '')
+                {
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Respondent Age is Required!'
+                        })
+                }else{
+                    this.form.respondents.push({
+                        respondent_name: this.form.respondent_name,
+                        respondent_address: this.form.respondent_address,
+                        respondent_telephone: this.form.respondent_telephone,
+                        respondent_age: this.form.respondent_age,
+                    });
+                        this.form.respondent_name = '';
+                        this.form.respondent_address = '';
+                        this.form.respondent_telephone = '';
+                        this.form.respondent_age = '';
+                }
+            },
+            deleteRespondentRow(index)
+            {
+                this.form.respondents.splice(index,1)
+            },
+            AddComplainant() {
+                if(this.form.complainant_names == '')
+                {
+                     toast.fire({
+                          icon: 'warning',
+                          title: 'Complainant Name is Required!'
+                        })
+                }else if(this.form.complainant_address == '')
+                {
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Complainant Address is Required!'
+                        })
+                }else if(this.form.complainant_telephone == ''){
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Complainant Contact Number is Required!'
+                        })
+                }else if(this.form.complainant_age == '')
+                {
+                    toast.fire({
+                          icon: 'warning',
+                          title: 'Complainant Age is Required!'
+                        })
+                }else{
+                    this.form.complainants.push({
+                        complainant_name: this.form.complainant_names,
+                        address: this.form.complainant_address,
+                        telephone: this.form.complainant_telephone,
+                        age: this.form.complainant_age,
+                    });
+                        this.form.complainant_names = '';
+                        this.form.complainant_address = '';
+                        this.form.complainant_telephone = '';
+                        this.form.complainant_age = '';
+                }
+            },
+            deleteComplainantRow(index)
+            {
+                this.form.complainants.splice(index,1)
+            },
+            createBlotter(){
+                this.form.post('/api/blotter')
                     .then((response) => {
                          toast.fire({
                           icon: 'success',
-                          title: 'Crime Type updated!'
+                          title: 'New Blotter successfully Added'
                         })
-                        $("#modalclose").trigger("click");
-                        this.populateCrimeType();
                     })
                     .catch(error => {
                     });
-
             },
-            editBarangay(barangay){
-                this.form.reset();
-                this.editMode = true;
-                $('.btnSubmit').text('Update');
-                $('.btnSubmit').removeClass('btn-primary');
-                $('.btnSubmit').css('font-weight','bold');
-                $('.modal-title').text('Edit Crime Type');
-                $('.btnSubmit').addClass('btn-secondary');
-                $('#addModal').modal('show');
-                this.form.fill(barangay);
+            fetchCrimeType(){
+                axios.get('/api/fetch/crime_type')
+                .then(function(response){
+                    this.crime_type = response.data;
+                }.bind(this));
             },
-            openAddModal(){
-                this.form.reset();
-                this.editMode = false;
-                $('.btnSubmit').text('Create');
-                $('.btnSubmit').addClass('btn-primary');
-                $('.btnSubmit').removeClass('btn-secondary');
-                $('.modal-title').text('Add Crime Type');
-                $('#addModal').modal('show');
+            setSelected(value){
+                this.form.crime_type_id = value.id;
             },
-            populateCrimeType(){
-                axios.get("api/crime_type")
-                .then(({ data }) => (this.crimes = data.data));
-                this.loadingData = false;
-            },
-            deleteBarangay(id){
-                swal.fire({
-                  title: 'Are you sure?',
-                  text: "You won't be able to revert this!",
-                  icon: 'warning',
-                  showCancelButton: true,
-                  confirmButtonColor: '#3085d6',
-                  cancelButtonColor: '#d33',
-                  confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                        if (result.value) {
-                            this.form.delete('/api/crime_type/'+id).then(()=> {
-                            this.populateCrimeType();
-                             toast.fire({
-                                  icon: 'success',
-                                  title: 'Crime Type has been Deleted'
-                                })
-                            })
-                          }
-                })
-            },
-            createBarangay(){
-                this.form.post('/api/crime_type')
-                    .then((response) => {
-                         toast.fire({
-                          icon: 'success',
-                          title: 'New Crime Type successfully Added'
-                        })
-                        $("#modalclose").trigger("click");
-                        this.populateCrimeType();
-                    })
-                    .catch(error => {
-                    });
-            }
           },
 
         created() {
-            this.populateCrimeType();
+            this.fetchCrimeType();
         }
     }
 </script>

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Blotter;
+use App\PersonsOfInterest;
+use Log;
 
 class BlotterController extends Controller
 {
@@ -36,7 +38,18 @@ class BlotterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        for($x=0;$x<count($request->complainants);$x++)
+            {
+                PersonsOfInterest::create([
+                    'blotter_id'=>$blotter->id,
+                    'type'=>'victim',
+                    'name'=>$request->input('victim-name')[$x],
+                    'address'=>$request->input('victim-address')[$x],
+                    'age'=>$request->input('victim-age')[$x],
+                    'occupation'=>$request->input('victim-occupation')[$x],
+                    'number'=>$request->input('victim-number')[$x],
+                ]);
+            }
     }
 
     /**

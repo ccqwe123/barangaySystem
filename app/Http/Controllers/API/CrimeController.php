@@ -14,6 +14,10 @@ class CrimeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function fetchData()
+    {
+        return CrimeType::get();
+    }
     public function index()
     {
         return CrimeType::orderBy('id','desc')->paginate(10);

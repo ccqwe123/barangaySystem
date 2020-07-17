@@ -49,4 +49,5 @@ Route::get('fetch/barangay/residents','API\BusinessClearanceController@fetchResi
 Route::get('fetch/variable/path','API\SystemController@fetchVariable');
 Route::get('fetch/barangay/officials','API\BarangayOfficialController@fetchOfficials');
 Route::get('fetch/good_moral/data','API\GoodMoralController@fetchData');
+Route::get('fetch/crime_type','API\CrimeController@fetchData');
 // Route::get('getResidentBarangay','API\BarangayController@getResidentBarangay');

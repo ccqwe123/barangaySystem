@@ -15,24 +15,21 @@ class CreateBlotterTable extends Migration
     {
         Schema::create('blotter', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('provincial_id')->default(0);
-            $table->integer('municipality_id')->default(0);
             $table->enum('type',['complaints','for_record','for_follow_up']);
             $table->string('lupon')->nullable();
 
             $table->dateTime('date_of_incident')->nullable();
             $table->string('address')->nullable();
-            $table->decimal('longitude', 10, 7)->nullable();
-            $table->decimal('latitude', 10, 7)->nullable();
             $table->dateTime('time_reported')->nullable();
             $table->integer('type_of_crime')->nullable()->unsigned();
             $table->foreign('type_of_crime')
                 ->references('id')
                 ->on('crime_type')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('specify_crime')->nullable();
             $table->string('case_summary',10000)->nullable();
-            $table->tinyInteger('status')->default(0);
+            $table->enum('status',['Pending','On Going','CFA','Amicable Settlement','BPO','Closed']);
             $table->tinyInteger('hearing_count')->default(0);
+            $table->integer('barangay_id')->unsigned()->nullable();
+            $table->foreign('barangay_id')->references('id')->on('barangay')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

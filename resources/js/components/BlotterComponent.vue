@@ -8,9 +8,7 @@
                       <h3 class="card-title">Blotter List</h3>
 
                       <div class="card-tools">
-                        <router-link to="/barangay-officials">test</router-link>
-                        <button type="button" class="btn btn-success">
-                          <i class="fas fa-plus"></i> Add New</button>
+                        <router-link to="/blotter/create" class="btn btn-success"><i class="fas fa-plus"></i> Add New</router-link>
                       </div>
                     </div>
 
@@ -19,10 +17,19 @@
                           <thead>
                               <tr>
                                   <th>
-                                      Complainant
+                                      Complainant/Victim
+                                  </th>
+                                  <th>
+                                      Respondent/Suspect
                                   </th>
                                   <th>
                                       Crime Type
+                                  </th>
+                                  <th>
+                                      Date and Time of Incident
+                                  </th>
+                                  <th>
+                                      Status
                                   </th>
                                   <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
                                       Actions
@@ -31,6 +38,15 @@
                           </thead>
                           <tbody>
                               <tr v-for="blotter in blotters" :key="blotter.id">
+                                  <td>
+                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
+                                  </td>
+                                  <td>
+                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
+                                  </td>
+                                  <td>
+                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
+                                  </td>
                                   <td>
                                     {{ blotter.created_at | moment("MMMM D, YYYY") }}
                                   </td>
@@ -65,32 +81,6 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="addModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            <form @submit.prevent="editMode ? updateBarangay() : createBarangay()">
-              <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">Crime Name</label>
-                        <input v-model="form.id" type="hidden" class="form-control" name="barangay_id" id="barangay_id">
-                        <input v-model="form.name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('name') }" id="name" placeholder="Crime Type" autocomplete="off">
-                        <has-error :form="form" field="name"></has-error>
-                    </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="modalclose" data-dismiss="modal">Close</button>
-                <button :disabled="form.busy" type="submit" class="btn btn-primary btnSubmit">Create</button>
-              </div>
-            </form>
-            </div>
-          </div>
-        </div>
     </div>
 </template>
 <style type="text/css">
@@ -110,14 +100,9 @@
     export default {
         data () {
             return {
-                barangay_captain_set: 0,
                 editMode : false,
                 loadingData : true,
                 blotters: {},
-                barangay_captain_id: [],
-                bar:{
-                    id: '',
-                },
               form: new Form({
                id: '',
                name: '',
@@ -125,9 +110,10 @@
             }
           },
           methods: {
-            populateCrimeType(){
-               axios.get("api/blotter")
+            populateBlotter(){
+               axios.get("/api/blotter")
                  .then((response) => {
+                  console.log("aaa");
                   console.log(response.data);
                         this.blotters = response.data.data
                         this.loadingData = false;
@@ -147,7 +133,7 @@
                 }).then((result) => {
                         if (result.value) {
                             this.form.delete('/api/crime_type/'+id).then(()=> {
-                            this.populateCrimeType();
+                            this.populateBlotter();
                              toast.fire({
                                   icon: 'success',
                                   title: 'Crime Type has been Deleted'
@@ -155,10 +141,11 @@
                             })
                           }
                 })
-            },
+            }
+          },
         created() {
-            this.populateCrimeType();
+            this.populateBlotter();
         }
     }
-  }
+  
 </script>
