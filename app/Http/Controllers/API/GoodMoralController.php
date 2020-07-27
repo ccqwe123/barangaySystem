@@ -4,13 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use DB;
+use App\GoodMoral;
 use Log;
 use Auth;
-use App\BusinessClearance;
-use App\Residents;
 
-class BusinessClearanceController extends Controller
+class GoodMoralController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -28,21 +26,9 @@ class BusinessClearanceController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->type == 'admin') {
+        return GoodMoral::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+    }
 
-        }else{
-            return BusinessClearance::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
-        }
-        // return BusinessClearance::latest()->paginate(10);
-    }
-    public function fetchResidents(Request $request)
-    {
-        if(count($request->clearance_id)>0){
-            return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->where('id',$request->clearance_id)->where('barangay_id', Auth::user()->barangay_id)->get();
-        }else{
-            return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->where('barangay_id', Auth::user()->barangay_id)->get();
-        }
-    }
     /**
      * Show the form for creating a new resource.
      *
@@ -62,27 +48,19 @@ class BusinessClearanceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'business_name' => 'required|min:2|string|max:299',
-            'location' => 'required|min:2|string|max:299',
             'requestor_resident_id' => 'required',
             'address' => 'required|min:2|string|max:299',
-            'remarks' => 'required|min:2|string|max:299',
-            'status' => 'required'
+            'purpose' => 'required|min:2|string|max:299',
         ]);
 
          $request->merge(['barangay_id' => Auth::user()->barangay_id]);
-        return BusinessClearance::create([
-            'business_name'=> $request['business_name'],
-            'location'=> $request['location'],
+        return GoodMoral::create([
             'requestor_resident_id'=> $request['requestor_resident_id'],
-            'address'=> $request['address'],
             'name'=> $request['name'],
-            'remarks'=> $request['remarks'],
-            'status'=> $request['status'],
+            'address'=> $request['address'],
+            'purpose'=> $request['purpose'],
             'barangay_id'=> $request['barangay_id'],
         ]);
-
-
     }
 
     /**
@@ -91,6 +69,10 @@ class BusinessClearanceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function fetchData(Request $request)
+    {
+        return GoodMoral::where('barangay_id', Auth::user()->barangay_id)->where('id',$request->id)->first();
+    }
     public function show($id)
     {
         //
@@ -116,17 +98,14 @@ class BusinessClearanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $bc = BusinessClearance::findOrFail($id);
+        $gm = GoodMoral::findOrFail($id);
         $this->validate($request, [
-            'business_name' => 'required|min:2|string|max:299',
-            'location' => 'required|min:2|string|max:299',
             'requestor_resident_id' => 'required',
             'address' => 'required|min:2|string|max:299',
-            'remarks' => 'required|min:2|string|max:299',
-            'status' => 'required'
+            'purpose' => 'required|min:2|string|max:299',
         ]);
         $request->merge(['barangay_id' => Auth::user()->barangay_id]);
-        $bc->update($request->all());
+        $gm->update($request->all());
     }
 
     /**
@@ -137,7 +116,7 @@ class BusinessClearanceController extends Controller
      */
     public function destroy($id)
     {
-        $bc = BusinessClearance::findOrFail($id);
-        $bc->delete();
+        $gm = GoodMoral::findOrFail($id);
+        $gm->delete();
     }
 }

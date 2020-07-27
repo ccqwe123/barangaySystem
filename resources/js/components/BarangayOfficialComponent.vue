@@ -181,7 +181,6 @@
                 $('#addModal').modal('show');
             },
             editBarangay(official){
-                console.log(official);
                 this.form.reset();
                 this.editMode = true;
                 $('.btnSubmit').text('Update');

@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">Business Clearance List</h3>
+                      <h3 class="card-title">Resident Certificate List</h3>
 
                       <div class="card-tools">
                         <button type="button" class="btn btn-success" @click="openAddModal">
@@ -22,9 +22,6 @@
                                   <th>
                                       Name
                                   </th>
-                                  <th>
-                                      Business or Trade Activity
-                                  </th>
                                   <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
                                       Actions
                                   </th>
@@ -37,13 +34,6 @@
                                   </td>
                                   <td>
                                     {{ clearance.name }}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                          <li class="list-inline-item text-capitalize">
-                                            {{ clearance.business_name }}
-                                          </li>
-                                      </ul>
                                   </td>
                                   <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
 
@@ -88,52 +78,27 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name">Business or Trade Activity</label>
-                                    <input v-model="form.id" type="hidden" class="form-control" name="ba_id" id="barangay_id">
-                                    <input v-model="form.business_name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('business_name') }" id="name" placeholder="Business Name" autocomplete="off">
-                                    <has-error :form="form" field="business_name"></has-error>
+                                    <label for="name">Name</label>
+                                    <v-select :options="residents" placeholder="select" v-model="res.id" label="full_name" :clearable="false" @input="setSelected"></v-select>
+                                    <input class="form-control" hidden :class="{ 'is-invalid': form.errors.has('requestor_resident_id') }" type="text" v-model="form.requestor_resident_id">
+                                    <has-error :form="form" field="requestor_resident_id"></has-error>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="name">Location</label>
-                                    <input v-model="form.location" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('location') }" id="name" placeholder="Location" autocomplete="off">
-                                    <has-error :form="form" field="location"></has-error>
+                                    <label for="date">Address</label>
+                                    <input v-model="form.address" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" id="date" placeholder="Location" autocomplete="off">
+                                    <has-error :form="form" field="address"></has-error>
                                 </div>
                             </div>
                         </div> 
-                        <div class="row">
+                        <div class="row mt-2">
                             <div class="col-md-12">
-                                <label for="name">Operator/Manager</label>
-                                <v-select :options="residents" placeholder="select" v-model="res.id" label="full_name" :clearable="false" @input="setSelected"></v-select>
-                                <input class="form-control" hidden :class="{ 'is-invalid': form.errors.has('requestor_resident_id') }" type="text" v-model="form.requestor_resident_id">
-                                <has-error :form="form" field="requestor_resident_id"></has-error>
+                                <label for="name">Purpose</label>
+                                <input type="text" name="purpose" class="form-control" :class="{ 'is-invalid': form.errors.has('purpose') }" v-model="form.purpose">
+                                <has-error :form="form" field="purpose"></has-error>
                             </div>
                         </div>  
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <label for="name">Address</label>
-                                <input type="text" name="address" class="form-control" :class="{ 'is-invalid': form.errors.has('address') }" v-model="form.address">
-                                <has-error :form="form" field="address"></has-error>
-                            </div>
-                        </div>  
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <label for="name">Remarks</label>
-                                <textarea name="remarks" v-model="form.remarks" class="form-control" :class="{ 'is-invalid': form.errors.has('remarks') }" style="height: 150px;"></textarea>
-                                <has-error :form="form" field="remarks"></has-error>
-                            </div>
-                        </div> 
-                        <div class="row mt-2">
-                            <div class="col-md-12">
-                                <label for="name">Status</label>
-                                <select class="form-control" :class="{ 'is-invalid': form.errors.has('status') }" name="status" v-model="form.status">
-                                    <option selected value="New Business">New Business</option>
-                                    <option value="Renewal">Renewal</option>
-                                </select>
-                                <has-error :form="form" field="status"></has-error>
-                            </div>
-                        </div> 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger" id="modalclose" data-dismiss="modal">Close</button>
@@ -160,123 +125,91 @@
                      <span v-if="variable.name == 'barangay_contact' && variable.value != ''"><br>Telephone No: {{variable.value}}</span>
                 </span>
                 <br />
-                <h2 class="office_of_the_punong_barangay_header">
+                <br />
+                <h2 class="office_of_the_punong_barangay_header" style="font-size: 20px; font-family: 'Times New Roman';">
                     <b>OFFICE OF THE PUNONG BARANGAY</b>
                 </h2>
             </div>
             <div class="manila_logo_container">
-                <img src="images/certificate/default_logo2.png" :src="getBrgyLogo2()" alt="Barangay Logo" class="manila_logo" />
+                <img src="images/certificate/default_logo2.png" :src="getBrgyLogo2()" alt="Manila Logo" class="manila_logo" />
             </div>
         </div>
 
         <div class="cus_header_line_1"></div>
         <div class="cus_header_line_2"></div>
 
-        <br />
-        
-        <!-- Date and Control No. -->
-        <div class="date_and_control_number_container">
-            <div class="date_container" style="display: flex; text-align: center;">
-                Date: <div style="border-bottom: 1px solid black; width: 100px; margin: auto;">{{this.date_created | moment("MMMM D, YYYY")}}</div>
-            </div>
-            <div class="control_number_container" style="display: flex; text-align: center;">
-                Control No: <div style="border-bottom: 1px solid black; width: 100px; margin: auto;">&nbsp;</div>
-            </div>
-        </div>
+
+      <br/>
+  
 
         <br />
         
         <!-- Business Clearance Content -->
         <div class="business_clearance_content">
             <div class="barangay_business_clearance_text">
-                <b>BARANGAY BUSINESS CLEARANCE</b>
+              <h1>CERTIFICATION</h1>
             </div>
 
             <div class="to_whom_it_may_concern_text">
-                <b>TO WHOM IT MAY CONCERN:</b>
+              <b>TO WHOM IT MAY CONCERN :</b>
             </div>
 
-            <div style="font-size: 1.5em;">
-                This is to certify that the business or trade activity described below.
-            </div>
-            
-            <br />
-            <br />
+      <!--      <br />
+       -->
+            <div class="paragraph_container">
+              <div class="paragraph">
+                This is to certify that <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.name}}</span> whose specimen signature appears below, is a bonafide resident of this barangay with postal address <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.address}}</span>.
+              </div>
 
-            <div style="font-size: 1.5em;">
-                <div style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.form.business_name}}</div>
-                (Business or Trade Activity)
-            </div>
+              <br>
 
-            <br />
+              <div class="paragraph">
+                This certification is being issued upon the request of the above named person for <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{form.purpose}}</span>
+              </div>
+              <br>
 
-            <div style="font-size: 1.5em;">
-            <div style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.form.location}}</div>
-                (Location)
-            </div>
-
-            <br />
-
-            <div style="font-size: 1.5em;">
-                <div style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.form.name}}</div>
-                (Operator/Manager)
-            </div>
-
-            <br />
-
-            <div style="font-size: 1.5em;">
-                <div style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.form.address}}</div>
-                (Address)
-            </div>
-
-            <br />
-
-            <div class="paragraph_container" >
-                <div class="paragraph" style="text-align: justify;">
-                    being applied for the <i><b>NEW / RENEWAL</b></i> of the corresponding Mayor's Permit has been found to be:
-                    <br />
-                    ___________/ Complying with the provisions of existing Barangay ordinances, rules and regulations being enforced in this Barangay:
-                    <br />
-                    ___________/ Partially complying with the provisions of existing Barangay ordinances, rules and regulations being enforced in this Barangay:
-                </div>
-
-                <br />
-
-                <div class="paragraph" style="text-align: justify;">
-                    In view of the foregoing, this Barangay thru the undersigned - - -
-                    <br />
-                    ___________/ Interposes <b><i>NO objection</i></b> for the issuance of the corresponding
-                    <br />
-                    Mayor's Permit being applied for;
-                    <br />
-                    ___________/ Recommended only the issuance of a <b><i>"TEMPORARY PERMIT"</i></b> for not more than (3) months and within that period the requirements under existing Barangay ordinances, rules and regulations on that matter should be totally compiled with, otherwise this Barangay would take the necessary actions, within legal bounds, to stop its continued operation.
+              <div class="paragraph" style=" text-align: justify;  text-justify: inter-word;">
+                    Given this <span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.date_created | moment("DD")}} </span><span style="border-bottom: 1px solid black;"> day of </span><span style="border-bottom: 1px solid black; width: 300px; margin: auto;">{{this.date_created | moment("MMMM, YYYY")}}</span>
                 </div>
             </div>
-        </div>
+          </div>
 
+        <br />
         <br />
         <br />
 
         <!-- Seal and Signature -->
         <div class="seal_and_signature">
-            <div class="seal">
-                <!-- <h6 style="margin: 0px;">
-                    Attested:
-                    <br />
-                    <br />
-                    ______________________________
-                    <br />
-                    <center>Kagawad</center>
-                    <br />
-                    <b>(Not valid without Barangay Seal)</b>
-                </h6> -->
-            </div>
+          <div class="seal">
+            <h6 style="margin: 0px;">
+              Specimen Signature
+              <br>
+              <br>
+              ______________________________
+              <br>
+              Res. Cert. No.________________
+              <br>
+              Issued at ____________________
+              <br>
+              On ___________________________
 
-            <div class="signature">
-                <b>{{this.brgy_captain}}</b>
-                <br />
-                PUNONG BARANGAY
-            </div>
+              <br>
+              Attested:
+              <br>
+              <br>
+              ______________________________
+              <br>
+              <center>Kagawad</center>
+              <br>
+              <!-- <b>(Not valid without Barangay Seal)</b> -->
+            </h6>
+          </div>
+
+          <div class="signature">
+           <b style="text-transform:uppercase">{{this.brgy_captain}}</b>
+            <br>
+            PUNONG BARANGAY
+          </div>
         </div>
         
         <br />
@@ -395,15 +328,12 @@
                 },
               form: new Form({
                 id: '',
+                name: '',
                 barangay_logo1: '',
                 barangay_logo2: '',
-                business_name: '',
-                location: '',
-                name: '',
                 address: '',
-                remarks: '',
+                purpose: '',
                 requestor_resident_id: '',
-                status: 'New Business',
                 busy: false,
               })
             }
@@ -414,14 +344,15 @@
                 axios.get('/api/system/getlogo').then(function(response){
                     vm.barangay_logo1 = response.data[0].barangay_logo1;
                     vm.barangay_logo2 = response.data[0].barangay_logo2;
+                    // console.log(response.data[0].barangay_logo1);
                 }.bind(this));
             },
-            getBrgyLogo1() {
-                let photo1 = (this.form.barangay_logo1.length > 200) ? this.form.barangay_logo1 : "images/certificate/"+ this.form.barangay_logo1;
+             getBrgyLogo1() {
+                let photo1 = (this.form.barangay_logo1 > 1200) ? this.form.barangay_logo1 : "images/certificate/"+ this.form.barangay_logo1 ;
                 return photo1;
             },
             getBrgyLogo2() {
-                let photo2 = (this.form.barangay_logo2.length > 200) ? this.form.barangay_logo2 : "images/certificate/"+ this.form.barangay_logo2 ;
+                let photo2 = (this.form.barangay_logo2 > 1200) ? this.form.barangay_logo2 : "images/certificate/"+ this.form.barangay_logo2 ;
                 return photo2;
             },
             openAddModal(){
@@ -432,15 +363,15 @@
                 $('.btnSubmit').text('Create');
                 $('.btnSubmit').addClass('btn-primary');
                 $('.btnSubmit').removeClass('btn-secondary');
-                $('.modal-title').text('Add New Business Clearance');
+                $('.modal-title').text('Add New Resident Certificate');
                 $('#addModal').modal('show');
             },
             createClearance() {
-            this.form.post('/api/business_clearance')
+            this.form.post('/api/resident_certificate')
                 .then((response) => {
                      toast.fire({
                       icon: 'success',
-                      title: 'New Business Clearance successfully Added'
+                      title: 'New Resident Certificate successfully Added'
                     })
                     $("#modalclose").trigger("click");
                     this.populateClearance();
@@ -449,7 +380,7 @@
                 });
             },
             printClearance(clearance){
-                this.populateBrgyLogo();
+              this.populateBrgyLogo();
                 this.res.id = '';
                 this.form.requestor_resident_id = '';
                 
@@ -560,11 +491,11 @@
             },
             updateClearance()
             {
-                this.form.put('/api/business_clearance/'+this.form.id)
+                this.form.put('/api/resident_certificate/'+this.form.id)
                     .then((response) => {
                          toast.fire({
                           icon: 'success',
-                          title: 'Business Clearance updated!'
+                          title: 'Resident Certificate updated!'
                         })
                         $("#modalclose").trigger("click");
                         this.populateClearance();
@@ -577,7 +508,7 @@
                   this.form.requestor_resident_id = value.id;
             },
             populateClearance(){
-                axios.get("api/business_clearance")
+                axios.get("api/resident_certificate")
                  .then((response) => {
                         this.clearances = response.data.data
                         this.loadingData = false;
@@ -588,6 +519,7 @@
             fetchResidents(){
                 axios.get('/api/fetch/barangay/residents')
                 .then(function(response){
+                    // console.log(response);
                     this.residents = response.data;
                 }.bind(this));
             },
@@ -602,11 +534,11 @@
                   confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                         if (result.value) {
-                            this.form.delete('/api/business_clearance/'+id).then(()=> {
+                            this.form.delete('/api/resident_certificate/'+id).then(()=> {
                             this.populateClearance();
                              toast.fire({
                                   icon: 'success',
-                                  title: 'Business Clearance has been Deleted'
+                                  title: 'Resident Certificate has been Deleted'
                                 })
                             })
                           }

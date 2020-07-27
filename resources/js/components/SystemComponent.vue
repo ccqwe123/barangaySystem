@@ -217,7 +217,7 @@
                 axios.get('/api/system/getlogo').then(function(response){
                     vm.barangay_logo1 = response.data[0].barangay_logo1;
                     vm.barangay_logo2 = response.data[0].barangay_logo2;
-                    console.log(response.data[0].barangay_logo1);
+                    // console.log(response.data[0].barangay_logo1);
                 }.bind(this));
             },
             populateData() {

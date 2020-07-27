@@ -8,9 +8,14 @@ use App\Barangay;
 use App\Residents;
 use DB;
 use Log;
+use Auth;
 
 class ResidentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +23,9 @@ class ResidentController extends Controller
      */
     public function index()
     {
-        $test = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')->paginate(10);
+        $test = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')
+            ->where('residents.barangay_id', Auth::user()->barangay_id)
+            ->paginate(10);
         // $test->merge(['test' => 'testtest']);
         return $test;
     }
@@ -41,29 +48,62 @@ class ResidentController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'first_name' => 'required|min:2|string|max:299',
-            'middle_name' => 'required|min:2|string|max:299',
-            'last_name' => 'required|min:2|string|max:299',
-            'birthdate' => 'required',
-            'age' => 'required|numeric',
-            'gender' => 'required',
-            'civil_status' => 'required',
-            'citizenship' => 'required',
-            'barangay_id' => 'required',
-        ]);
+        if($request->employment_status == 'Unemployed')
+        {
+            $this->validate($request, [
+                'first_name' => 'required|min:2|string|max:299',
+                'middle_name' => 'required|min:2|string|max:299',
+                'last_name' => 'required|min:2|string|max:299',
+                'birthdate' => 'required',
+                'age' => 'required|numeric',
+                'gender' => 'required',
+                'civil_status' => 'required',
+                'citizenship' => 'required',
+                'employment_status' => 'required',
+            ]);
+        }else if($request->employment_status == NULL){
+            $this->validate($request, [
+                'first_name' => 'required|min:2|string|max:299',
+                'middle_name' => 'required|min:2|string|max:299',
+                'last_name' => 'required|min:2|string|max:299',
+                'birthdate' => 'required',
+                'age' => 'required|numeric',
+                'gender' => 'required',
+                'civil_status' => 'required',
+                'citizenship' => 'required',
+                'employment_status' => 'required',
+            ]);
+        }else if($request->employment_status == 'Employed' || $request->employment_status == 'Self-employed'){
+            $this->validate($request, [
+                'first_name' => 'required|min:2|string|max:299',
+                'middle_name' => 'required|min:2|string|max:299',
+                'last_name' => 'required|min:2|string|max:299',
+                'birthdate' => 'required',
+                'age' => 'required|numeric',
+                'gender' => 'required',
+                'civil_status' => 'required',
+                'citizenship' => 'required',
+                'employment_status' => 'required',
+                'occupation' => 'required',
+            ]);
+        }
+        
         return Residents::create([
             'first_name'=> $request['first_name'],
             'middle_name'=> $request['middle_name'],
             'last_name'=> $request['last_name'],
             'birthdate'=> $request['birthdate'],
+            'birthplace'=> $request['birthplace'],
             'age'=> $request['age'],
             'gender'=> $request['gender'],
             'civil_status'=> $request['civil_status'],
             'mobile_no'=> $request['mobile_no'],
             'citizenship'=> $request['citizenship'],
             'address'=> $request['address'],
-            'barangay_id'=> $request['barangay_id']
+            'employment_status'=> $request['employment_status'],
+            'occupation'=> $request['employment_status'] == 'Unemployed' ? '' : $request['occupation'],
+            'barangay_id'=> Auth::user()->barangay_id
+            // 'barangay_id'=> $request['barangay_id']
         ]);
     }
 
@@ -107,7 +147,7 @@ class ResidentController extends Controller
             'gender' => 'required',
             'civil_status' => 'required',
             'citizenship' => 'required',
-            'barangay_id' => 'required',
+            // 'barangay_id' => 'required',
         ]);
         return DB::table('residents')
                 ->where('id', $id)
@@ -116,13 +156,16 @@ class ResidentController extends Controller
                     'middle_name'=> $request['middle_name'],
                     'last_name'=> $request['last_name'],
                     'birthdate'=> $request['birthdate'],
+                    'birthplace'=> $request['birthplace'],
                     'age'=> $request['age'],
                     'gender'=> $request['gender'],
                     'civil_status'=> $request['civil_status'],
                     'mobile_no'=> $request['mobile_no'],
                     'citizenship'=> $request['citizenship'],
                     'address'=> $request['address'],
-                    'barangay_id'=> $request['barangay_id']
+                    'employment_status'=> $request['employment_status'],
+                    'occupation'=> $request['employment_status'] == 'Unemployed' ? NULL : $request['occupation'],
+                    // 'barangay_id'=> $request['barangay_id']
             ]);
     }
 
