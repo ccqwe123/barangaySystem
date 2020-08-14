@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PersonsOfInterest extends Model
 {
-     protected $table = 'personsofinterest';
+     protected $table = 'blotter_personsofinterest';
     public $timestamps = false;
     protected $fillable =  [
 	

@@ -20,16 +20,16 @@
                                       Complainant/Victim
                                   </th>
                                   <th>
-                                      Respondent/Suspect
+                                      Blotter Type
                                   </th>
                                   <th>
                                       Crime Type
                                   </th>
                                   <th>
-                                      Date and Time of Incident
+                                      Date/Time of Incident
                                   </th>
                                   <th>
-                                      Status
+                                      Date/Time Reported
                                   </th>
                                   <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
                                       Actions
@@ -39,23 +39,23 @@
                           <tbody>
                               <tr v-for="blotter in blotters" :key="blotter.id">
                                   <td>
-                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                    {{ blotter.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
+                                    <ul class="list-inline">
                                           <li class="list-inline-item text-capitalize">
                                             {{blotter.name}}
                                           </li>
                                       </ul>
+                                  </td>
+                                  <td>
+                                    {{ blotter.type }}
+                                  </td>
+                                  <td>
+                                    {{ blotter.crime_type }}
+                                  </td>
+                                  <td>
+                                    {{ blotter.date_of_incident | moment("MMMM D, YYYY") }}
+                                  </td>
+                                  <td>
+                                      {{ blotter.time_reported | moment("MMMM D, YYYY") }}
                                   </td>
                                   <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
                                       <button class="btn btn-primary" @click="editBarangay(blotter)" alt="Edit" title="Edit Data">

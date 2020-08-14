@@ -2074,6 +2074,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2083,6 +2092,8 @@ __webpack_require__.r(__webpack_exports__);
       res: {
         id: ''
       },
+      complainant_checker: 0,
+      submitform: true,
       form: new Form({
         id: '',
         respondents: [],
@@ -2093,7 +2104,8 @@ __webpack_require__.r(__webpack_exports__);
         date_reported: '',
         incident_address: '',
         desposition: '',
-        lupon: ''
+        lupon: '',
+        case_summary: ''
       })
     };
   },
@@ -2204,17 +2216,30 @@ __webpack_require__.r(__webpack_exports__);
         this.form.complainant_address = '';
         this.form.complainant_telephone = '';
         this.form.complainant_age = '';
+        this.complainant_checker += 1;
+        this.submitform = false;
       }
     },
     deleteComplainantRow: function deleteComplainantRow(index) {
       this.form.complainants.splice(index, 1);
+      this.complainant_checker -= 1;
+
+      if (this.complainant_checker > 0) {
+        this.submitform = false;
+      } else {
+        this.submitform = true;
+      }
     },
     createBlotter: function createBlotter() {
+      var _this = this;
+
       this.form.post('/api/blotter').then(function (response) {
         toast.fire({
           icon: 'success',
           title: 'New Blotter successfully Added'
         });
+
+        _this.$router.push('/blotter');
       })["catch"](function (error) {});
     },
     fetchCrimeType: function fetchCrimeType() {
@@ -92299,125 +92324,155 @@ var render = function() {
                 _c("div", { staticClass: "card-body" }, [
                   _c("div", { staticClass: "row" }, [
                     _c("div", { staticClass: "col-md-6 col-sm-12" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { attrs: { for: "inputStatus" } }, [
-                          _vm._v("Desposition")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.desposition,
-                                expression: "form.desposition"
-                              }
-                            ],
-                            staticClass: "form-control custom-select",
-                            attrs: { name: "desposition" },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.form,
-                                  "desposition",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c(
-                              "option",
-                              {
-                                attrs: { selected: "", disabled: "", value: "" }
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", { attrs: { for: "inputStatus" } }, [
+                            _vm._v("Desposition")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.desposition,
+                                  expression: "form.desposition"
+                                }
+                              ],
+                              staticClass: "form-control custom-select",
+                              class: {
+                                "is-invalid": _vm.form.errors.has("desposition")
                               },
-                              [_vm._v("Select one")]
-                            ),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "complaints" } }, [
-                              _vm._v("Complaints")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "for_record" } }, [
-                              _vm._v("For Record")
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "option",
-                              { attrs: { value: "for_follow_up" } },
-                              [_vm._v("For Record & Followed By")]
-                            )
-                          ]
-                        )
-                      ])
+                              attrs: { name: "desposition" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.form,
+                                    "desposition",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    selected: "",
+                                    disabled: "",
+                                    value: ""
+                                  }
+                                },
+                                [_vm._v("Select one")]
+                              ),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "complaints" } }, [
+                                _vm._v("Complaints")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "for_record" } }, [
+                                _vm._v("For Record")
+                              ]),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "for_follow_up" } },
+                                [_vm._v("For Record & Followed By")]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("has-error", {
+                            attrs: { form: _vm.form, field: "desposition" }
+                          })
+                        ],
+                        1
+                      )
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-md-6" }, [
-                      _c("div", { staticClass: "form-group" }, [
-                        _c("label", { staticClass: "control-label" }, [
-                          _vm._v("Assigned to")
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "select",
-                          {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.form.lupon,
-                                expression: "form.lupon"
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", { staticClass: "control-label" }, [
+                            _vm._v("Assigned to")
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.form.lupon,
+                                  expression: "form.lupon"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              class: {
+                                "is-invalid": _vm.form.errors.has("lupon")
+                              },
+                              attrs: { name: "lupon", id: "lupon" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.form,
+                                    "lupon",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
                               }
-                            ],
-                            staticClass: "form-control validate[required]",
-                            attrs: { name: "lupon", id: "lupon" },
-                            on: {
-                              change: function($event) {
-                                var $$selectedVal = Array.prototype.filter
-                                  .call($event.target.options, function(o) {
-                                    return o.selected
-                                  })
-                                  .map(function(o) {
-                                    var val = "_value" in o ? o._value : o.value
-                                    return val
-                                  })
-                                _vm.$set(
-                                  _vm.form,
-                                  "lupon",
-                                  $event.target.multiple
-                                    ? $$selectedVal
-                                    : $$selectedVal[0]
-                                )
-                              }
-                            }
-                          },
-                          [
-                            _c("option", { attrs: { value: "chairman" } }, [
-                              _vm._v("Chairman")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "secretary" } }, [
-                              _vm._v("Secretary")
-                            ]),
-                            _vm._v(" "),
-                            _c("option", { attrs: { value: "lupon" } }, [
-                              _vm._v("Lupon Tagapamayapa")
-                            ])
-                          ]
-                        )
-                      ])
+                            },
+                            [
+                              _c("option", { attrs: { value: "chairman" } }, [
+                                _vm._v("Chairman")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "secretary" } }, [
+                                _vm._v("Secretary")
+                              ]),
+                              _vm._v(" "),
+                              _c("option", { attrs: { value: "lupon" } }, [
+                                _vm._v("Lupon Tagapamayapa")
+                              ])
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("has-error", {
+                            attrs: { form: _vm.form, field: "lupon" }
+                          })
+                        ],
+                        1
+                      )
                     ])
                   ]),
                   _vm._v(" "),
@@ -92426,110 +92481,165 @@ var render = function() {
                       _c("div", { staticClass: "well" }, [
                         _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-md-6" }, [
-                            _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Date & Time Of Incident")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.date_incident,
-                                    expression: "form.date_incident"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "datetime-local",
-                                  name: "date_incident"
-                                },
-                                domProps: { value: _vm.form.date_incident },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                            _c(
+                              "div",
+                              { staticClass: "form-group" },
+                              [
+                                _c("label", [
+                                  _vm._v("Date & Time Of Incident")
+                                ]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form.date_incident,
+                                      expression: "form.date_incident"
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "date_incident",
-                                      $event.target.value
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.form.errors.has(
+                                      "date_incident"
                                     )
+                                  },
+                                  attrs: {
+                                    type: "datetime-local",
+                                    name: "date_incident"
+                                  },
+                                  domProps: { value: _vm.form.date_incident },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.form,
+                                        "date_incident",
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                }
-                              })
-                            ])
+                                }),
+                                _vm._v(" "),
+                                _c("has-error", {
+                                  attrs: {
+                                    form: _vm.form,
+                                    field: "date_incident"
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           ]),
                           _vm._v(" "),
                           _c("div", { staticClass: "col-md-6" }, [
-                            _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Date & Time Reported")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.date_reported,
-                                    expression: "form.date_reported"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "datetime-local",
-                                  name: "date_reported"
-                                },
-                                domProps: { value: _vm.form.date_reported },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                            _c(
+                              "div",
+                              { staticClass: "form-group" },
+                              [
+                                _c("label", [_vm._v("Date & Time Reported")]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form.date_reported,
+                                      expression: "form.date_reported"
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "date_reported",
-                                      $event.target.value
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.form.errors.has(
+                                      "date_reported"
                                     )
+                                  },
+                                  attrs: {
+                                    type: "datetime-local",
+                                    name: "date_reported"
+                                  },
+                                  domProps: { value: _vm.form.date_reported },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.form,
+                                        "date_reported",
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                }
-                              })
-                            ])
+                                }),
+                                _vm._v(" "),
+                                _c("has-error", {
+                                  attrs: {
+                                    form: _vm.form,
+                                    field: "date_reported"
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           ])
                         ]),
                         _vm._v(" "),
                         _c("div", { staticClass: "row" }, [
                           _c("div", { staticClass: "col-md-12" }, [
-                            _c("div", { staticClass: "form-group" }, [
-                              _c("label", [_vm._v("Incident Address")]),
-                              _vm._v(" "),
-                              _c("input", {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.form.incident_address,
-                                    expression: "form.incident_address"
-                                  }
-                                ],
-                                staticClass: "form-control",
-                                attrs: {
-                                  type: "text",
-                                  name: "incident_address"
-                                },
-                                domProps: { value: _vm.form.incident_address },
-                                on: {
-                                  input: function($event) {
-                                    if ($event.target.composing) {
-                                      return
+                            _c(
+                              "div",
+                              { staticClass: "form-group" },
+                              [
+                                _c("label", [_vm._v("Incident Address")]),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.form.incident_address,
+                                      expression: "form.incident_address"
                                     }
-                                    _vm.$set(
-                                      _vm.form,
-                                      "incident_address",
-                                      $event.target.value
+                                  ],
+                                  staticClass: "form-control",
+                                  class: {
+                                    "is-invalid": _vm.form.errors.has(
+                                      "incident_address"
                                     )
+                                  },
+                                  attrs: {
+                                    type: "text",
+                                    name: "incident_address"
+                                  },
+                                  domProps: {
+                                    value: _vm.form.incident_address
+                                  },
+                                  on: {
+                                    input: function($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.form,
+                                        "incident_address",
+                                        $event.target.value
+                                      )
+                                    }
                                   }
-                                }
-                              })
-                            ])
+                                }),
+                                _vm._v(" "),
+                                _c("has-error", {
+                                  attrs: {
+                                    form: _vm.form,
+                                    field: "incident_address"
+                                  }
+                                })
+                              ],
+                              1
+                            )
                           ])
                         ])
                       ])
@@ -92677,11 +92787,13 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _c(
-                              "button",
+                              "a",
                               {
                                 staticClass: "btn-danger btn-sm",
+                                attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
+                                    $event.preventDefault()
                                     return _vm.deleteComplainantRow(index)
                                   }
                                 }
@@ -92848,13 +92960,22 @@ var render = function() {
                       ])
                     ])
                   ]),
-                  _vm._v(" "),
+                  _vm._v(
+                    "\n                Total Complainant: " +
+                      _vm._s(_vm.complainant_checker) +
+                      "\n                "
+                  ),
                   _c(
-                    "button",
+                    "a",
                     {
                       staticClass: "btn btn-primary float-right px-5",
-                      attrs: { type: "button" },
-                      on: { click: _vm.AddComplainant }
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.AddComplainant($event)
+                        }
+                      }
                     },
                     [_vm._v("Add")]
                   )
@@ -93004,11 +93125,13 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _c(
-                              "button",
+                              "a",
                               {
                                 staticClass: "btn-danger btn-sm",
+                                attrs: { href: "#" },
                                 on: {
                                   click: function($event) {
+                                    $event.preventDefault()
                                     return _vm.deleteRespondentRow(index)
                                   }
                                 }
@@ -93331,12 +93454,13 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _c(
-                              "button",
+                              "a",
                               {
                                 staticClass: "btn-danger btn-sm",
-                                attrs: { type: "button" },
+                                attrs: { href: "#", type: "button" },
                                 on: {
                                   click: function($event) {
+                                    $event.preventDefault()
                                     return _vm.deleteWitnessRow(index)
                                   }
                                 }
@@ -93587,13 +93711,74 @@ var render = function() {
                     _vm._m(11)
                   ]),
                   _vm._v(" "),
-                  _vm._m(12)
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-12" }, [
+                      _c(
+                        "div",
+                        { staticClass: "form-group" },
+                        [
+                          _c("label", [_vm._v("Case Summary")]),
+                          _vm._v(" "),
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.form.case_summary,
+                                expression: "form.case_summary"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: {
+                              "is-invalid": _vm.form.errors.has("case_summary")
+                            },
+                            attrs: { rows: "10" },
+                            domProps: { value: _vm.form.case_summary },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.form,
+                                  "case_summary",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("has-error", {
+                            attrs: { form: _vm.form, field: "case_summary" }
+                          })
+                        ],
+                        1
+                      )
+                    ])
+                  ])
                 ])
               ])
             ])
           ]),
           _vm._v(" "),
-          _vm._m(13)
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-12" }, [
+              _c(
+                "a",
+                { staticClass: "btn btn-secondary", attrs: { href: "#" } },
+                [_vm._v("Cancel")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-success float-right",
+                  attrs: { type: "submit", disabled: _vm.submitform }
+                },
+                [_vm._v("Submit Blotter")]
+              )
+            ])
+          ])
         ]
       )
     ])
@@ -93605,7 +93790,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Blotter Information")])
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Blotter Informationas")])
     ])
   },
   function() {
@@ -93738,41 +93923,6 @@ var staticRenderFns = [
           staticClass: "form-control",
           attrs: { type: "file", name: "blotter_attachment", multiple: "" }
         })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", [_vm._v("Case Summary")]),
-          _vm._v(" "),
-          _c("textarea", { staticClass: "form-control", attrs: { rows: "10" } })
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-12" }, [
-        _c("a", { staticClass: "btn btn-secondary", attrs: { href: "#" } }, [
-          _vm._v("Cancel")
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-success float-right",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Submit Blotter")]
-        )
       ])
     ])
   }
@@ -94812,58 +94962,6 @@ var render = function() {
                       _vm._l(_vm.blotters, function(blotter) {
                         return _c("tr", { key: blotter.id }, [
                           _c("td", [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm._f("moment")(
-                                    blotter.created_at,
-                                    "MMMM D, YYYY"
-                                  )
-                                ) +
-                                "\n                              "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm._f("moment")(
-                                    blotter.created_at,
-                                    "MMMM D, YYYY"
-                                  )
-                                ) +
-                                "\n                              "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm._f("moment")(
-                                    blotter.created_at,
-                                    "MMMM D, YYYY"
-                                  )
-                                ) +
-                                "\n                              "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm._f("moment")(
-                                    blotter.created_at,
-                                    "MMMM D, YYYY"
-                                  )
-                                ) +
-                                "\n                              "
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("td", [
                             _c("ul", { staticClass: "list-inline" }, [
                               _c(
                                 "li",
@@ -94880,6 +94978,48 @@ var render = function() {
                                 ]
                               )
                             ])
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(blotter.type) +
+                                "\n                              "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(blotter.crime_type) +
+                                "\n                              "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    blotter.date_of_incident,
+                                    "MMMM D, YYYY"
+                                  )
+                                ) +
+                                "\n                              "
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              "\n                                  " +
+                                _vm._s(
+                                  _vm._f("moment")(
+                                    blotter.time_reported,
+                                    "MMMM D, YYYY"
+                                  )
+                                ) +
+                                "\n                              "
+                            )
                           ]),
                           _vm._v(" "),
                           _c(
@@ -94961,7 +95101,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [
           _vm._v(
-            "\n                                  Respondent/Suspect\n                              "
+            "\n                                  Blotter Type\n                              "
           )
         ]),
         _vm._v(" "),
@@ -94973,13 +95113,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [
           _vm._v(
-            "\n                                  Date and Time of Incident\n                              "
+            "\n                                  Date/Time of Incident\n                              "
           )
         ]),
         _vm._v(" "),
         _c("th", [
           _vm._v(
-            "\n                                  Status\n                              "
+            "\n                                  Date/Time Reported\n                              "
           )
         ]),
         _vm._v(" "),
@@ -124021,8 +124161,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\xampp\htdocs\BarangaySystem\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\xampp\htdocs\BarangaySystem\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\Laravel Project\BRISS_MOBI_UPDATED\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\Laravel Project\BRISS_MOBI_UPDATED\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
