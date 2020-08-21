@@ -58,11 +58,8 @@
                                       {{ blotter.time_reported | moment("MMMM D, YYYY") }}
                                   </td>
                                   <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-                                      <button class="btn btn-primary" @click="editBarangay(blotter)" alt="Edit" title="Edit Data">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" @click="deleteBarangay(blotter.id)" alt="Delete" title="Delete Data">
+                                      <router-link class="btn btn-primary" v-bind:to="{ name: 'editBlotter', params: { id:blotter.id }}"  alt="Edit" title="Edit Data"><i class="fas fa-pencil-alt"></i></router-link>
+                                      <button class="btn btn-danger" @click="deleteBlotter(blotter.id)" alt="Delete" title="Delete Data">
                                           <i class="fas fa-trash">
                                           </i>
                                       </button>
@@ -121,7 +118,7 @@
                     .catch(error => {
                     });
             },
-            deleteBarangay(id){
+            deleteBlotter(id){
                 swal.fire({
                   title: 'Are you sure?',
                   text: "You won't be able to revert this!",
@@ -132,11 +129,11 @@
                   confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                         if (result.value) {
-                            this.form.delete('/api/crime_type/'+id).then(()=> {
+                            this.form.delete('/api/blotter/'+id).then(()=> {
                             this.populateBlotter();
                              toast.fire({
                                   icon: 'success',
-                                  title: 'Crime Type has been Deleted'
+                                  title: 'Blotter has been Deleted'
                                 })
                             })
                           }
@@ -145,6 +142,8 @@
           },
         created() {
             this.populateBlotter();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
   

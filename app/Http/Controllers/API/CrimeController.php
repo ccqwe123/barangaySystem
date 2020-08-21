@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\CrimeType;
+use App\Blotter;
 use Log;
 
 class CrimeController extends Controller
@@ -14,9 +15,17 @@ class CrimeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function fetchData()
+    public function fetchData(Request $request)
     {
-        return CrimeType::get();
+        if(count($request->crime_id)>0){
+            $crime = Blotter::select(['crime_type.name as crime_type','crime_type.id'])
+            ->leftjoin('crime_type','blotter.type_of_crime','=','crime_type.id')
+            ->where('blotter.id', $request->crime_id)
+            ->get();
+        }else{
+            $crime = CrimeType::get();
+        }
+        return $crime;
     }
     public function index()
     {

@@ -33,6 +33,7 @@ Route::apiResources(['blotter'=>'API\BlotterController']);
 Route::apiResources(['crime_type'=>'API\CrimeController']);
 
 Route::get('fetch/barangay_head','API\BarangayController@fetchBarangay');
+Route::get('fetch/blotter/{id}','API\BlotterController@fetchBlotter');
 Route::get('fetch/barangay','API\BarangayController@fetchBarangayAll');
 Route::get('getStates','API\BarangayController@getStates');
 

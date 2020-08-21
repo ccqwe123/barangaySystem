@@ -8,6 +8,12 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
+
+import { Datetime } from 'vue-datetime'
+Vue.use(Datetime)
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.component('datetime', Datetime);
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import { Form, HasError, AlertError } from 'vform'
@@ -32,7 +38,6 @@ window.toast = Toast;
 
 import vSelect from 'vue-select'
 Vue.component('v-select', vSelect)
-
 import Chart from 'chart.js'
 // Vue.use(Chart)
 window.Chart = Chart;
@@ -83,6 +88,7 @@ let routes = [
   { path: '/crime-type', component: require('./components/CrimeTypeComponent.vue').default, meta: { title: 'BRIS - Crime Type', } },
   { path: '/blotter', component: require('./components/BlotterComponent.vue').default, meta: { title: 'BRIS - Blotter', } },
   { path: '/blotter/create', component: require('./components/AddBlotterComponent.vue').default, meta: { title: 'BRIS - Add Blotter', } },
+  { path: '/blotter/edit/:id', component: require('./components/EditBlotterComponent.vue').default, name: 'editBlotter', meta: { title: 'BRIS - Edit Blotter', } },
 ]
 /**
  * Next, we will create a fresh Vue application instance and attach it to

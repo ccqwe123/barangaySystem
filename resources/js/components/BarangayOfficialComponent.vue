@@ -139,6 +139,7 @@
     }
 </style>
 <script>
+    import EditBlotter from './EditBlotterComponent';
     export default {
         data () {
             return {
@@ -281,6 +282,8 @@
             this.fetchUsers();
             this.fetchBarangay();
             this.populateOfficial();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>

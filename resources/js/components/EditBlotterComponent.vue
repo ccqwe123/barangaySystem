@@ -1,9 +1,9 @@
 
 <template>
     <div class="container-fluid">
-      <h3 class="mt-2">Add new Blotter</h3>
+      <h3 class="mt-2">Edit Blotter</h3>
         <section class="content my-3">
-        <form @submit.prevent="createBlotter()">
+        <form @submit.prevent="updateBlotter()">
           <div class="row">
             <div class="col-md-12">
               <div class="card card-primary">
@@ -15,13 +15,13 @@
                         <div class="col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="inputStatus">Desposition</label>
-                                <select class="form-control custom-select" name="desposition" v-model="form.desposition" :class="{ 'is-invalid': form.errors.has('desposition') }">
+                                <select class="form-control custom-select" name="type" v-model="form.type" :class="{ 'is-invalid': form.errors.has('type') }">
                                   <option selected disabled value="">Select one</option>
                                   <option value="complaints">Complaints</option>
                                   <option value="for_record">For Record</option>
                                   <option value="for_follow_up">For Record & Followed By</option>
                                 </select>
-                                <has-error :form="form" field="desposition"></has-error>
+                                <has-error :form="form" field="type"></has-error>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -42,15 +42,67 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
+
                                             <label>Date & Time Of Incident</label>
-                                            <input type="datetime-local" name="date_incident" v-model="form.date_incident" :class="{ 'is-invalid': form.errors.has('date_incident') }" class="form-control">
-                                            <has-error :form="form" field="date_incident"></has-error>
+                                            <!-- <input type="datetime-local" name="date_of_incident" v-model="form.date_of_incident" :class="{ 'is-invalid': form.errors.has('date_of_incident') }" class="form-control"> -->
+                                            
+                                            <datetime
+                                              v-if="time_incident_error"
+                                              type="datetime"
+                                              v-model="form.date_of_incident"
+                                              input-class="form-control is-invalid"
+                                               value-zone="local" zone="local"
+                                              :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                                              :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                                              :week-start="7"
+                                              :class="{ 'is-invalid': form.errors.has('date_of_incident') }"
+                                              use12-hour
+                                              auto
+                                              ></datetime>
+                                            <datetime
+                                              v-else
+                                              type="datetime"
+                                              v-model="form.date_of_incident"
+                                              input-class="form-control"
+                                               value-zone="local" zone="local"
+                                              :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                                              :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                                              :week-start="7"
+                                              :class="{ 'is-invalid': form.errors.has('date_of_incident') }"
+                                              use12-hour
+                                              auto
+                                              ></datetime>
+                                            <has-error :form="form" field="date_of_incident"></has-error>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Date & Time Reported</label>
-                                            <input type="datetime-local" name="date_reported" v-model="form.date_reported" :class="{ 'is-invalid': form.errors.has('date_reported') }" class="form-control">
+                                            <!-- <input type="datetime-local" name="date_reported" v-model="form.date_reported" :class="{ 'is-invalid': form.errors.has('date_reported') }" class="form-control"> -->
+                                            <datetime
+                                              v-if="time_reported_error"
+                                              type="datetime"
+                                              v-model="form.date_reported"
+                                              input-class="form-control is-invalid"
+                                              value-zone="local" zone="local"
+                                              :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                                              :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                                              :week-start="7"
+                                              use12-hour
+                                              auto
+                                              ></datetime>
+                                            <datetime
+                                              v-else
+                                              type="datetime"
+                                              v-model="form.date_reported"
+                                              input-class="form-control"
+                                              value-zone="local" zone="local"
+                                              :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'}"
+                                              :phrases="{ok: 'Continue', cancel: 'Exit'}"
+                                              :week-start="7"
+                                              use12-hour
+                                              auto
+                                              ></datetime>
                                             <has-error :form="form" field="date_reported"></has-error>
                                         </div>
                                     </div>
@@ -59,8 +111,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Incident Address</label>
-                                            <input type="text" name="incident_address" v-model="form.incident_address" :class="{ 'is-invalid': form.errors.has('incident_address') }" class="form-control">
-                                            <has-error :form="form" field="incident_address"></has-error>
+                                            <input type="text" name="address" v-model="form.address" :class="{ 'is-invalid': form.errors.has('address') }" class="form-control">
+                                            <has-error :form="form" field="address"></has-error>
                                         </div>
                                     </div>
                                 </div>
@@ -89,7 +141,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(content, index) in form.complainants">
+                        <tr v-for="(content, index) in complainantss">
                           <td><input type="text" readonly name="complainant_name[]" class="form-control tbl-border-0" v-model="content.complainant_name"></td>
                           <td><input type="text" readonly name="address[]" class="form-control tbl-border-0" v-model="content.address"></td>
                           <td><input type="text" readonly name="telephone[]" class="form-control tbl-border-0" v-model="content.telephone"></td>
@@ -161,7 +213,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(content, index) in form.respondents">
+                        <tr v-for="(content, index) in respondents">
                           <td><input type="text" readonly name="respondent_name[]" class="form-control tbl-border-0" v-model="content.respondent_name"></td>
                           <td><input type="text" readonly name="respondent_address[]" class="form-control tbl-border-0" v-model="content.respondent_address"></td>
                           <td><input type="text" readonly name="respondent_telephone[]" class="form-control tbl-border-0" v-model="content.respondent_telephone"></td>
@@ -233,7 +285,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                         <tr v-for="(content, index) in form.witnesses">
+                         <tr v-for="(content, index) in witnesses">
                           <td><input type="text" readonly name="witness_name[]" class="form-control tbl-border-0" v-model="content.witness_name"></td>
                           <td><input type="text" readonly name="witness_address[]" class="form-control tbl-border-0" v-model="content.witness_address"></td>
                           <td><input type="text" readonly name="witness_telephone[]" class="form-control tbl-border-0" v-model="content.witness_telephone"></td>
@@ -299,8 +351,8 @@
                                 <div class="form-group">
                                     <label>Type of Crime</label>
                                     <v-select :options="crime_type" placeholder="select" v-model="res.id" label="name" :clearable="false" @input="setSelected"></v-select>
-                                    <input class="form-control" hidden :class="{ 'is-invalid': form.errors.has('crime_type') }" type="text" v-model="form.crime_type_id">
-                                    <has-error :form="form" field="crime_type"></has-error>
+                                    <input class="form-control" hidden :class="{ 'is-invalid': form.errors.has('crime_type_id') }" type="text" v-model="form.crime_type_id">
+                                    <has-error :form="form" field="crime_type_id"></has-error>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -322,11 +374,12 @@
                     </div>
                     <!-- /.card-body -->
                   </div>
+                  
             </div>
           </div>
           <div class="row">
             <div class="col-12">
-              <a href="#" class="btn btn-secondary">Cancel</a>
+              <router-link to="/blotter" class="btn btn-secondary"> Cancel</router-link>
               <button type="submit" class="btn btn-success float-right" :disabled='submitform'>Submit Blotter</button>
             </div>
           </div>
@@ -369,15 +422,22 @@
     }
 </style>
 <script>
+  import moment from 'moment'
+    import Blotter from './BlotterComponent';
     export default {
         data () {
             return {
                 loadingData : true,
+                time_reported_error: false,
+                time_incident_error: false,
                 crimes: {},
                 crime_type: [],
                 res:{
                     id: '',
                 },
+                respondents: [],
+                witnesses: [],
+                complainantss: [],
                complainant_checker: 0,
                submitform: true,
               form: new Form({
@@ -386,12 +446,13 @@
                complainants: [],
                witnesses: [],
                crime_type_id: '',
-               date_incident: '',
+               date_of_incident: '',
                date_reported: '',
-               incident_address: '',
-               desposition: '',
+               address: '',
+               type: '',
                lupon: '',
                case_summary: '',
+               test_date: '',
               })
             }
           },
@@ -476,7 +537,7 @@
             },
             deleteRespondentRow(index)
             {
-                this.form.respondents.splice(index,1)
+                this.respondents.splice(index,1)
             },
             AddComplainant() {
                 if(this.form.complainant_names == '')
@@ -503,7 +564,7 @@
                           title: 'Complainant Age is Required!'
                         })
                 }else{
-                    this.form.complainants.push({
+                    this.complainantss.push({
                         complainant_name: this.form.complainant_names,
                         address: this.form.complainant_address,
                         telephone: this.form.complainant_telephone,
@@ -519,7 +580,7 @@
             },
             deleteComplainantRow(index)
             {
-                this.form.complainants.splice(index,1)
+                this.complainantss.splice(index,1)
                 this.complainant_checker -=1;
                 if(this.complainant_checker>0)
                 {
@@ -540,19 +601,102 @@
                     .catch(error => {
                     });
             },
+            updateBlotter(){
+                this.form.put('/api/blotter/'+this.$route.params.id)
+                    .then((response) => {
+                         toast.fire({
+                          icon: 'success',
+                          title: 'Blotter Information updated!'
+                        })
+                        this.$router.push('/blotter')
+                    })
+                    .catch(error => {
+                      $('html, body').animate({scrollTop: '0px'}, 1000);
+                      if(this.form.errors.has('date_reported'))
+                      {
+                        this.time_reported_error = true;
+                      }
+                      if(this.form.errors.has('date_of_incident'))
+                      {
+                        this.time_incident_error = true;
+                      }
+                    });
+
+            },
+            fetchBlotter() {
+               axios.get("/api/blotter/"+this.$route.params.id)
+                .then((response) => {
+                  this.respondents = response.data.blotter_person_respondent;
+                  this.witnesses = response.data.blotter_person_witness;
+                  this.complainantss = response.data.blotter_person_complainant;
+                  this.form.fill(response.data.blotter);
+                  this.complainant_checker = response.data.blotter_complainant_count;
+                  this.form.date_reported = moment(String(response.data.blotter.time_reported)).format("Y-MM-DD\THH:mm");
+                  this.form.date_of_incident = moment(String(response.data.blotter.date_of_incident)).format("Y-MM-DD\THH:mm");
+                  this.form.test_date = moment(String(response.data.blotter.date_of_incident)).format("Y-MM-DD\TH:mm");
+                  //update complaints record/info
+                  this.form.complaints = response.data.blotter_person_complainant;
+                  //update Respondent Record/info
+                  this.form.respondents = response.data.blotter_person_respondent;
+                  //Update Witness Record/Info
+                  this.form.witnesses = response.data.blotter_person_witness;
+
+                  this.form.crime_type_id = response.data.crime_type[0].id;
+                  // console.log(moment(String(response.data.blotter.date_of_incident)).format("Y-MM-DD\THH:mm"));
+                  if(this.complainant_checker>0)
+                {
+                  this.submitform = false;
+                  }else{
+                    this.submitform = true;
+                  }
+              });
+            },
             fetchCrimeType(){
-                axios.get('/api/fetch/crime_type')
-                .then(function(response){
+              axios.all([
+                  axios.get('/api/fetch/crime_type'),
+                  axios.get('/api/fetch/crime_type',{
+                     params: {
+                        crime_id: this.$route.params.id
+                    }
+                  })
+                ])
+              .then(axios.spread((response, response2) => {
                     this.crime_type = response.data;
-                }.bind(this));
+                    if(response2.data[0].crime_type != undefined){
+                        this.res.id = response2.data[0].crime_type;
+                      console.log(this.form.crime_type_id+" sss");
+                    }else{
+                        this.res.id = ''; 
+                    }
+                })).catch(error => {  
+                    this.res.id = ''; 
+                    this.form.crime_type_id = '';
+                });
             },
             setSelected(value){
                 this.form.crime_type_id = value.id;
             },
           },
-
+          editBlotter(blotter){
+                this.form.reset();
+                axios.get('/api/fetch/blotter',{
+                    params: {
+                        barangay_id: official.barangay_id
+                    }
+                  }).then(function(response){
+                    // console.log(response.data[0]);
+                    this.bar.id = response.data[0].barangay_name;
+                    this.form.barangay_id = response.data[0].id;
+                }.bind(this));
+                this.form.fill(official);
+            },
         created() {
             this.fetchCrimeType();
+            this.fetchBlotter();
+            console.log(this.form.errors);
+            //this.$route.params.id;
+            // axios.get("/api/blotter/"+this.$route.params.id).then(({ data }) => (this.respondents = data));
+            
         }
     }
 </script>

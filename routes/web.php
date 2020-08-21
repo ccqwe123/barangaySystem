@@ -13,6 +13,6 @@
 
 Route::get('/', 'HomeController@login');
 Auth::routes();
-
+// Route::Resource('blotter', 'API\BlotterController');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('{path}','HomeController@index')->where('path','([A-z\d\-\/_.]+)?');

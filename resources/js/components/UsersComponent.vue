@@ -264,6 +264,8 @@
             this.fetchUsers();
             this.populateUser();
             this.fetchBarangay();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>

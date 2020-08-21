@@ -274,6 +274,8 @@
         created() {
             this.populateBrgyLogo();
             this.populateData();
+            $('.modal').modal('hide');
+            console.clear();
         },
         mounted() {
             var vs = this.form;

@@ -447,6 +447,8 @@
             this.populateClearance();
             
             this.fetchResidents();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>

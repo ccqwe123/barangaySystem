@@ -201,6 +201,8 @@
 
         created() {
             this.populateCrimeType();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>

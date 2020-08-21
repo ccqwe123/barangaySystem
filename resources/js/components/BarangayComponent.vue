@@ -69,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addModalbrgy" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -178,7 +178,7 @@
                 $('.btnSubmit').removeClass('btn-primary');
                 $('.btnSubmit').css('font-weight','bold');
                 $('.btnSubmit').addClass('btn-secondary');
-                $('#addModal').modal('show');
+                $('#addModalbrgy').modal('show');
               axios.all([
                   axios.get('/api/getStates',{
                     params: {
@@ -216,7 +216,7 @@
                 $('.btnSubmit').addClass('btn-primary');
                 $('.btnSubmit').removeClass('btn-secondary');
                 $('.modal-title').text('Add New Barangay');
-                $('#addModal').modal('show');
+                $('#addModalbrgy').modal('show');
             },
             populateBarangay(){
                 axios.get("api/barangay")
@@ -261,6 +261,8 @@
 
         created() {
             this.populateBarangay();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>

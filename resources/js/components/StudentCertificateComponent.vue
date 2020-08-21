@@ -565,7 +565,8 @@
 
         created() {
             this.populateClearance();
-            
+            $('.modal').modal('hide');
+            console.clear();
             this.fetchResidents();
         }
     }

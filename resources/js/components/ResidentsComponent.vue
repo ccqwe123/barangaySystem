@@ -93,7 +93,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addModalresident" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -290,6 +290,9 @@
               })
             }
           },
+          // mixins: [
+          //   Barangay
+          // ],
           methods: {
             employment(status)
             {
@@ -343,7 +346,7 @@
                 $('.btnSubmit').css('font-weight','bold');
                 $('.btnSubmit').addClass('btn-secondary');
                 $('.modal-title').text('Edit Resident Record');
-                $('#addModal').modal('show');
+                $('#addModalresident').modal('show');
             axios.all([
                   axios.get('/api/getBarangay',{
                     params: {
@@ -381,7 +384,7 @@
                 $('.btnSubmit').addClass('btn-primary');
                 $('.btnSubmit').removeClass('btn-secondary');
                 $('.modal-title').text('Add New Resident');
-                $('#addModal').modal('show');
+                $('#addModalresident').modal('show');
             },
             populateResidents(){
                 axios.get("api/residents")
@@ -427,6 +430,8 @@
         created() {
             this.populateResidents();
             this.fetchBarangay();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>
