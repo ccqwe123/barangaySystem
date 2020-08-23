@@ -269,6 +269,15 @@
           },
 
         created() {
+           Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/barangay?search=' + query)
+                .then((data) => {
+                    this.barangays = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateBarangay();
             $('.modal').modal('hide');
             console.clear();

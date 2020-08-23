@@ -23,6 +23,28 @@ class BarangayOfficialController extends Controller
         $this->middleware('auth:api');
     }
 
+    public function searchOfficials()
+    {
+
+        if ($search = \Request::get('search')) {
+            $official = BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
+                     ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
+                     ->where(function($query) use ($search){
+                        $query->where('barangay_officials.name','LIKE',"%$search%")
+                                ->orWhere('barangay_officials.position','LIKE',"%$search%")
+                                ->orWhere('barangay.barangay_name','LIKE',"%$search%");
+                    })
+                     ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
+                     ->paginate(10);
+        }else{
+            $official = BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
+                     ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
+                     ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
+                     ->paginate(10);
+        }
+
+        return $official;
+    }
     public function index()
     {
          return BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')

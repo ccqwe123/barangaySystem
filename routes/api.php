@@ -32,6 +32,13 @@ Route::apiResources(['resident_certificate'=>'API\ResidentCertificateController'
 Route::apiResources(['blotter'=>'API\BlotterController']);
 Route::apiResources(['crime_type'=>'API\CrimeController']);
 
+//seracj function
+Route::get('search/blotter','API\BlotterController@saerchBlotter');
+Route::get('search/residents','API\ResidentController@searchResidents');
+Route::get('search/barangay','API\BarangayController@searchBarangay');
+Route::get('search/officials','API\BarangayOfficialController@searchOfficials');
+//end search
+
 Route::get('fetch/barangay_head','API\BarangayController@fetchBarangay');
 Route::get('fetch/blotter/{id}','API\BlotterController@fetchBlotter');
 Route::get('fetch/barangay','API\BarangayController@fetchBarangayAll');

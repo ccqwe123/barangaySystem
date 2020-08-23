@@ -23,6 +23,49 @@ class BlotterController extends Controller
     {
         $this->middleware('auth:api');
     }
+    public function saerchBlotter()
+    {
+        if ($search = \Request::get('search')) {
+             $blotter = Blotter::leftjoin('blotter_personsofinterest','blotter.id','=','blotter_personsofinterest.blotter_id')
+                ->leftjoin('crime_type','blotter.type_of_crime','crime_type.id')
+                ->select([
+                    'blotter_personsofinterest.name',
+                    'blotter.date_of_incident',
+                    'crime_type.name as crime_type',
+                    'blotter.time_reported',
+                    'blotter.type',
+                    'blotter.id',
+                ])
+                ->where(function($query) use ($search){
+                $query->where('blotter_personsofinterest.name','LIKE',"%$search%")
+                        ->orWhere('crime_type.name','LIKE',"%$search%")
+                        ->orWhere('blotter.time_reported','LIKE',"%$search%")
+                        ->orWhere('blotter.date_of_incident','LIKE',"%$search%")
+                        ->orWhere('blotter.type','LIKE',"%$search%");
+                })
+                ->where('blotter.barangay_id','=', Auth::user()->barangay_id)
+                ->orderBy('blotter.id','desc')
+                ->groupBy('blotter.id')
+                ->paginate(10);
+        }else{
+            $blotter = Blotter::leftjoin('blotter_personsofinterest','blotter.id','=','blotter_personsofinterest.blotter_id')
+                ->leftjoin('crime_type','blotter.type_of_crime','crime_type.id')
+                ->select([
+                    'blotter_personsofinterest.name',
+                    'blotter.date_of_incident',
+                    'crime_type.name as crime_type',
+                    'blotter.time_reported',
+                    'blotter.type',
+                    'blotter.id',
+                ])
+                ->where('blotter.barangay_id','=', Auth::user()->barangay_id)
+                ->orderBy('blotter.id','desc')
+                ->groupBy('blotter.id')
+                ->paginate(10);
+        }
+        // log::info($blotter);
+        return $blotter;
+    }
     public function index()
     {
         return Blotter::leftjoin('blotter_personsofinterest','blotter.id','=','blotter_personsofinterest.blotter_id')
@@ -38,7 +81,7 @@ class BlotterController extends Controller
             ->where('blotter.barangay_id','=', Auth::user()->barangay_id)
             ->orderBy('blotter.id','desc')
             ->groupBy('blotter.id')
-            ->paginate(3);
+            ->paginate(10);
     }
 
     /**

@@ -21,6 +21,33 @@ class ResidentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchResidents()
+    {
+      if ($search = \Request::get('search')) {
+        log::info($search);
+            $res = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')
+            ->where('residents.barangay_id', Auth::user()->barangay_id)
+            ->where(function($query) use ($search){
+                $query->where('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.middle_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%")
+                        ->orWhere('residents.birthdate','LIKE',"%$search%")
+                        ->orWhere('residents.age','LIKE',"%$search%")
+                        ->orWhere('residents.gender','LIKE',"%$search%")
+                        ->orWhere('residents.civil_status','LIKE',"%$search%")
+                        ->orWhere('residents.mobile_no','LIKE',"%$search%")
+                        ->orWhere('residents.citizenship','LIKE',"%$search%")
+                        ->orWhere('residents.employment_status','LIKE',"%$search%")
+                        ->orWhere('residents.address','LIKE',"%$search%")
+                        ->orWhere('barangay.barangay_name','LIKE',"%$search%");
+            })->paginate(10);
+        }else{
+            $res = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')
+            ->where('residents.barangay_id', Auth::user()->barangay_id)
+            ->paginate(10);
+        }
+        return $res;
+    }
     public function index()
     {
         $test = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')

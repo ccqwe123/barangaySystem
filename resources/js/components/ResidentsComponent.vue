@@ -437,6 +437,15 @@
           },
 
         created() {
+              Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+                axios.get('api/search/residents?search=' + query)
+                .then((data) => {
+                    this.residents = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateResidents();
             this.fetchBarangay();
             $('.modal').modal('hide');

@@ -150,6 +150,15 @@
             }
           },
         created() {
+           Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/blotter?search=' + query)
+                .then((data) => {
+                    this.blotters = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateBlotter();
             $('.modal').modal('hide');
             console.clear();

@@ -288,6 +288,15 @@
             },
           },
         created() {
+           Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/officials?search=' + query)
+                .then((data) => {
+                    this.officials = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.fetchUsers();
             this.fetchBarangay();
             this.populateOfficial();

@@ -20,7 +20,7 @@ import { Form, HasError, AlertError } from 'vform'
 window.Form = Form;
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
-
+window.Fire =  new Vue();
 import Swal from 'sweetalert2'
 window.swal = Swal;
 const Toast = Swal.mixin({
@@ -103,7 +103,15 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data:{
+      searhall: ''
+    },
+    methods: {
+      searchData() {
+         Fire.$emit('searching');
+      }
+    }
 });
 router.beforeEach((to, from, next) => {
   const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
