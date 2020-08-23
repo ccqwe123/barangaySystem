@@ -37,7 +37,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="blotter in blotters" :key="blotter.id">
+                              <tr v-for="blotter in blotters.data" :key="blotter.id">
                                   <td>
                                     <ul class="list-inline">
                                           <li class="list-inline-item text-capitalize">
@@ -75,6 +75,9 @@
                         </div>
                       </div>
                     </div>
+                    <div class="card-footer">
+                      <pagination :data="blotters" @pagination-change-page="getResults" class="float-right"></pagination>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,12 +110,18 @@
             }
           },
           methods: {
+            getResults(page = 1) {
+              axios.get('api/blotter?page=' + page)
+                .then(response => {
+                  this.loadingData = true;
+                  this.blotters = response.data;
+                  this.loadingData = false;
+                });
+            },
             populateBlotter(){
                axios.get("/api/blotter")
                  .then((response) => {
-                  console.log("aaa");
-                  console.log(response.data);
-                        this.blotters = response.data.data
+                        this.blotters = response.data
                         this.loadingData = false;
                     })
                     .catch(error => {

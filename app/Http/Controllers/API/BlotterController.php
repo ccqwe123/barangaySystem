@@ -38,7 +38,7 @@ class BlotterController extends Controller
             ->where('blotter.barangay_id','=', Auth::user()->barangay_id)
             ->orderBy('blotter.id','desc')
             ->groupBy('blotter.id')
-            ->paginate(10);
+            ->paginate(3);
     }
 
     /**

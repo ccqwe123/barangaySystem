@@ -29,7 +29,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="barangay in barangays" :key="barangay.id">
+                              <tr v-for="barangay in barangays.data" :key="barangay.id">
                                   <td>
                                      {{barangay.barangay_name}}
                                   </td>
@@ -65,6 +65,9 @@
                           <span class="sr-only">Loading...</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="card-footer">
+                      <pagination :data="barangays" @pagination-change-page="getResults" class="float-right"></pagination>
                     </div>
                 </div>
             </div>
@@ -139,6 +142,12 @@
             }
           },
           methods: {
+            getResults(page = 1) {
+              axios.get('api/barangay?page=' + page)
+                .then(response => {
+                  this.barangays = response.data;
+                });
+            },
             // openAddDepartmentModal(){
             //     this.form.reset();
             //     this.editMode = false;
@@ -220,7 +229,7 @@
             },
             populateBarangay(){
                 axios.get("api/barangay")
-                .then(({ data }) => (this.barangays = data.data));
+                .then(({ data }) => (this.barangays = data));
                 this.loadingData = false;
             },
             deleteBarangay(id){

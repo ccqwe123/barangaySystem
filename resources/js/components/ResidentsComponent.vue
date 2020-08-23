@@ -38,7 +38,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="resident in residents" :key="resident.id">
+                              <tr v-for="resident in residents.data" :key="resident.id">
                                   <td>
                                     <li class="list-inline-item text-capitalize">
                                       {{resident.first_name}} {{resident.last_name}}
@@ -89,6 +89,9 @@
                           <span class="sr-only">Loading...</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="card-footer">
+                      <pagination :data="residents" @pagination-change-page="getResults" class="float-right"></pagination>
                     </div>
                 </div>
             </div>
@@ -294,6 +297,12 @@
           //   Barangay
           // ],
           methods: {
+            getResults(page = 1) {
+              axios.get('api/residents?page=' + page)
+                .then(response => {
+                  this.residents = response.data;
+                });
+            },
             employment(status)
             {
                 if(status !== 'Unemployed')
@@ -388,7 +397,7 @@
             },
             populateResidents(){
                 axios.get("api/residents")
-                .then(({ data }) => (this.residents = data.data));
+                .then(({ data }) => (this.residents = data));
                 this.loadingData = false;
             },
             deleteResident(id){

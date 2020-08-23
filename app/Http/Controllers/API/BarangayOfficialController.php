@@ -28,7 +28,7 @@ class BarangayOfficialController extends Controller
          return BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
                      ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
                      ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
-                     ->paginate(100);
+                     ->paginate(10);
     }
 
     /**

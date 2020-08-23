@@ -32,7 +32,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="official in officials" :key="official.id">
+                              <tr v-for="official in officials.data" :key="official.id">
                                   <td>
                                     {{ official.name }}
                                   </td>
@@ -66,6 +66,9 @@
                           <span class="sr-only">Loading...</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="card-footer">
+                      <pagination :data="officials" @pagination-change-page="getResults" class="float-right"></pagination>
                     </div>
                 </div>
             </div>
@@ -164,12 +167,18 @@
             }
           },
           methods: {
+            getResults(page = 1) {
+              axios.get('api/officials?page=' + page)
+                .then(response => {
+                  this.officials = response.data;
+                });
+            },
             setSelected(value) {
                 this.form.barangay_id = value.id
             },
             populateOfficial(){
                 axios.get("api/officials")
-                .then(({ data }) => (this.officials = data.data));
+                .then(({ data }) => (this.officials = data));
                 this.loadingData = false;
             },
             openAddModal(){

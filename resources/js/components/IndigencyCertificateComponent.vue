@@ -28,7 +28,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="clearance in clearances" :key="clearance.id">
+                              <tr v-for="clearance in clearances.data" :key="clearance.id">
                                   <td>
                                     {{ clearance.created_at | moment("MMMM D, YYYY") }}
                                   </td>
@@ -60,6 +60,9 @@
                           <span class="sr-only">Loading...</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="card-footer">
+                      <pagination :data="clearances" @pagination-change-page="getResults" class="float-right"></pagination>
                     </div>
                 </div>
             </div>
@@ -337,6 +340,12 @@
             }
           },
           methods: {
+            getResults(page = 1) {
+              axios.get('api/barangay_indigency?page=' + page)
+                .then(response => {
+                  this.clearances = response.data;
+                });
+            },
             populateBrgyLogo() {
                 let vm = this.form;
                 axios.get('/api/system/getlogo').then(function(response){
@@ -508,7 +517,7 @@
             populateClearance(){
                 axios.get("api/barangay_indigency")
                  .then((response) => {
-                        this.clearances = response.data.data
+                        this.clearances = response.data
                         this.loadingData = false;
                     })
                     .catch(error => {

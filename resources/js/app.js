@@ -38,6 +38,7 @@ window.toast = Toast;
 
 import vSelect from 'vue-select'
 Vue.component('v-select', vSelect)
+Vue.component('pagination', require('laravel-vue-pagination'));
 import Chart from 'chart.js'
 // Vue.use(Chart)
 window.Chart = Chart;

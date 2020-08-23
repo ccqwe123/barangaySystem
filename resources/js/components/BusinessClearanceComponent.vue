@@ -31,7 +31,7 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr v-for="clearance in clearances" :key="clearance.id">
+                              <tr v-for="clearance in clearances.data" :key="clearance.id">
                                   <td>
                                     {{ clearance.created_at | moment("MMMM D, YYYY") }}
                                   </td>
@@ -70,6 +70,9 @@
                           <span class="sr-only">Loading...</span>
                         </div>
                       </div>
+                    </div>
+                    <div class="card-footer">
+                      <pagination :data="clearances" @pagination-change-page="getResults" class="float-right"></pagination>
                     </div>
                 </div>
             </div>
@@ -147,7 +150,7 @@
         <div id="printMe" hidden>
             <div class="header">
             <div class="barangay_logo_container">
-                <img src="images/certificate/default_logo1.png" :src="getBrgyLogo1()" alt="Manila Logo" class="barangay_logo" />
+                <!-- <img src="images/certificate/default_logo1.png" :src="getBrgyLogo1()" alt="Manila Logo" class="barangay_logo" /> -->
             </div>
             <div class="header_text">
                 Republic of the Philippines
@@ -165,7 +168,7 @@
                 </h2>
             </div>
             <div class="manila_logo_container">
-                <img src="images/certificate/default_logo2.png" :src="getBrgyLogo2()" alt="Barangay Logo" class="manila_logo" />
+                <!-- <img src="images/certificate/default_logo2.png" :src="getBrgyLogo2()" alt="Barangay Logo" class="manila_logo" /> -->
             </div>
         </div>
 
@@ -409,20 +412,26 @@
             }
           },
           methods: {
+            getResults(page = 1) {
+              axios.get('api/business_clearance?page=' + page)
+                .then(response => {
+                  this.clearances = response.data;
+                });
+            },
             populateBrgyLogo() {
                 let vm = this.form;
                 axios.get('/api/system/getlogo').then(function(response){
                     vm.barangay_logo1 = response.data[0].barangay_logo1;
                     vm.barangay_logo2 = response.data[0].barangay_logo2;
                 }.bind(this));
-            },
-            getBrgyLogo1() {
-                let photo1 = (this.form.barangay_logo1.length > 200) ? this.form.barangay_logo1 : "images/certificate/"+ this.form.barangay_logo1;
-                return photo1;
-            },
-            getBrgyLogo2() {
-                let photo2 = (this.form.barangay_logo2.length > 200) ? this.form.barangay_logo2 : "images/certificate/"+ this.form.barangay_logo2 ;
-                return photo2;
+            // },
+            // getBrgyLogo1() {
+            //     let photo1 = (this.form.barangay_logo1.length > 200) ? this.form.barangay_logo1 : "images/certificate/"+ this.form.barangay_logo1;
+            //     return photo1;
+            // },
+            // getBrgyLogo2() {
+            //     let photo2 = (this.form.barangay_logo2.length > 200) ? this.form.barangay_logo2 : "images/certificate/"+ this.form.barangay_logo2 ;
+            //     return photo2;
             },
             openAddModal(){
                 this.form.reset();
@@ -579,7 +588,7 @@
             populateClearance(){
                 axios.get("api/business_clearance")
                  .then((response) => {
-                        this.clearances = response.data.data
+                        this.clearances = response.data
                         this.loadingData = false;
                     })
                     .catch(error => {
