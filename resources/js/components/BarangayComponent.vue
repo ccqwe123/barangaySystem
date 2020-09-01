@@ -125,6 +125,7 @@
     export default {
         data () {
             return {
+                fullPage: false,
                 barangay_captain_set: 0,
                 editMode : false,
                 loadingData : true,

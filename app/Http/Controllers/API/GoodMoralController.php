@@ -24,6 +24,24 @@ class GoodMoralController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchGoodmoral()
+    {
+        if ($search = \Request::get('search')) {
+            $clearance = GoodMoral::leftjoin('residents','good_moral.requestor_resident_id','=','residents.id')
+                ->where(function($query) use ($search){
+                $query->where('good_moral.name','LIKE',"%$search%")
+                        ->orWhere('good_moral.address','LIKE',"%$search%")
+                        ->orWhere('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%");
+            })
+            ->where('good_moral.barangay_id', Auth::user()->barangay_id)
+            ->paginate(10);
+        }else{
+            $clearance = GoodMoral::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        }
+
+        return $clearance;
+    }
     public function index()
     {
         return GoodMoral::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);

@@ -24,6 +24,24 @@ class ResidentCertificateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchResident()
+    {
+        if ($search = \Request::get('search')) {
+            $clearance = ResidentCertificate::leftjoin('residents','resident_certificate.requestor_resident_id','=','residents.id')
+                ->where(function($query) use ($search){
+                $query->where('resident_certificate.name','LIKE',"%$search%")
+                        ->orWhere('resident_certificate.address','LIKE',"%$search%")
+                        ->orWhere('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%");
+            })
+            ->where('resident_certificate.barangay_id', Auth::user()->barangay_id) 
+            ->paginate(10);
+        }else{
+            $clearance = ResidentCertificate::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        }
+
+        return $clearance;
+    }
     public function index()
     {
         return ResidentCertificate::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);

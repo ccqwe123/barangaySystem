@@ -573,6 +573,15 @@
           },
 
         created() {
+          Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/student_certificate?search=' + query)
+                .then((data) => {
+                    this.clearances = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateClearance();
             $('.modal').modal('hide');
             console.clear();

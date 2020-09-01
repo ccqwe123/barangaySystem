@@ -25,6 +25,25 @@ class StudentCertificateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchStudent()
+    {
+        if ($search = \Request::get('search')) {
+            $clearance = StudentCertificate::leftjoin('residents','student_certificate.requestor_resident_id','=','residents.id')
+                ->where(function($query) use ($search){
+                $query->where('student_certificate.school_name','LIKE',"%$search%")
+                        ->orWhere('student_certificate.date','LIKE',"%$search%")
+                        ->orWhere('student_certificate.student_name','LIKE',"%$search%")
+                        ->orWhere('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%");
+            })
+            ->where('student_certificate.barangay_id', Auth::user()->barangay_id) 
+            ->paginate(10);
+        }else{
+            $clearance = StudentCertificate::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        }
+
+        return $clearance;
+    }
     public function index()
     {
         return StudentCertificate::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);

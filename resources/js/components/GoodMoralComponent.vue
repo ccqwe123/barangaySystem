@@ -453,8 +453,16 @@
           },
 
         created() {
+            Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/good_moral?search=' + query)
+                .then((data) => {
+                    this.clearances = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateClearance();
-            
             this.fetchResidents();
             $('.modal').modal('hide');
             console.clear();

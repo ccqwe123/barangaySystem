@@ -18,7 +18,10 @@
                           <thead>
                               <tr>
                                   <th>
-                                      Full Name
+                                      First Name
+                                  </th>
+                                  <th>
+                                      Last Name
                                   </th>
                                   <th>
                                       Age
@@ -41,7 +44,12 @@
                               <tr v-for="resident in residents.data" :key="resident.id">
                                   <td>
                                     <li class="list-inline-item text-capitalize">
-                                      {{resident.first_name}} {{resident.last_name}}
+                                      {{resident.first_name}}
+                                    </li>
+                                  </td>
+                                  <td>
+                                    <li class="list-inline-item text-capitalize">
+                                      {{resident.last_name}}
                                     </li>
                                   </td>
                                   <td>

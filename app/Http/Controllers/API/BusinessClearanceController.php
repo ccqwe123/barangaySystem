@@ -26,6 +26,28 @@ class BusinessClearanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchClearance()
+    {
+        if ($search = \Request::get('search')) {
+            $clearance = BusinessClearance::leftjoin('residents','business_clearance.requestor_resident_id','=','residents.id')
+                ->where(function($query) use ($search){
+                $query->where('business_clearance.business_name','LIKE',"%$search%")
+                        ->orWhere('business_clearance.location','LIKE',"%$search%")
+                        ->orWhere('business_clearance.name','LIKE',"%$search%")
+                        ->orWhere('business_clearance.address','LIKE',"%$search%")
+                        ->orWhere('business_clearance.remarks','LIKE',"%$search%")
+                        ->orWhere('business_clearance.status','LIKE',"%$search%")
+                        ->orWhere('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%");
+            })
+            ->where('business_clearance.barangay_id', Auth::user()->barangay_id) 
+            ->paginate(10);
+        }else{
+            $clearance = BusinessClearance::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        }
+
+        return $clearance;
+    }
     public function index()
     {
         if(Auth::user()->type == 'admin') {

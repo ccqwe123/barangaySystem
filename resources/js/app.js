@@ -14,6 +14,10 @@ Vue.use(Datetime)
 import 'vue-datetime/dist/vue-datetime.css'
 Vue.component('datetime', Datetime);
 
+import Loadings from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+Vue.use(Loadings);
+
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 import { Form, HasError, AlertError } from 'vform'

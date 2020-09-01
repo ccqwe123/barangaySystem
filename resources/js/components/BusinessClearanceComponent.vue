@@ -458,6 +458,17 @@
                 });
             },
             printClearance(clearance){
+
+              let loader = this.$loading.show({
+                  // Optional parameters
+                  container: this.fullPage,
+                  loader: 'bars',
+                });
+                // simulate AJAX
+                // setTimeout(() => {
+                //   loader.hide()
+                // },4000)  
+
                 this.populateBrgyLogo();
                 this.res.id = '';
                 this.form.requestor_resident_id = '';
@@ -530,6 +541,7 @@
                 {
                     clearInterval(interval);
                 }
+                loader.hide()
                 vm.$htmlToPaper('printMe');
                 }, 1000); 
 
@@ -624,6 +636,15 @@
           },
 
         created() {
+            Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/business_clearance?search=' + query)
+                .then((data) => {
+                    this.clearances = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateClearance();
             $('.modal').modal('hide');
             console.clear();

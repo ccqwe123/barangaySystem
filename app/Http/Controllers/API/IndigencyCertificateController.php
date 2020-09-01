@@ -24,6 +24,24 @@ class IndigencyCertificateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function searchIndifency()
+    {
+        if ($search = \Request::get('search')) {
+            $clearance = Indigency::leftjoin('residents','barangay_indigency.requestor_resident_id','=','residents.id')
+                ->where(function($query) use ($search){
+                $query->where('barangay_indigency.name','LIKE',"%$search%")
+                        ->orWhere('barangay_indigency.address','LIKE',"%$search%")
+                        ->orWhere('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%");
+            })
+            ->where('barangay_indigency.barangay_id', Auth::user()->barangay_id) 
+            ->paginate(10);
+        }else{
+            $clearance = Indigency::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        }
+
+        return $clearance;
+    }
     public function index()
     {
         return Indigency::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);

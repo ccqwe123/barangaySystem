@@ -554,6 +554,15 @@
           },
 
         created() {
+          Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/barangay_indigency?search=' + query)
+                .then((data) => {
+                    this.clearances = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateClearance();
             $('.modal').modal('hide');
             console.clear();
