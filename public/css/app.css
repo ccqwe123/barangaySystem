@@ -30712,3 +30712,65 @@ readers do not read off random characters that represent icons */
   padding-left: 50px !important;
 }
 
+@-webkit-keyframes modal-b-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes modal-b-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+@-webkit-keyframes modal-fade {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes modal-fade {
+  from {
+    top: -100px;
+    opacity: 0;
+  }
+
+  to {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+.modal-backdrop {
+  opacity: 0.3;
+  -webkit-animation: ease-in-out 0.3s modal-b-fade;
+          animation: ease-in-out 0.3s modal-b-fade;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal {
+  top: -100px;
+  -webkit-animation: ease-in-out 0.3s modal-fade;
+          animation: ease-in-out 0.3s modal-fade;
+  transition: all 0.3s ease-in-out;
+}
+
+.modal.show {
+  top: 0;
+}
+
