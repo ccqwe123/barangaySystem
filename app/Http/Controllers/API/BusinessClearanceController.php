@@ -48,12 +48,12 @@ class BusinessClearanceController extends Controller
 
         return $clearance;
     }
-    public function index()
+    public function index(Request $request)
     {
         if(Auth::user()->type == 'admin') {
 
         }else{
-            return BusinessClearance::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+            return BusinessClearance::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(2);
         }
         // return BusinessClearance::latest()->paginate(10);
     }

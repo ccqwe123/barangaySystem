@@ -1,107 +1,55 @@
-
 <template>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Resident List</h3>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-success" @click="openAddModal">
-                          <i class="fas fa-plus"></i> Add New</button>
-                      </div>
-                    </div>
-
-                    <div class="card-body p-0 table-responsive" style="display: block;" v-if="!loadingData">
-                      <table class="table table-striped projects">
-                          <thead>
-                              <tr>
-                                  <th>
-                                      First Name
-                                  </th>
-                                  <th>
-                                      Last Name
-                                  </th>
-                                  <th>
-                                      Age
-                                  </th>
-                                  <th>
-                                      Gender
-                                  </th>
-                                  <th>
-                                      Address
-                                  </th>
-                                  <th>
-                                      Barangay
-                                  </th>
-                                  <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
-                                      Actions
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="resident in residents.data" :key="resident.id">
-                                  <td>
-                                    <li class="list-inline-item text-capitalize">
-                                      {{resident.first_name}}
-                                    </li>
-                                  </td>
-                                  <td>
-                                    <li class="list-inline-item text-capitalize">
-                                      {{resident.last_name}}
-                                    </li>
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                        {{resident.age}} 
-                                      </ul>
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                        {{resident.gender}} 
-                                      </ul>
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                        {{resident.address}} 
-                                      </ul>
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                        {{resident.barangay_name}}
-                                      </ul>
-                                  </td>
-                                  <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-
-                                      <!-- <button class="btn btn-success" alt="Edit" title="View Data">
-                                          <i class="fas fa-eye">
-                                          </i>
-                                      </button> -->
-                                      <button class="btn btn-primary" @click="editResident(resident)" alt="Edit" title="Edit Data">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" @click="deleteResident(resident.id)" alt="Delete" title="Delete Data">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                    </div>
-                    <div class="card-body p-0" style="display: block;" v-else>
-                      <div class="text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <pagination :data="residents" @pagination-change-page="getResults" class="float-right"></pagination>
-                    </div>
+                <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    Residents List
+                    <div class="float-right"> <button type="button" class="btn btn-success btn-sm mb-2" @click="openAddModal">
+                          <i class="fas fa-plus"></i> Add New</button></div>
+                  </h4>
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Full Name</th>
+                      <th>Age</th>
+                      <th>Gender</th>
+                      <th>Address</th>
+                      <th>Barangay</th>
+                      <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="resident in residents.data" :key="resident.id">
+                        <td class="custom-table">{{resident.first_name}} {{resident.last_name}}</td>
+                        <td class="custom-table">{{resident.age}} </td>
+                        <td class="custom-table">{{resident.gender}} </td>
+                        <td class="custom-table">{{resident.address}} </td>
+                        <td class="custom-table">{{resident.barangay_name}}</td>
+                        <td class="project-actions text-center custom-table" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
+                            <button class="btn btn-primary" @click="editResident(resident)" alt="Edit" title="Edit Data">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                            </button>
+                            <button class="btn btn-danger" @click="deleteResident(resident.id)" alt="Delete" title="Delete Data">
+                                <i class="fas fa-trash">
+                                </i>
+                            </button>
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                    <pagination :data="residents" @pagination-change-page="getResults" class="float-right"></pagination>
+                </div>
+              </div>
+            </div>
             </div>
         </div>
         <div class="modal fade" id="addModalresident" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
@@ -267,6 +215,11 @@
     {
         color:darkred;
     }
+    .custom-table .table th, .table td {
+        padding: 0.15rem 1.25rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
 </style>
 <script>
     export default {
@@ -353,7 +306,6 @@
                     })
                     .catch(error => {
                     });
-
             },
             editResident(resident){
                 this.form.reset();
@@ -390,7 +342,6 @@
                     // this.bar.id = ''; 
                     // this.bar_id = ''; 
                 });
-
                 this.form.fill(resident);
             },
             openAddModal(){
@@ -443,7 +394,6 @@
                     });
             }
           },
-
         created() {
               Fire.$on('searching',() => {
                 let query = this.$parent.searhall;

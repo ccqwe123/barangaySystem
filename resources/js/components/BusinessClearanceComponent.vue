@@ -1,82 +1,5 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Business Clearance List</h3>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-success" @click="openAddModal">
-                          <i class="fas fa-plus"></i> Add New</button>
-                      </div>
-                    </div>
-
-                    <div class="card-body p-0 table-responsive" style="display: block;" v-if="!loadingData">
-                      <table class="table table-striped projects">
-                          <thead>
-                              <tr>
-                                  <th>
-                                      Date
-                                  </th>
-                                  <th>
-                                      Name
-                                  </th>
-                                  <th>
-                                      Business or Trade Activity
-                                  </th>
-                                  <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
-                                      Actions
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="clearance in clearances.data" :key="clearance.id">
-                                  <td>
-                                    {{ clearance.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                    {{ clearance.name }}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                          <li class="list-inline-item text-capitalize">
-                                            {{ clearance.business_name }}
-                                          </li>
-                                      </ul>
-                                  </td>
-                                  <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-
-                                      <button class="btn btn-success" alt="Print" title="Print Data" @click="printClearance(clearance)">
-                                          <i class="fas fa-print"></i>
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-primary" alt="Edit" title="Edit Data" @click="editClearance(clearance)">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" alt="Delete" title="Delete Data" @click="deleteClearance(clearance.id)">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                    </div>
-                    <div class="card-body p-3" style="display: block;" v-else>
-                      <div class="text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <pagination :data="clearances" @pagination-change-page="getResults" class="float-right"></pagination>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="container-fluid" v-if="!loadingData">
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -355,10 +278,69 @@
                 </div>
             </div>
         </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    Business Clearance List
+                    <div class="float-right"> <button type="button" class="btn btn-success btn-sm mb-2" @click="openAddModal">
+                          <i class="fas fa-plus"></i> Add New</button></div>
+                  </h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Name</th>
+                      <th>Business or Trade Activity</th>
+                      <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="clearance in clearances.data" :key="clearance.id">
+                        <td class="custom-table">{{ clearance.created_at | moment("MMMM D, YYYY") }}</td>
+                        <td class="custom-table">{{ clearance.name }}</td>
+                        <td class="custom-table">
+                            <ul class="list-inline">
+                                <li class="list-inline-item text-capitalize">
+                                  {{ clearance.business_name }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="project-actions text-center custom-table" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
+                            <button class="btn btn-success btn-sm" alt="Print" title="Print Data" @click="printClearance(clearance)">
+                                <i class="fas fa-print"></i>
+                                </i>
+                            </button>
+                            <button class="btn btn-primary btn-sm" alt="Edit" title="Edit Data" @click="editClearance(clearance)">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" alt="Delete" title="Delete Data" @click="deleteClearance(clearance.id)">
+                                <i class="fas fa-trash">
+                                </i>
+                            </button>
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                    <pagination :data="clearances" @pagination-change-page="getResults" class="float-right"></pagination>
+                </div>
+              </div>
+            </div>
+            </div>
         </div>
     </div>
 </template>
-<style type="text/css">
+<style type="text/css" scoped>
     .removeDept, a label
     {
         text-decoration: none;
@@ -370,12 +352,18 @@
     {
         color:darkred;
     }
-    
+    .custom-table .table th, .table td {
+        padding: 0.15rem 1.25rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
 </style>
 <script>
     export default {
         data () {
             return {
+                fullPage: false,
               loadingData : true, //true
               editMode : false,
               clearances: {},
@@ -415,6 +403,7 @@
             getResults(page = 1) {
               axios.get('api/business_clearance?page=' + page)
                 .then(response => {
+                console.log(response.data);
                   this.clearances = response.data;
                 });
             },
@@ -424,14 +413,6 @@
                     vm.barangay_logo1 = response.data[0].barangay_logo1;
                     vm.barangay_logo2 = response.data[0].barangay_logo2;
                 }.bind(this));
-            // },
-            // getBrgyLogo1() {
-            //     let photo1 = (this.form.barangay_logo1.length > 200) ? this.form.barangay_logo1 : "images/certificate/"+ this.form.barangay_logo1;
-            //     return photo1;
-            // },
-            // getBrgyLogo2() {
-            //     let photo2 = (this.form.barangay_logo2.length > 200) ? this.form.barangay_logo2 : "images/certificate/"+ this.form.barangay_logo2 ;
-            //     return photo2;
             },
             openAddModal(){
                 this.form.reset();
@@ -460,15 +441,9 @@
             printClearance(clearance){
 
               let loader = this.$loading.show({
-                  // Optional parameters
                   container: this.fullPage,
                   loader: 'bars',
                 });
-                // simulate AJAX
-                // setTimeout(() => {
-                //   loader.hide()
-                // },4000)  
-
                 this.populateBrgyLogo();
                 this.res.id = '';
                 this.form.requestor_resident_id = '';
@@ -598,10 +573,15 @@
                   this.form.requestor_resident_id = value.id;
             },
             populateClearance(){
+                let loader = this.$loading.show({
+                  container: this.fullPage,
+                  loader: 'bars',
+                });
                 axios.get("api/business_clearance")
                  .then((response) => {
                         this.clearances = response.data
                         this.loadingData = false;
+                        loader.hide()
                     })
                     .catch(error => {
                     });
@@ -647,7 +627,7 @@
             })
             this.populateClearance();
             $('.modal').modal('hide');
-            console.clear();
+            // console.clear();
             this.fetchResidents();
         }
     }

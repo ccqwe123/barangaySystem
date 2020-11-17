@@ -50,11 +50,11 @@ class ResidentController extends Controller
     }
     public function index()
     {
-        $test = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')
+        $resd = Residents::select('residents.*','barangay.barangay_name','barangay.id as brgy_id')->leftjoin('barangay','residents.barangay_id','=','barangay.id')
             ->where('residents.barangay_id', Auth::user()->barangay_id)
             ->paginate(10);
         // $test->merge(['test' => 'testtest']);
-        return $test;
+        return $resd;
     }
 
     /**

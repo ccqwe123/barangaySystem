@@ -166,7 +166,7 @@
                       <p>Resident Certificate</p>
                   </router-link>
                 </li>
-                <li class="nav-item">
+               <!--  <li class="nav-item">
                   <router-link to="/transfer-certificate" class="nav-link disabled">
                       <p>Transfer Certificate</p>
                       <span class="badge badge-warning">Request <br>if needed</span>
@@ -177,7 +177,7 @@
                       <p>Excavation Certificate</p>
                       <span class="badge badge-warning">Request <br>if needed</span>
                   </router-link>
-                </li>
+                </li> -->
               </ul>
             </li>
             <li class="nav-item">

@@ -1,76 +1,60 @@
-
 <template>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Barangay Official List</h3>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-success" @click="openAddModal">
-                          <i class="fas fa-plus"></i> Add New</button>
-                      </div>
+              <div class="invoice p-3 mb-3">
+                <!-- title row -->
+                <div class="loading-container" v-if="!loadingData">
+                  <div class="row">
+                    <div class="col-12">
+                      <h4>
+                        Barangay Officials List
+                        <div class="float-right"> <button type="button" class="btn btn-success btn-sm mb-2" @click="openAddModal">
+                              <i class="fas fa-plus"></i> Add New</button></div>
+                      </h4>
                     </div>
-
-                    <div class="card-body p-0 table-responsive" style="display: block;" v-if="!loadingData">
-                      <table class="table table-striped projects">
-                          <thead>
-                              <tr>
-                                  <th>
-                                      Name 
-                                  </th>
-                                  <th>
-                                      Position
-                                  </th>
-                                  <th>
-                                      Barangay
-                                  </th>
-                                  <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
-                                      Actions
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="official in officials.data" :key="official.id">
-                                  <td>
-                                    {{ official.name }}
-                                  </td>
-                                  <td class="list-inline-item text-capitalize">
-                                    {{ official.position }}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                          <li class="list-inline-item text-capitalize">
-                                            {{ official.barangay_name }}
-                                          </li>
-                                      </ul>
-                                  </td>
-                                  <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-                                      <button class="btn btn-primary" @click="editBarangay(official)" alt="Edit" title="Edit Data">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" @click="deleteBarangay(official.id)" alt="Delete" title="Delete Data">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </tbody>
+                  </div>
+                  <div class="row">
+                    <div class="col-12 table-responsive">
+                      <table class="table table-striped">
+                        <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Position</th>
+                          <th>Barangay</th>
+                          <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="official in officials.data" :key="official.id">
+                            <td class="custom-table">{{official.name}} </td>
+                            <td class="custom-table">{{official.position}} </td>
+                            <td class="custom-table">{{official.barangay_name}}</td>
+                            <td class="project-actions text-center custom-table" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
+                                  <button class="btn btn-primary" @click="editBarangay(official)" alt="Edit" title="Edit Data">
+                                      <i class="fas fa-pencil-alt">
+                                      </i>
+                                  </button>
+                                  <button class="btn btn-danger" @click="deleteBarangay(official.id)" alt="Delete" title="Delete Data">
+                                      <i class="fas fa-trash">
+                                      </i>
+                                  </button>
+                              </td>
+                          </tr>
+                        </tbody>
                       </table>
+                        <pagination :data="officials" @pagination-change-page="getResults" class="float-right"></pagination>
                     </div>
-                    <div class="card-body p-3" style="display: block;" v-else>
-                      <div class="text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <pagination :data="officials" @pagination-change-page="getResults" class="float-right"></pagination>
-                    </div>
+                  </div>
                 </div>
+                <div v-else>
+                  <div class="text-center">
+                    <div class="spinner-border" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
         <!--- Modal --->

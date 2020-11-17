@@ -1,76 +1,63 @@
-
 <template>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Barangay List</h3>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-success" @click="openAddModal">
-                          <i class="fas fa-plus"></i> Add New</button>
-                      </div>
-                    </div>
-
-                    <div class="card-body p-0 table-responsive" style="display: block;" v-if="!loadingData">
-                      <table class="table table-striped projects">
-                          <thead>
-                              <tr>
-                                  <th>
-                                      Barangay Name
-                                  </th>
-                                  <th>
-                                      Barangay Captain
-                                  </th>
-                                  <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
-                                      Actions
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="barangay in barangays.data" :key="barangay.id">
-                                  <td>
-                                     {{barangay.barangay_name}}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                          <li class="list-inline-item text-capitalize">
-                                            {{barangay.full_name}}
-                                          </li>
-                                      </ul>
-                                  </td>
-                                  <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-<!-- 
-                                      <button class="btn btn-success" alt="Edit" title="View Data">
-                                          <i class="fas fa-eye">
-                                          </i>
-                                      </button> -->
-                                      <button class="btn btn-primary" @click="editBarangay(barangay)" alt="Edit" title="Edit Data">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" @click="deleteBarangay(barangay.id)" alt="Delete" title="Delete Data">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                    </div>
-                    <div class="card-body p-0" style="display: block;" v-else>
-                      <div class="text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                      <pagination :data="barangays" @pagination-change-page="getResults" class="float-right"></pagination>
-                    </div>
+              <div class="callout callout-danger" style="background-color: rgba(255, 99, 71, 0.1) !important;" v-if="errPopup">
+                  <h5><i class="fas fa-info"></i> Warning:</h5>
+                  You are not allowed to delete the Barangay
+              </div>
+              <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="loading-container" v-if="!loadingData">
+                <div class="row">
+                  <div class="col-12">
+                    <h4>
+                      Barangay List
+                      <div class="float-right"> <button type="button" class="btn btn-success btn-sm mb-2" @click="openAddModal">
+                            <i class="fas fa-plus"></i> Add New</button></div>
+                    </h4>
+                  </div>
                 </div>
+                <div class="row">
+                  <div class="col-12 table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th>Barangay Name</th>
+                        <th>Barangay</th>
+                        <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">Actions</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr v-for="barangay in barangays.data" :key="barangay.id">
+                          <td class="custom-table">{{barangay.barangay_name}} </td>
+                          <td class="custom-table">{{barangay.full_name}}</td>
+                          <td class="project-actions text-center custom-table" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
+                               <button class="btn btn-primary" @click="editBarangay(barangay)" alt="Edit" title="Edit Data">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                </button>
+                                <button class="btn btn-danger" @click="deleteBarangay(barangay.id)" alt="Delete" title="Delete Data">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                </button>
+                            </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                      <pagination :data="barangays" @pagination-change-page="getResults" class="float-right"></pagination>
+                  </div>
+                </div>
+              </div>
+              <div v-else>
+                <div class="text-center">
+                  <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
         <div class="modal fade" id="addModalbrgy" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
@@ -89,13 +76,13 @@
                         <input v-model="form.barangay_name" type="text" class="form-control" :class="{ 'is-invalid': form.errors.has('barangay_name') }" id="name" placeholder="Barangay Name" autocomplete="off">
                         <has-error :form="form" field="barangay_name"></has-error>
                     </div>
-                    <div class="form-group" v-if="editMode">
+                    <!-- <div class="form-group" v-if="editMode">
                         <label for="name">Barangay Captain</label> <a href="" class="removeDept float-right" v-if="barangay_captain_set === 1" v-on:click.stop.prevent="removeDeptHead"><label><i class="fas fa-user-times"></i> [Remove Barangay Captain]</label></a>
                          <v-select :options="barangay_captain_id" placeholder="select" v-model='bar.id' label="full_name" @input="setSelected" :clearable="false"></v-select>
 
                         <input class="form-control m-input" hidden type="text" v-model="form.bar_id">
                         <has-error :form="form" field="bar_id"></has-error>
-                    </div>
+                    </div> -->
                     
               </div>
               <div class="modal-footer">
@@ -125,6 +112,8 @@
     export default {
         data () {
             return {
+                errPopup: false,
+                errMsg: false,
                 fullPage: false,
                 barangay_captain_set: 0,
                 editMode : false,
@@ -149,15 +138,6 @@
                   this.barangays = response.data;
                 });
             },
-            // openAddDepartmentModal(){
-            //     this.form.reset();
-            //     this.editMode = false;
-            //     $('.btnSubmit').text('Create');
-            //     $('.btnSubmit').addClass('btn-primary');
-            //     $('.btnSubmit').removeClass('btn-secondary');
-            //     $('.modal-title').text('Add New Department');
-            //     $('#addDepartmentModal').modal('show');
-            // },
             updateBarangay(){
                 this.form.put('/api/barangay/'+this.form.id)
                     .then((response) => {
@@ -243,15 +223,19 @@
                   cancelButtonColor: '#d33',
                   confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
-                        if (result.value) {
-                            this.form.delete('/api/barangay/'+id).then(()=> {
-                            this.populateBarangay();
-                             toast.fire({
-                                  icon: 'success',
-                                  title: 'Barangay has been Deleted'
-                                })
-                            })
-                          }
+                  if (result.value) {
+                      this.form.delete('/api/barangay/'+id).then(()=> {
+                      this.populateBarangay();
+                       toast.fire({
+                            icon: 'success',
+                            title: 'Barangay has been Deleted'
+                          })
+                      })
+                      .catch(error => {
+                        this.errPopup = true;
+                        this.errMsg = error.response.data.errors;
+                      });
+                    }
                 })
             },
             createBarangay(){

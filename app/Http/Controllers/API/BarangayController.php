@@ -8,9 +8,13 @@ use App\Barangay;
 use App\Residents;
 use DB;
 use Log;
-
+use Auth;
 class BarangayController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -101,25 +105,11 @@ class BarangayController extends Controller
         $this->validate($request, [
             'barangay_name' => 'required|min:2|string|max:299'
         ]);
-
-        if(count($request->bar_id)>0 || !$request->bar_id = NULL || !$request->bar_id = "")
-        {
-            log::info("AA");
-            $barangay = DB::table('barangay')
-                ->where('id', $id)
-                ->update([
-                    'barangay_name' => $request['barangay_name'],
-                    'barangay_captain_id' => $request->bar_id,
-            ]);
-        }else{
-            log::info("BB");
-            $barangay = DB::table('barangay')
-                ->where('id', $id)
-                ->update([
-                    'barangay_name' => $request['barangay_name'],
-                    'barangay_captain_id' => NULL,
-            ]);
-        }
+        $barangay = DB::table('barangay')
+            ->where('id', $id)
+            ->update([
+                'barangay_name' => $request['barangay_name']
+        ]);
     }
 
     /**
@@ -131,7 +121,12 @@ class BarangayController extends Controller
     public function destroy($id)
     {
         $bar = Barangay::findOrFail($id);
-        $bar->delete();
+        if(Auth::user()->type == 'Admin' || Auth::user()->type == 'admin')
+        {
+            $bar->delete();
+        }else{
+            return response()->json(['errors' => 'You are not allowed to Delete the Barangay'], 422);
+        }
     }
 
      public function fetchBarangayAll()
