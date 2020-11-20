@@ -19,6 +19,7 @@ class Blotter extends Model
         'case_summary',
         'status',
         'hearing_count',
+        'barangay_id',
     ];
     protected $table = 'blotter';
 }

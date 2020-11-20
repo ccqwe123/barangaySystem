@@ -38,6 +38,10 @@ class HomeController extends Controller
             return view('auth.login', ['system_title'=>$var]);
         }
     }
+    public function pdfExpo()
+    {
+        log::info("qweq");
+    }
     public function index()
     {
         return view('home');

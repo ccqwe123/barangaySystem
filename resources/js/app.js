@@ -109,7 +109,8 @@ const app = new Vue({
     el: '#app',
     router,
     data:{
-      searhall: ''
+      searhall: '',
+      rlink: false
     },
     methods: {
       searchData() {
@@ -136,5 +137,4 @@ router.beforeEach((to, from, next) => {
   .forEach(tag => document.head.appendChild(tag));
   next();
 });
-
 

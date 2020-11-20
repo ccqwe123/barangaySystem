@@ -297,8 +297,23 @@
                   callbacks: {
                     onChange: function(contents, $editable) {
                         vs.software_description = contents
+                        console.log(contents);
+                    },
+                    onInit: function() {
+                      vs.software_description = "<h1>test</h1>";
                     }
                   }
+                  // callbacks: {
+                  //   onChange: function(contents, $editable) {
+                  //       contents = contents.replace(/<\/?[^>]+(>|$)/g, "");
+                  //       vs.form.software_description = contents
+                  //       var regex = /\B{(\w*)}$/;
+                  //     if (regex.test(contents)) {
+                  //       console.log(contents);
+                  //     }
+
+                  //   }
+                  // }
               });
             });
         }

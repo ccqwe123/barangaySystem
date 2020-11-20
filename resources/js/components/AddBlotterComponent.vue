@@ -397,24 +397,24 @@
           },
           methods: {
             AddWitness() {
-                 if(this.form.witness_name == '')
+                 if(this.form.witness_name == '' || this.form.witness_name == null)
                 {
                      toast.fire({
                           icon: 'warning',
                           title: 'Witness Name is Required!'
                         })
-                }else if(this.form.witness_address == '')
+                }else if(this.form.witness_address == '' || this.form.witness_address == null)
                 {
                     toast.fire({
                           icon: 'warning',
                           title: 'Witness Address is Required!'
                         })
-                }else if(this.form.witness_telephone == ''){
+                }else if(this.form.witness_telephone == '' || this.form.witness_telephone == null){
                     toast.fire({
                           icon: 'warning',
                           title: 'Witness Contact Number is Required!'
                         })
-                }else if(this.form.witness_age == '')
+                }else if(this.form.witness_age == '' || this.form.witness_age == null)
                 {
                     toast.fire({
                           icon: 'warning',
@@ -438,24 +438,24 @@
                 this.form.witnesses.splice(index,1)
             },
             AddRespondent() {
-                 if(this.form.respondent_name == '')
+                 if(this.form.respondent_name == '' || this.form.respondent_name == null)
                 {
                      toast.fire({
                           icon: 'warning',
                           title: 'Respondent Name is Required!'
                         })
-                }else if(this.form.respondent_address == '')
+                }else if(this.form.respondent_address == '' || this.form.respondent_address == null)
                 {
                     toast.fire({
                           icon: 'warning',
                           title: 'Respondent Address is Required!'
                         })
-                }else if(this.form.respondent_telephone == ''){
+                }else if(this.form.respondent_telephone == '' || this.form.respondent_telephone == null){
                     toast.fire({
                           icon: 'warning',
                           title: 'Respondent Contact Number is Required!'
                         })
-                }else if(this.form.respondent_age == '')
+                }else if(this.form.respondent_age == '' || this.form.respondent_age == null)
                 {
                     toast.fire({
                           icon: 'warning',
@@ -479,24 +479,24 @@
                 this.form.respondents.splice(index,1)
             },
             AddComplainant() {
-                if(this.form.complainant_names == '')
+                if(this.form.complainant_names == '' || this.form.complainant_names == null)
                 {
                      toast.fire({
                           icon: 'warning',
                           title: 'Complainant Name is Required!'
                         })
-                }else if(this.form.complainant_address == '')
+                }else if(this.form.complainant_address == '' || this.form.complainant_address == null)
                 {
                     toast.fire({
                           icon: 'warning',
                           title: 'Complainant Address is Required!'
                         })
-                }else if(this.form.complainant_telephone == ''){
+                }else if(this.form.complainant_telephone == '' || this.form.complainant_telephone == null){
                     toast.fire({
                           icon: 'warning',
                           title: 'Complainant Contact Number is Required!'
                         })
-                }else if(this.form.complainant_age == '')
+                }else if(this.form.complainant_age == '' || this.form.complainant_age == null)
                 {
                     toast.fire({
                           icon: 'warning',
@@ -543,6 +543,7 @@
             fetchCrimeType(){
                 axios.get('/api/fetch/crime_type')
                 .then(function(response){
+                    console.log(response.data);
                     this.crime_type = response.data;
                 }.bind(this));
             },

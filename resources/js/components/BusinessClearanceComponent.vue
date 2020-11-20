@@ -328,6 +328,10 @@
                                 <i class="fas fa-trash">
                                 </i>
                             </button>
+                            <button class="btn btn-info btn-sm" alt="Delete" title="Delete Data" @click="printClearances(clearance.id)">
+                                <i class="fas fa-trash">A
+                                </i>
+                            </button>
                           </td>
                       </tr>
                     </tbody>
@@ -437,6 +441,21 @@
                 })
                 .catch(error => {
                 });
+            },
+            printClearances(clearance)
+            {
+                let loader = this.$loading.show({
+                  container: this.fullPage,
+                  loader: 'bars',
+                });
+                setTimeout(() => {
+                  loader.hide()
+                    let routeData = this.$router.resolve(
+                    {
+                      path: '/business_clearance/'+clearance+'/show', 
+                    });
+                    window.open(routeData.href, '_blank');
+                },1500) 
             },
             printClearance(clearance){
 

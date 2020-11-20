@@ -17,7 +17,7 @@ class CrimeController extends Controller
      */
     public function fetchData(Request $request)
     {
-        if(count($request->crime_id)>0){
+        if($request->crime_id){
             $crime = Blotter::select(['crime_type.name as crime_type','crime_type.id'])
             ->leftjoin('crime_type','blotter.type_of_crime','=','crime_type.id')
             ->where('blotter.id', $request->crime_id)

@@ -162,4 +162,9 @@ class BusinessClearanceController extends Controller
         $bc = BusinessClearance::findOrFail($id);
         $bc->delete();
     }
+
+    public function pdfExpo(Request $request)
+    {
+        log::info($request);
+    }
 }

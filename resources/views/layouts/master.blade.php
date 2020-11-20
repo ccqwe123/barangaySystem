@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,8 +8,9 @@
   <title>BRIS</title>
   <link rel="stylesheet" type="text/css" href="/css/app.css">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link href="/css/OverlayScrollbars.min.css" rel="stylesheet" />
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper" id="app">
 
   <!-- Navbar -->
@@ -73,7 +73,6 @@
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <img src="/images/barangay/barangay_logo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
@@ -83,9 +82,7 @@
     overflow: hidden;">BRIS</span>
     </a>
 
-    <!-- Sidebar -->
     <div class="sidebar">
-      <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
           <img src="/images/users/default.png" class="img-circle elevation-2" alt="User Image">
@@ -94,14 +91,10 @@
           <a href="#" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
-
-      <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
             <li class="nav-item">
-	            <router-link to="/dashboard" class="nav-link">
+	            <router-link to="/dashboard" class="nav-link vlink">
 	              <i class="nav-icon fas fa-tachometer-alt"></i>
 	              <p>
 	                Dashboard
@@ -109,7 +102,7 @@
 	            </router-link>
           	</li>
           	<li class="nav-item">
-	            <router-link to="/residents" class="nav-link">
+	            <router-link to="/residents" class="nav-link vlink">
 	              <i class="nav-icon fas fa-users"></i>
 	              <p>
 	                Residents
@@ -117,7 +110,7 @@
 	            </router-link>
           	</li>
           	<li class="nav-item">
-	            <router-link to="/barangay" class="nav-link">
+	            <router-link to="/barangay" class="nav-link vlink">
 	              <i class="nav-icon fas fa-home"></i>
 	              <p>
 	                Barangay
@@ -125,7 +118,7 @@
 	            </router-link>
           	</li>
             <li class="nav-item">
-              <router-link to="/barangay-officials" class="nav-link">
+              <router-link to="/barangay-officials" class="nav-link vlink">
                 <i class="nav-icon fas fa-sitemap"></i>
                 <p>
                   Barangay Officials
@@ -133,7 +126,7 @@
               </router-link>
             </li>
             <li class="nav-item has-treeview">
-              <a href="" class="nav-link">
+              <a href="" class="nav-link vlink">
                 <i class="nav-icon fas fa-print"></i>
                 <p>
                   Certificates
@@ -166,18 +159,6 @@
                       <p>Resident Certificate</p>
                   </router-link>
                 </li>
-               <!--  <li class="nav-item">
-                  <router-link to="/transfer-certificate" class="nav-link disabled">
-                      <p>Transfer Certificate</p>
-                      <span class="badge badge-warning">Request <br>if needed</span>
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link to="/excavation-certificate" class="nav-link disabled">
-                      <p>Excavation Certificate</p>
-                      <span class="badge badge-warning">Request <br>if needed</span>
-                  </router-link>
-                </li> -->
               </ul>
             </li>
             <li class="nav-item">
@@ -223,6 +204,43 @@
                   <router-link to="/system" class="nav-link">
                       <p>System</p>
                   </router-link>
+                </li><!-- 
+                <li class="nav-item">
+                  <a href="/templates" class="nav-link">
+                      <p>Certification Template</p>
+                  </a>
+                </li> -->
+                <li class="nav-item has-treeview menu-open">
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item has-treeview">
+                      <a href="#" class="nav-link">
+                        <p>
+                          Template
+                          <i class="right fas fa-angle-left"></i>
+                        </p>
+                      </a>
+                      <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="/template/business-clearance" class="nav-link">
+                            <i class="fas fa-align-center nav-icon"></i>
+                            <p>Business Clearance</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#" class="nav-link">
+                            <i class="fas fa-align-center nav-icon"></i>
+                            <p>Good Moral</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="#" class="nav-link">
+                            <i class="fas fa-align-center nav-icon"></i>
+                            <p>Student Certificate</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </li>
 	              <li class="nav-item">
 	                <router-link to="/unknown" class="nav-link disabled">
@@ -245,22 +263,21 @@
 	        </li>
         </ul>
       </nav>
-      <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
   </aside>
-
-  <!-- Content Wrapper. Contains page content -->
 	  <div class="content-wrapper pt-2">
-	    <!-- Main content -->
 	    <div class="content">
-	      <div class="container-fluid">
+        <div class="container-fluid">
 	        <router-view></router-view>
-	      </div><!-- /.container-fluid -->
+        </div>
+        <div class="container-fluid">
+          @yield('body')
+	      </div>
 	    </div>
-	    <!-- /.content -->
 	  </div>
 </div>
 <script src="/js/app.js"></script>
+<script src="/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/js/demo.js"></script>
 </body>
 </html>

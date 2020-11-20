@@ -114,6 +114,7 @@
             return {
                 errPopup: false,
                 errMsg: false,
+                rlink: false,
                 fullPage: false,
                 barangay_captain_set: 0,
                 editMode : false,
@@ -265,7 +266,15 @@
             })
             this.populateBarangay();
             $('.modal').modal('hide');
-            console.clear();
+            if(this.$route.path == '/barangay')
+            {
+              this.rlink = true;
+            }else{
+              this.rlink = false;
+            }
+            // console.log(this.$route.path);
+            // console.log(this);
+            // console.clear();
         }
     }
 </script>
