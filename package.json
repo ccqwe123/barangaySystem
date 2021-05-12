@@ -26,7 +26,7 @@
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
         "admin-lte": "^3.0.0-alpha.2",
-        "chart.js": "^2.9.3",
+        "chart.js": "^2.9.4",
         "summernote": "^0.8.16",
         "sweetalert2": "^9.10.12",
         "vform": "^1.0.1",
