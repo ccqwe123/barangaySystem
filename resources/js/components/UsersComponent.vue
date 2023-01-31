@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                      <h3 class="card-title">User List</h3>
+                      <h3 class="card-title">User Listz</h3>
 
                       <div class="card-tools">
                         <button type="button" class="btn btn-success" @click="openAddModal">
@@ -263,6 +263,7 @@
             this.fetchUsers();
             this.populateUser();
             this.fetchBarangay();
+
         }
     }
 </script>

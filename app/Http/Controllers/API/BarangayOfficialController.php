@@ -48,6 +48,7 @@ class BarangayOfficialController extends Controller
      */
     public function store(Request $request)
     {
+        log::info($request);
         $check_user_if_admin = User::where('id', Auth::user()->id)->first();
         if($check_user_if_admin->type == 'admin'){
             $this->validate($request, [

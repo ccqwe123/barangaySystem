@@ -37,7 +37,7 @@ class BusinessClearanceController extends Controller
     }
     public function fetchResidents(Request $request)
     {
-        if(count($request->clearance_id)>0){
+        if(isset($request->clearance_id)){
             return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->where('id',$request->clearance_id)->get();
         }else{
             return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->get();
@@ -69,7 +69,7 @@ class BusinessClearanceController extends Controller
             'remarks' => 'required|min:2|string|max:299',
             'status' => 'required'
         ]);
-
+        
          $request->merge(['barangay_id' => Auth::user()->barangay_id]);
         return BusinessClearance::create([
             'business_name'=> $request['business_name'],

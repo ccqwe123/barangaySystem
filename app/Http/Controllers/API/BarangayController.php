@@ -86,11 +86,12 @@ class BarangayController extends Controller
      */
     public function update(Request $request, $id)
     {
+        log::info($request);
         $this->validate($request, [
             'barangay_name' => 'required|min:2|string|max:299'
         ]);
 
-        if(count($request->bar_id)>0 || !$request->bar_id = NULL || !$request->bar_id = "")
+        if(($request->bar_id)>0 || !$request->bar_id = NULL || !$request->bar_id = "")
         {
             log::info("AA");
             $barangay = DB::table('barangay')

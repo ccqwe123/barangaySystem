@@ -3,7 +3,7 @@
 @section('content')
 <div class="login-box">
   <div class="login-logo">
-    {!! $system_title->value !!}
+    
   </div>
   <!-- /.login-logo -->
   <div class="card">
