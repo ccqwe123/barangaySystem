@@ -11,11 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('/', 'HomeController@login');
 Auth::routes();
-
+// Route::Resource('blotter', 'API\BlotterController');
+Route::get('business_clearance/{id}/show','PrintController@bClearance');
+// Route::resource('/templates','TemplateController');
+Route::get('/template/business-clearance','TemplateController@index')->name('template.index');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('{path}','HomeController@index')->where('path','([A-z\d\-\/_.]+)?');

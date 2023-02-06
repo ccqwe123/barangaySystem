@@ -1,79 +1,5 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                      <h3 class="card-title">Business Clearance List</h3>
-
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-success" @click="openAddModal">
-                          <i class="fas fa-plus"></i> Add New</button>
-                      </div>
-                    </div>
-
-                    <div class="card-body p-0 table-responsive" style="display: block;" v-if="!loadingData">
-                      <table class="table table-striped projects">
-                          <thead>
-                              <tr>
-                                  <th>
-                                      Date
-                                  </th>
-                                  <th>
-                                      Name
-                                  </th>
-                                  <th>
-                                      Business or Trade Activity
-                                  </th>
-                                  <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">
-                                      Actions
-                                  </th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              <tr v-for="clearance in clearances" :key="clearance.id">
-                                  <td>
-                                    {{ clearance.created_at | moment("MMMM D, YYYY") }}
-                                  </td>
-                                  <td>
-                                    {{ clearance.name }}
-                                  </td>
-                                  <td>
-                                      <ul class="list-inline">
-                                          <li class="list-inline-item text-capitalize">
-                                            {{ clearance.business_name }}
-                                          </li>
-                                      </ul>
-                                  </td>
-                                  <td class="project-actions text-center" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
-
-                                      <button class="btn btn-success" alt="Print" title="Print Data" @click="printClearance(clearance)">
-                                          <i class="fas fa-print"></i>
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-primary" alt="Edit" title="Edit Data" @click="editClearance(clearance)">
-                                          <i class="fas fa-pencil-alt">
-                                          </i>
-                                      </button>
-                                      <button class="btn btn-danger" alt="Delete" title="Delete Data" @click="deleteClearance(clearance.id)">
-                                          <i class="fas fa-trash">
-                                          </i>
-                                      </button>
-                                  </td>
-                              </tr>
-                          </tbody>
-                      </table>
-                    </div>
-                    <div class="card-body p-3" style="display: block;" v-else>
-                      <div class="text-center">
-                        <div class="spinner-border" role="status">
-                          <span class="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="container-fluid" v-if="!loadingData">
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -147,7 +73,7 @@
         <div id="printMe" hidden>
             <div class="header">
             <div class="barangay_logo_container">
-                <img src="images/certificate/default_logo1.png" alt="Manila Logo" class="barangay_logo" />
+                <!-- <img src="images/certificate/default_logo1.png" :src="getBrgyLogo1()" alt="Manila Logo" class="barangay_logo" /> -->
             </div>
             <div class="header_text">
                 Republic of the Philippines
@@ -165,7 +91,7 @@
                 </h2>
             </div>
             <div class="manila_logo_container">
-                <img src="images/certificate/default_logo2.png" alt="Manila Logo" class="manila_logo" />
+                <!-- <img src="images/certificate/default_logo2.png" :src="getBrgyLogo2()" alt="Barangay Logo" class="manila_logo" /> -->
             </div>
         </div>
 
@@ -352,10 +278,73 @@
                 </div>
             </div>
         </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    Business Clearance List
+                    <div class="float-right"> <button type="button" class="btn btn-success btn-sm mb-2" @click="openAddModal">
+                          <i class="fas fa-plus"></i> Add New</button></div>
+                  </h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Name</th>
+                      <th>Business or Trade Activity</th>
+                      <th style="text-align: center; justify-content: center; align-items: center;" class="text-center">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="clearance in clearances.data" :key="clearance.id">
+                        <td class="custom-table">{{ clearance.created_at | moment("MMMM D, YYYY") }}</td>
+                        <td class="custom-table">{{ clearance.name }}</td>
+                        <td class="custom-table">
+                            <ul class="list-inline">
+                                <li class="list-inline-item text-capitalize">
+                                  {{ clearance.business_name }}
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="project-actions text-center custom-table" style="text-align: center; justify-content: center; align-items: center; min-width: 170px !important;">
+                            <button class="btn btn-success btn-sm" alt="Print" title="Print Data" @click="printClearance(clearance)">
+                                <i class="fas fa-print"></i>
+                                </i>
+                            </button>
+                            <button class="btn btn-primary btn-sm" alt="Edit" title="Edit Data" @click="editClearance(clearance)">
+                                <i class="fas fa-pencil-alt">
+                                </i>
+                            </button>
+                            <button class="btn btn-danger btn-sm" alt="Delete" title="Delete Data" @click="deleteClearance(clearance.id)">
+                                <i class="fas fa-trash">
+                                </i>
+                            </button>
+                            <button class="btn btn-info btn-sm" alt="Delete" title="Delete Data" @click="printClearances(clearance.id)">
+                                <i class="fas fa-trash">A
+                                </i>
+                            </button>
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                    <pagination :data="clearances" @pagination-change-page="getResults" class="float-right"></pagination>
+                </div>
+              </div>
+            </div>
+            </div>
         </div>
     </div>
 </template>
-<style type="text/css">
+<style type="text/css" scoped>
     .removeDept, a label
     {
         text-decoration: none;
@@ -367,12 +356,18 @@
     {
         color:darkred;
     }
-    
+    .custom-table .table th, .table td {
+        padding: 0.15rem 1.25rem;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6;
+    }
+
 </style>
 <script>
     export default {
         data () {
             return {
+                fullPage: false,
               loadingData : true, //true
               editMode : false,
               clearances: {},
@@ -395,6 +390,8 @@
                 },
               form: new Form({
                 id: '',
+                barangay_logo1: '',
+                barangay_logo2: '',
                 business_name: '',
                 location: '',
                 name: '',
@@ -407,6 +404,20 @@
             }
           },
           methods: {
+            getResults(page = 1) {
+              axios.get('api/business_clearance?page=' + page)
+                .then(response => {
+                console.log(response.data);
+                  this.clearances = response.data;
+                });
+            },
+            populateBrgyLogo() {
+                let vm = this.form;
+                axios.get('/api/system/getlogo').then(function(response){
+                    vm.barangay_logo1 = response.data[0].barangay_logo1;
+                    vm.barangay_logo2 = response.data[0].barangay_logo2;
+                }.bind(this));
+            },
             openAddModal(){
                 this.form.reset();
                 this.res.id = '';
@@ -431,7 +442,28 @@
                 .catch(error => {
                 });
             },
+            printClearances(clearance)
+            {
+                let loader = this.$loading.show({
+                  container: this.fullPage,
+                  loader: 'bars',
+                });
+                setTimeout(() => {
+                  loader.hide()
+                    let routeData = this.$router.resolve(
+                    {
+                      path: '/business_clearance/'+clearance+'/show', 
+                    });
+                    window.open(routeData.href, '_blank');
+                },1500) 
+            },
             printClearance(clearance){
+
+              let loader = this.$loading.show({
+                  container: this.fullPage,
+                  loader: 'bars',
+                });
+                this.populateBrgyLogo();
                 this.res.id = '';
                 this.form.requestor_resident_id = '';
                 
@@ -446,41 +478,33 @@
                     this.brgy_captain = dep2.data.captain.name;
                     this.brgy_secretary = dep2.data.secretary.name;
                     this.brgy_treasurer = dep2.data.treasurer.name;
-                    console.log(dep2.data.kagawad[1].name)
                     if(dep2.data.kagawad[0].name != undefined)
                     {
                         this.kagawad1 = dep2.data.kagawad[0].name;
-                        console.log("kagawad 1: "+ this.kagawad1);
                     } 
                     if(dep2.data.kagawad[1].name != undefined)
                     {
                         this.kagawad2 = dep2.data.kagawad[1].name;
-                        console.log("kagawad 2: "+ this.kagawad2);
                     }
                     if(dep2.data.kagawad[2].name != undefined)
                     {
                         this.kagawad3 = dep2.data.kagawad[2].name;
-                        console.log("kagawad 3: "+ this.kagawad3);
                     }
                     if(dep2.data.kagawad[3].name != undefined)
                     {
                         this.kagawad4 = dep2.data.kagawad[3].name;
-                        console.log("kagawad 4: "+ this.kagawad4);
                     }
                     if(dep2.data.kagawad[4].name != undefined)
                     {
                         this.kagawad5 = dep2.data.kagawad[4].name;
-                        console.log("kagawad 5: "+ this.kagawad5);
                     }
                     if(dep2.data.kagawad[5].name != undefined)
                     {
                         this.kagawad6 = dep2.data.kagawad[5].name;
-                        console.log("kagawad 6: "+ this.kagawad6);
                     }
                     if(dep2.data.kagawad[6].name != undefined)
                     {
                         this.kagawad7 = dep2.data.kagawad[6].name;
-                        console.log("kagawad 7: "+ this.kagawad7);
                     }else{
                         this.kagawad1 = '';
                         this.kagawad2 = '';
@@ -511,6 +535,7 @@
                 {
                     clearInterval(interval);
                 }
+                loader.hide()
                 vm.$htmlToPaper('printMe');
                 }, 1000); 
 
@@ -567,10 +592,15 @@
                   this.form.requestor_resident_id = value.id;
             },
             populateClearance(){
+                let loader = this.$loading.show({
+                  container: this.fullPage,
+                  loader: 'bars',
+                });
                 axios.get("api/business_clearance")
                  .then((response) => {
-                        this.clearances = response.data.data
+                        this.clearances = response.data
                         this.loadingData = false;
+                        loader.hide()
                     })
                     .catch(error => {
                     });
@@ -578,7 +608,6 @@
             fetchResidents(){
                 axios.get('/api/fetch/barangay/residents')
                 .then(function(response){
-                    console.log(response);
                     this.residents = response.data;
                 }.bind(this));
             },
@@ -606,8 +635,18 @@
           },
 
         created() {
+            Fire.$on('searching',() => {
+                let query = this.$parent.searhall;
+              axios.get('api/search/business_clearance?search=' + query)
+                .then((data) => {
+                    this.clearances = data.data
+                })
+                .catch(() => {
+                })
+            })
             this.populateClearance();
-            
+            $('.modal').modal('hide');
+            // console.clear();
             this.fetchResidents();
         }
     }

@@ -19,6 +19,9 @@ class Residents extends Model
 		'citizenship',
 		'address',
 		'barangay_id',
+		'employment_status',
+		'occupation',
+		'birthplace',
 	];
 	protected $table = 'residents';
 	protected $dates = ['deleted_at'];

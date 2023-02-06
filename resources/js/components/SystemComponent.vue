@@ -217,7 +217,7 @@
                 axios.get('/api/system/getlogo').then(function(response){
                     vm.barangay_logo1 = response.data[0].barangay_logo1;
                     vm.barangay_logo2 = response.data[0].barangay_logo2;
-                    console.log(response.data[0].barangay_logo1);
+                    // console.log(response.data[0].barangay_logo1);
                 }.bind(this));
             },
             populateData() {
@@ -274,6 +274,8 @@
         created() {
             this.populateBrgyLogo();
             this.populateData();
+            $('.modal').modal('hide');
+            console.clear();
         },
         mounted() {
             var vs = this.form;
@@ -295,8 +297,23 @@
                   callbacks: {
                     onChange: function(contents, $editable) {
                         vs.software_description = contents
+                        console.log(contents);
+                    },
+                    onInit: function() {
+                      vs.software_description = "<h1>test</h1>";
                     }
                   }
+                  // callbacks: {
+                  //   onChange: function(contents, $editable) {
+                  //       contents = contents.replace(/<\/?[^>]+(>|$)/g, "");
+                  //       vs.form.software_description = contents
+                  //       var regex = /\B{(\w*)}$/;
+                  //     if (regex.test(contents)) {
+                  //       console.log(contents);
+                  //     }
+
+                  //   }
+                  // }
               });
             });
         }

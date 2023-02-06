@@ -26,21 +26,48 @@ class BusinessClearanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function searchClearance()
+    {
+        if ($search = \Request::get('search')) {
+            $clearance = BusinessClearance::leftjoin('residents','business_clearance.requestor_resident_id','=','residents.id')
+                ->where(function($query) use ($search){
+                $query->where('business_clearance.business_name','LIKE',"%$search%")
+                        ->orWhere('business_clearance.location','LIKE',"%$search%")
+                        ->orWhere('business_clearance.name','LIKE',"%$search%")
+                        ->orWhere('business_clearance.address','LIKE',"%$search%")
+                        ->orWhere('business_clearance.remarks','LIKE',"%$search%")
+                        ->orWhere('business_clearance.status','LIKE',"%$search%")
+                        ->orWhere('residents.first_name','LIKE',"%$search%")
+                        ->orWhere('residents.last_name','LIKE',"%$search%");
+            })
+            ->where('business_clearance.barangay_id', Auth::user()->barangay_id) 
+            ->paginate(10);
+        }else{
+            $clearance = BusinessClearance::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(10);
+        }
+
+        return $clearance;
+    }
+    public function index(Request $request)
     {
         if(Auth::user()->type == 'admin') {
 
         }else{
-            return BusinessClearance::orderBy('id','desc')->paginate(10);
+            return BusinessClearance::orderBy('id','desc')->where('barangay_id', Auth::user()->barangay_id)->paginate(2);
         }
         // return BusinessClearance::latest()->paginate(10);
     }
     public function fetchResidents(Request $request)
     {
+<<<<<<< HEAD
         if(isset($request->clearance_id)){
             return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->where('id',$request->clearance_id)->get();
+=======
+        if($request->clearance_id){
+            return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->where('id',$request->clearance_id)->where('barangay_id', Auth::user()->barangay_id)->get();
+>>>>>>> 1af3779b3bf8499ebea32f01cd29dd34723586d5
         }else{
-            return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->get();
+            return Residents::select('residents.*', DB::raw('CONCAT(residents.first_name," ", residents.last_name) AS full_name'))->where('barangay_id', Auth::user()->barangay_id)->get();
         }
     }
     /**
@@ -139,5 +166,10 @@ class BusinessClearanceController extends Controller
     {
         $bc = BusinessClearance::findOrFail($id);
         $bc->delete();
+    }
+
+    public function pdfExpo(Request $request)
+    {
+        log::info($request);
     }
 }

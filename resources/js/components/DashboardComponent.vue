@@ -288,6 +288,8 @@
         created(){
             this.fetcResientCount();
             this.fetchBarangay();
+            $('.modal').modal('hide');
+            console.clear();
         }
     }
 </script>

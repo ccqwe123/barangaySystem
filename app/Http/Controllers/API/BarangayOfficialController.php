@@ -23,11 +23,34 @@ class BarangayOfficialController extends Controller
         $this->middleware('auth:api');
     }
 
+    public function searchOfficials()
+    {
+
+        if ($search = \Request::get('search')) {
+            $official = BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
+                     ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
+                     ->where(function($query) use ($search){
+                        $query->where('barangay_officials.name','LIKE',"%$search%")
+                                ->orWhere('barangay_officials.position','LIKE',"%$search%")
+                                ->orWhere('barangay.barangay_name','LIKE',"%$search%");
+                    })
+                     ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
+                     ->paginate(10);
+        }else{
+            $official = BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
+                     ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
+                     ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
+                     ->paginate(10);
+        }
+
+        return $official;
+    }
     public function index()
     {
          return BarangayOfficials::select('barangay.barangay_name', 'barangay_officials.*')
                      ->leftjoin('barangay','barangay_officials.barangay_id','=','barangay.id')
-                     ->paginate(100);
+                     ->where('barangay_officials.barangay_id','=',Auth::user()->barangay_id)
+                     ->paginate(10);
     }
 
     /**
@@ -288,15 +311,19 @@ class BarangayOfficialController extends Controller
     {
         $captain = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','barangay captain')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->first();
         $secretary = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','secretary')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->first();
         $treasurer = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','treasurer')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->first();                                             
         $kagawad = BarangayOfficials::where('barangay_id', Auth::user()->barangay_id)
                                 ->where('position','=','kagawad')
+                                ->where('barangay_id','=',Auth::user()->barangay_id)
                                 ->get();
         return response()->json([
             'captain' => $captain,

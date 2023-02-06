@@ -58,7 +58,7 @@ class SystemController extends Controller
         $collection = collect($request->all());
         if($var == '' || $var == NULL){
             foreach ($collection as $var) {
-                if(count($var)>0)
+                if($var)
                 {
                     DB::table('var_path')
                     ->insert([
@@ -69,6 +69,7 @@ class SystemController extends Controller
                     ]);
                 }else {}
             }
+        log::info($request);
             $update_existing_data = Varpath::where('barangay_id', Auth::user()->barangay_id)->get();
             foreach ($update_existing_data as $var_rename) {
                 if($var_rename->name == $request->barangay_city) {

@@ -1,24 +1,17 @@
             body
             {
                 margin: 20px;
-
                 box-sizing: border-box;
             }
             .default
             {
                 margin: 0px; padding: 0px;
-
                 position: relative;
-
                 width: auto; height: auto;
-
                 display: block;
-
                 box-sizing: border-box;
-
                 border: 1px solid #333333;
             }
-
             .header
             {
                 margin: 0px; padding: 0px;
@@ -56,16 +49,13 @@
 
             .header_text
             {
-                margin: auto; padding: 0px;
-
+                margin: auto; 
+                padding: 0px;
                 position: relative;
-
-                width: auto; height: auto;
-
+                width: auto; 
+                height: auto;
                 display: block;
-
                 box-sizing: border-box;
-
                 text-align: center;
                 font-family: "Times New Roman";
             }
@@ -224,7 +214,7 @@
 
             .paragraph_container
             {
-                margin: auto;
+                /*margin: auto;*/
 
                 font-size: 1.5em;
                 text-align: center;
@@ -234,7 +224,7 @@
             {
                 margin: auto;
                 
-                width: 800px;
+                width: 1000px;
 
                 text-align: left;
                 text-indent: 60px;
@@ -387,14 +377,14 @@
 
                 .paragraph_container
                 {
-                    margin: auto;
+                    /*margin: auto;*/
 
                     text-align: center;
                 }
 
                 .paragraph
                 {
-                    width: 600px;
+                    width: 800px;
                 }
 
                 .seal_and_signature

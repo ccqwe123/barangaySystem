@@ -255,6 +255,7 @@
             },
              fetchUsers() {
                 axios.get('/api/fetch/user_id').then(function(response){
+                  console.log(response.data.type);
                     this.user_id = response.data.type
                 }.bind(this));
             }
@@ -263,7 +264,12 @@
             this.fetchUsers();
             this.populateUser();
             this.fetchBarangay();
+<<<<<<< HEAD
 
+=======
+            $('.modal').modal('hide');
+            console.clear();
+>>>>>>> 1af3779b3bf8499ebea32f01cd29dd34723586d5
         }
     }
 </script>
